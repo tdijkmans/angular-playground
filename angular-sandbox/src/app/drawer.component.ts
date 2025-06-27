@@ -50,7 +50,14 @@ export class DrawerContainerComponent {
         this.router.navigate([], { queryParams: { drawerWidth: mode }, queryParamsHandling: 'merge' });
     }
 
-    close() { this.dialogRef.close(); }
+    close() {
+        // Remove only drawerWidth from the URL
+        this.router.navigate([], {
+            queryParams: { drawerWidth: null },
+            queryParamsHandling: 'merge',
+        });
+        this.dialogRef.close();
+    }
 
     cloneTab() {
         window.open(window.location.href, '_blank');
