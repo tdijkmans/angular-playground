@@ -1,8 +1,5 @@
-import { Component, inject, OnDestroy } from '@angular/core';
-import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { DrawerService } from './drawer.service';
-import { MyContentComponent } from './my-content.component';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,30 +7,7 @@ import { MyContentComponent } from './my-content.component';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App implements OnDestroy {
+export class App  {
   protected title = 'angular-sandbox';
-  private drawer = inject(DrawerService);
-  private route = inject(ActivatedRoute);
-  private sub: Subscription;
-  private drawerOpen = false;
 
-  constructor() {
-    this.sub = this.route.queryParams.subscribe(params => {
-      const width = params['drawerWidth'] || 'full';
-      // Open drawer if drawerWidth or id is present and not already open
-      if ((params['drawerWidth'] || params['id']) && !this.drawerOpen) {
-        this.drawer.openDrawer(MyContentComponent, width);
-        this.drawerOpen = true;
-      }
-    });
-  }
-
-  openMyDrawer() {
-    this.drawer.openDrawer(MyContentComponent, 'half');
-    this.drawerOpen = true;
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
 }
