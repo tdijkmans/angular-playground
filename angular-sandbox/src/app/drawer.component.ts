@@ -1,7 +1,7 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     template: `
     <div class="drawer" [ngStyle]="{ width: drawerWidth }">
       <div class="top-bar">
+        <span> {{ data.zaakId }}</span>
         <button (click)="setWidth('full')">Full</button>
         <button (click)="setWidth('half')">Half</button>
         <button (click)="setWidth('wide')">Wide</button>
@@ -27,10 +28,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class DrawerContainerComponent {
     drawerWidth = '100%';
     private dialogRef = inject(DialogRef);
-    private data = inject(DIALOG_DATA) as { portal: ComponentPortal<any>, width: string };
+    public data = inject(DIALOG_DATA) as { portal: ComponentPortal<any>, width: string, zaakId: string };
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     content = this.data.portal;
+
+    @ViewChild(CdkPortalOutlet) portalOutlet!: CdkPortalOutlet;
 
     constructor() {
         this.setWidth(this.data.width || 'full');

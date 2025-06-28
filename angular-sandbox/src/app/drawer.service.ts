@@ -7,11 +7,11 @@ import { DrawerContainerComponent } from './drawer.component';
 export class DrawerService {
   dialog = inject(Dialog);
 
-  openDrawer(component: any, width: string = 'full') {
+  openDrawer(component: any, width: string = 'full', zaakId: string) {
+    console.log(`Opening drawer with component: ${component.name}, width: ${width}, zaakId: ${zaakId}`);
     const portal = new ComponentPortal(component);
     this.dialog.open(DrawerContainerComponent, {
-      data: { portal, width },
-      // Optionally add panelClass for custom styling
+      data: { portal, width, zaakId },
     });
   }
 }
