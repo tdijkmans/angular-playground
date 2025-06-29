@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DrawerData } from './drawer.service';
 
 export type Width = 'full' | 'half' | 'wide';
 
@@ -16,7 +17,7 @@ export type Width = 'full' | 'half' | 'wide';
 export class DrawerComponent  {
     drawerWidth = '100%';
     private dialogRef = inject(DialogRef);
-    public data = inject(DIALOG_DATA) as { portal: ComponentPortal<any>, width: Width, zaakId: string, tabs?: any[], activeTab?: string };
+    public data = inject(DIALOG_DATA) as DrawerData;
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     content = this.data.portal;
@@ -44,7 +45,7 @@ export class DrawerComponent  {
     }
 
     setWidth(mode: Width) {
-        let width;
+        let width: string;
         switch (mode) {
             case 'half': width = '50%'; break;
             case 'wide': width = 'calc(100% - 60px)'; break;
@@ -57,7 +58,7 @@ export class DrawerComponent  {
     setTab(tabLabel: string) {
         this.activeTab = tabLabel;
         if (this.data.tabs) {
-            const tabConfig = this.data.tabs.find((t: any) => t.label === tabLabel);
+            const tabConfig = this.data.tabs.find((t) => t.label === tabLabel);
             if (tabConfig) {
                 this.content = new ComponentPortal(tabConfig.component);
             }

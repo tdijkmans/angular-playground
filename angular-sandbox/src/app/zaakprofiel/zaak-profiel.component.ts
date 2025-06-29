@@ -39,31 +39,32 @@ export class ZaakProfiel {
       .subscribe(params => {
         const width = params['drawerWidth'] || 'full';
         const tab = params['tab'];
-        const tabConfig = TABS.find((t): t is Tab => t.label === tab);
+        const tabConfig = TABS.find((t) => t.label === tab);
         // Open drawer if drawerWidth or id is present and not already open
         if (tabConfig && !this.drawerOpen) {
-          this.drawer.openDrawer(tabConfig.component, width, this.zaakId, TABS, tab);
+          const options ={ width, zaakId: this.zaakId, tabs: TABS, activeTab: tab, title:'Titel X' }
+          this.drawer.openDrawer(tabConfig.component,options );
           this.drawerOpen = true;
         }
       });
     
     // If the route has a zaakId, open the drawer immediately
     if (this.zaakId && !this.drawerOpen) {
-      this.drawer.openDrawer(MyContentComponent, 'half', this.zaakId, TABS, TABS[0].label);
+      this.drawer.openDrawer(MyContentComponent, { width: 'half', zaakId: this.zaakId, tabs: TABS, activeTab: TABS[0].label , title:'Titel X' });
       this.drawerOpen = true;
     }
   }
 
   openMyDrawer() {
-    this.drawer.openDrawer(MyContentComponent, 'half', this.zaakId, TABS, TABS[0].label);
+    this.drawer.openDrawer(MyContentComponent, { width: 'half', zaakId: this.zaakId, tabs: TABS, activeTab: TABS[0].label, title:'Titel X'  });
     this.drawerOpen = true;
   }
 
   openTab(tabLabel: Tab['label']) {
-    const tabConfig = TABS.find((t): t is Tab => t.label === tabLabel);
+    const tabConfig = TABS.find((t) => t.label === tabLabel);
   
     if (tabConfig) {
-      this.drawer.openDrawer(tabConfig.component, 'half', this.zaakId, TABS, tabLabel);
+      this.drawer.openDrawer(tabConfig.component, { width: 'half', zaakId: this.zaakId, tabs: TABS, activeTab: tabLabel, title:'Titel X'  });
       this.drawerOpen = true;
     }
   }

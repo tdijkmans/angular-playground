@@ -1,13 +1,13 @@
 <div class="drawer" [style.width]="drawerWidth">
   <div class="top-bar">
-    <span>{{ data.zaakId }}</span>
+    <span>{{ data.title }}</span>
     <button type="button" (click)="setWidth('full')">Full</button>
     <button type="button" (click)="setWidth('half')">Half</button>
     <button type="button" (click)="setWidth('wide')">Wide</button>
     <button type="button"
-            [ngClass]="{'active': drawerWidth === 'wide' || drawerWidth === 'half'}"
+            [class.active]="drawerWidth === '50%'"
             (click)="toggleWideHalf()">
-      {{ drawerWidth === 'wide' ? 'Toggle Half' : 'Toggle Wide' }}
+      {{ drawerWidth === '50%' ? 'Toggle Half' : 'Toggle Wide' }}
     </button>
     <button type="button" (click)="cloneTab()">Clone Tab</button>
     <button type="button" (click)="closeDrawer()">Close</button>
