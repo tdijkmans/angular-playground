@@ -2,8 +2,10 @@ import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Width } from './drawer.service';
+
+export type Width = 'full' | 'half' | 'wide';
 
 @Component({
     selector: 'app-drawer-container',
@@ -11,7 +13,7 @@ import { Width } from './drawer.service';
     templateUrl: './drawer.component.html',
     styleUrls: ['./drawer.component.scss']
 })
-export class DrawerComponent {
+export class DrawerComponent  {
     drawerWidth = '100%';
     private dialogRef = inject(DialogRef);
     public data = inject(DIALOG_DATA) as { portal: ComponentPortal<any>, width: Width, zaakId: string, tabs?: any[], activeTab?: string };
@@ -21,13 +23,24 @@ export class DrawerComponent {
     activeTab = this.data.activeTab;
 
     constructor() {
-        this.setWidth(this.data.width || 'full');
-        this.route.queryParams.subscribe(params => {
+        this.initalizeQueryParams();
+        this.route.queryParams.pipe(takeUntilDestroyed()).subscribe(params => {
             if (params['drawerWidth']) this.setWidth(params['drawerWidth']);
             if (params['tab'] && this.data.tabs) {
                 this.setTab(params['tab']);
             }
         });
+    }
+
+    private initalizeQueryParams() {
+        const queryParams: any = {};
+        if (this.data.width) {
+            queryParams.drawerWidth = this.data.width;
+        }
+        if (this.data.activeTab) {
+            queryParams.tab = this.data.activeTab;
+        }
+        this.router.navigate([], { queryParams, queryParamsHandling: 'merge' });
     }
 
     setWidth(mode: Width) {
@@ -66,5 +79,14 @@ export class DrawerComponent {
 
     cloneTab() {
         window.open(window.location.href, '_blank');
+    }
+
+    toggleWideHalf() {
+        // Toggle between 'wide' and 'half' widths
+        if (this.drawerWidth === 'calc(100% - 60px)') {
+            this.setWidth('half');
+        } else {
+            this.setWidth('wide');
+        }
     }
 }

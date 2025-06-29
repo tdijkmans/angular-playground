@@ -1,19 +1,20 @@
 import { Dialog } from '@angular/cdk/dialog';
-import { ComponentPortal } from '@angular/cdk/portal';
+import { ComponentPortal, ComponentType } from '@angular/cdk/portal';
 import { inject, Injectable } from '@angular/core';
-import { DrawerComponent } from './drawer.component';
+import { DrawerComponent, Width } from './drawer.component';
 
+export interface Tab {
+  label: string;
+  component: ComponentType<any>;
+} 
 
-export type Width = 'full' | 'half' | 'wide';
 
 @Injectable({ providedIn: 'root' })
 export class DrawerService {
   dialog = inject(Dialog);
 
-  openDrawer(component: any, width: Width = 'full', zaakId: string, tabs?: any[], activeTab?: string) {
-    console.log(`Opening drawer with component: ${component.name}, width: ${width}, zaakId: ${zaakId}`);
+  openDrawer(component: any, width: Width = 'full', zaakId: string, tabs?: Tab[], activeTab?: Tab['label']) {
     const portal = new ComponentPortal(component);
-
 
     this.dialog.open(DrawerComponent, {
       data: { portal, width, zaakId, tabs, activeTab },

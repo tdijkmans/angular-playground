@@ -1,15 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { DrawerService } from '../drawer/drawer.service';
+import { DrawerService, Tab } from '../drawer/drawer.service';
 import { MyContentComponent } from '../tabs/my-content.component';
 import { MyOtherContentComponent } from '../tabs/my-other-content.component';
 
-// Tab config defined only here for reusability
-const TABS = [
-  { label: 'MyContentComponentLabel', component: MyContentComponent },
-  { label: 'MyOtherContentComponentLabel', component: MyOtherContentComponent },
-];
+
+const TABS:  Tab[] = [
+  { label: 'MyContentTab', component: MyContentComponent },
+  { label: 'MyOtherContentTab', component: MyOtherContentComponent },
+] as const;
 
 @Component({
   selector: 'zaak-profiel',
@@ -17,8 +17,13 @@ const TABS = [
   template: `
     <div>zaak-profiel</div>
     <button (click)="openMyDrawer()">Open Drawer</button>
-    <button (click)="openTab('MyContentComponentLabel')">Open MyContentComponentLabel</button>
-    <button (click)="openTab('MyOtherContentComponentLabel')">Open MyOtherContentComponentLabel</button>
+    @if (TABS.length > 0) {
+      <div class="tabs">
+        @for (tab of TABS; track tab.label) {
+          <button (click)="openTab(tab.label)">{{ tab.label }}</button>
+        }
+      </div>
+    }
     <router-outlet></router-outlet>`
 })
 export class ZaakProfiel {
@@ -26,6 +31,7 @@ export class ZaakProfiel {
   private route = inject(ActivatedRoute);
   private drawerOpen = false;
   private zaakId = this.route.snapshot.paramMap.get('zaakid') || '';
+  public TABS = TABS;
 
   constructor() {
     this.route.queryParams
@@ -33,27 +39,29 @@ export class ZaakProfiel {
       .subscribe(params => {
         const width = params['drawerWidth'] || 'full';
         const tab = params['tab'];
-        const tabConfig = TABS.find(t => t.label === tab);
+        const tabConfig = TABS.find((t): t is Tab => t.label === tab);
         // Open drawer if drawerWidth or id is present and not already open
         if (tabConfig && !this.drawerOpen) {
           this.drawer.openDrawer(tabConfig.component, width, this.zaakId, TABS, tab);
           this.drawerOpen = true;
         }
       });
+    
     // If the route has a zaakId, open the drawer immediately
     if (this.zaakId && !this.drawerOpen) {
-      this.drawer.openDrawer(MyContentComponent, 'half', this.zaakId, TABS, 'MyContentComponentLabel');
+      this.drawer.openDrawer(MyContentComponent, 'half', this.zaakId, TABS, TABS[0].label);
       this.drawerOpen = true;
     }
   }
 
   openMyDrawer() {
-    this.drawer.openDrawer(MyContentComponent, 'half', this.zaakId, TABS, 'MyContentComponentLabel');
+    this.drawer.openDrawer(MyContentComponent, 'half', this.zaakId, TABS, TABS[0].label);
     this.drawerOpen = true;
   }
 
-  openTab(tabLabel: string) {
-    const tabConfig = TABS.find(t => t.label === tabLabel);
+  openTab(tabLabel: Tab['label']) {
+    const tabConfig = TABS.find((t): t is Tab => t.label === tabLabel);
+  
     if (tabConfig) {
       this.drawer.openDrawer(tabConfig.component, 'half', this.zaakId, TABS, tabLabel);
       this.drawerOpen = true;
