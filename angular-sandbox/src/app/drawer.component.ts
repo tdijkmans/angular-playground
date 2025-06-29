@@ -3,6 +3,7 @@ import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Width } from './drawer.service';
 
 @Component({
     selector: 'app-drawer-container',
@@ -28,7 +29,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class DrawerComponent {
     drawerWidth = '100%';
     private dialogRef = inject(DialogRef);
-    public data = inject(DIALOG_DATA) as { portal: ComponentPortal<any>, width: string, zaakId: string };
+    public data = inject(DIALOG_DATA) as { portal: ComponentPortal<any>, width: Width, zaakId: string };
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     content = this.data.portal;
@@ -40,7 +41,7 @@ export class DrawerComponent {
         });
     }
 
-    setWidth(mode: string) {
+    setWidth(mode: Width) {
         let width;
         switch (mode) {
             case 'half': width = '50%'; break;
