@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ZaakProfiel } from './zaak-profiel.component';
+import { ZaakProfiel } from './zaakprofiel/zaak-profiel.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/zaakprofiel/3', pathMatch: 'full' },

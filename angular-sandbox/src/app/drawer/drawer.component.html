@@ -1,0 +1,17 @@
+<div class="drawer" [ngStyle]="{ width: drawerWidth }">
+  <div class="top-bar">
+    <span> {{ data.zaakId }}</span>
+    <button (click)="setWidth('full')">Full</button>
+    <button (click)="setWidth('half')">Half</button>
+    <button (click)="setWidth('wide')">Wide</button>
+    <button (click)="cloneTab()">Clone Tab</button>
+    <button (click)="closeDrawer()">Close</button>
+  </div>
+  <div class="tab-bar" *ngIf="data.tabs">
+    <button *ngFor="let tab of data.tabs" [class.active]="tab.label === activeTab"
+      (click)="selectTab(tab.label)">{{ tab.label }}</button>
+  </div>
+  <div class="content">
+    <ng-template [cdkPortalOutlet]="content"></ng-template>
+  </div>
+</div>

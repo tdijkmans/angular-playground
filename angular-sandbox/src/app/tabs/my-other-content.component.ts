@@ -5,8 +5,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 
 @Component({
-    selector: 'app-my-content',
+    selector: 'app-my-other-content',
     template: `
+    <h2>My Other Content</h2>
         <span> {{ data.zaakId }}</span>
         <div *ngIf="post$ | async as data; else loading">
             <h2>Post #{{ data.id }}</h2>
@@ -17,7 +18,7 @@ import { Component, inject } from '@angular/core';
   `,
     imports: [CommonModule],
 })
-export class MyContentComponent {
+export class MyOtherContentComponent {
     private http = inject(HttpClient);
     public data = inject(DIALOG_DATA) as { portal: ComponentPortal<any>, width: string, zaakId: string };
     post$ = this.http.get<any>(`https://jsonplaceholder.typicode.com/posts/${this.data.zaakId}`);

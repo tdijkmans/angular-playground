@@ -10,13 +10,13 @@ export type Width = 'full' | 'half' | 'wide';
 export class DrawerService {
   dialog = inject(Dialog);
 
-  openDrawer(component: any, width: Width = 'full', zaakId: string) {
+  openDrawer(component: any, width: Width = 'full', zaakId: string, tabs?: any[], activeTab?: string) {
     console.log(`Opening drawer with component: ${component.name}, width: ${width}, zaakId: ${zaakId}`);
     const portal = new ComponentPortal(component);
 
 
     this.dialog.open(DrawerComponent, {
-      data: { portal, width, zaakId },
+      data: { portal, width, zaakId, tabs, activeTab },
     });
   }
 }

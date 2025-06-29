@@ -8,36 +8,25 @@ import { Width } from './drawer.service';
 @Component({
     selector: 'app-drawer-container',
     imports: [CommonModule, CdkPortalOutlet],
-    template: `
-    <div class="drawer" [ngStyle]="{ width: drawerWidth }">
-      <div class="top-bar">
-        <span> {{ data.zaakId }}</span>
-        <button (click)="setWidth('full')">Full</button>
-        <button (click)="setWidth('half')">Half</button>
-        <button (click)="setWidth('wide')">Wide</button>
-        <button (click)="cloneTab()">Clone Tab</button>
-        <button (click)="closeDrawer()">Close</button>
-      </div>
-      <ng-template [cdkPortalOutlet]="content"></ng-template>
-    </div>
-  `,
-    styles: [
-        `.drawer { height: 100vh; transition: width 0.3s; background: #fff; position: fixed; right: 0; top: 0; }`,
-        `.top-bar { display: flex; gap: 8px; padding: 8px; background: #eee; }`
-    ]
+    templateUrl: './drawer.component.html',
+    styleUrls: ['./drawer.component.scss']
 })
 export class DrawerComponent {
     drawerWidth = '100%';
     private dialogRef = inject(DialogRef);
-    public data = inject(DIALOG_DATA) as { portal: ComponentPortal<any>, width: Width, zaakId: string };
+    public data = inject(DIALOG_DATA) as { portal: ComponentPortal<any>, width: Width, zaakId: string, tabs?: any[], activeTab?: string };
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     content = this.data.portal;
+    activeTab = this.data.activeTab;
 
     constructor() {
         this.setWidth(this.data.width || 'full');
         this.route.queryParams.subscribe(params => {
             if (params['drawerWidth']) this.setWidth(params['drawerWidth']);
+            if (params['tab'] && this.data.tabs) {
+                this.setTab(params['tab']);
+            }
         });
     }
 
@@ -52,10 +41,24 @@ export class DrawerComponent {
         this.router.navigate([], { queryParams: { drawerWidth: mode }, queryParamsHandling: 'merge' });
     }
 
+    setTab(tabLabel: string) {
+        this.activeTab = tabLabel;
+        if (this.data.tabs) {
+            const tabConfig = this.data.tabs.find((t: any) => t.label === tabLabel);
+            if (tabConfig) {
+                this.content = new ComponentPortal(tabConfig.component);
+            }
+        }
+    }
+
+    selectTab(tabLabel: string) {
+        this.router.navigate([], { queryParams: { tab: tabLabel }, queryParamsHandling: 'merge' });
+        this.setTab(tabLabel);
+    }
+
     closeDrawer() {
-        // Remove only drawerWidth from the URL
         this.router.navigate([], {
-            queryParams: { drawerWidth: null },
+            queryParams: { drawerWidth: null, tab: null },
             queryParamsHandling: 'merge',
         });
         this.dialogRef.close();
