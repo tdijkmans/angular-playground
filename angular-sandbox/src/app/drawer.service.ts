@@ -1,7 +1,12 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { inject, Injectable } from '@angular/core';
-import { DrawerContainerComponent } from './drawer.component';
+import { DrawerComponent } from './drawer.component';
+
+type Data = {
+  width: string;
+  zaakId: string;
+};
 
 @Injectable({ providedIn: 'root' })
 export class DrawerService {
@@ -10,7 +15,9 @@ export class DrawerService {
   openDrawer(component: any, width: string = 'full', zaakId: string) {
     console.log(`Opening drawer with component: ${component.name}, width: ${width}, zaakId: ${zaakId}`);
     const portal = new ComponentPortal(component);
-    this.dialog.open(DrawerContainerComponent, {
+
+
+    this.dialog.open(DrawerComponent, {
       data: { portal, width, zaakId },
     });
   }

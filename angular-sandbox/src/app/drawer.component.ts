@@ -1,7 +1,7 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -15,7 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
         <button (click)="setWidth('half')">Half</button>
         <button (click)="setWidth('wide')">Wide</button>
         <button (click)="cloneTab()">Clone Tab</button>
-        <button (click)="close()">Close</button>
+        <button (click)="closeDrawer()">Close</button>
       </div>
       <ng-template [cdkPortalOutlet]="content"></ng-template>
     </div>
@@ -25,15 +25,13 @@ import { ActivatedRoute, Router } from '@angular/router';
         `.top-bar { display: flex; gap: 8px; padding: 8px; background: #eee; }`
     ]
 })
-export class DrawerContainerComponent {
+export class DrawerComponent {
     drawerWidth = '100%';
     private dialogRef = inject(DialogRef);
     public data = inject(DIALOG_DATA) as { portal: ComponentPortal<any>, width: string, zaakId: string };
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     content = this.data.portal;
-
-    @ViewChild(CdkPortalOutlet) portalOutlet!: CdkPortalOutlet;
 
     constructor() {
         this.setWidth(this.data.width || 'full');
@@ -53,7 +51,7 @@ export class DrawerContainerComponent {
         this.router.navigate([], { queryParams: { drawerWidth: mode }, queryParamsHandling: 'merge' });
     }
 
-    close() {
+    closeDrawer() {
         // Remove only drawerWidth from the URL
         this.router.navigate([], {
             queryParams: { drawerWidth: null },

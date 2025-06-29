@@ -16,7 +16,6 @@ import { Component, inject } from '@angular/core';
         <ng-template #loading>Loading...</ng-template>
   `,
     imports: [CommonModule],
-    standalone: true,
 })
 export class MyContentComponent {
     private http = inject(HttpClient);
