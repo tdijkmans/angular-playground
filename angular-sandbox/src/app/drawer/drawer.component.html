@@ -1,0 +1,29 @@
+<div class="drawer" [style.width]="drawerWidth">
+  <div class="top-bar">
+    <span>{{ data.title }}</span>
+    <button type="button" (click)="setWidth('full')">Full</button>
+    <button type="button" (click)="setWidth('half')">Half</button>
+    <button type="button" (click)="setWidth('wide')">Wide</button>
+    <button type="button"
+            [class.active]="drawerWidth === '50%'"
+            (click)="toggleWideHalf()">
+      {{ drawerWidth === '50%' ? 'Toggle Half' : 'Toggle Wide' }}
+    </button>
+    <button type="button" (click)="cloneTab()">Clone Tab</button>
+    <button type="button" (click)="closeDrawer()">Close</button>
+  </div>
+  <div class="drawer-body">
+    <div class="content">
+      <ng-template [cdkPortalOutlet]="content"></ng-template>
+    </div>
+    @if (data.tabs; as tabs) {
+      <div class="tab-bar vertical">
+        @for (tab of tabs; track tab.label) {
+          <button type="button" [class.active]="tab.label === activeTab" (click)="selectTab(tab.label)">
+            {{ tab.label }}
+          </button>
+        }
+      </div>
+    }
+  </div>
+</div>
