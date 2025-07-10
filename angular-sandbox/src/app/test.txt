@@ -1,0 +1,59 @@
+import { Component, HostListener, ElementRef } from '@angular/core';
+
+@Component({
+  selector: 'app-dropdown',
+  templateUrl: './dropdown.component.html',
+  styleUrls: ['./dropdown.component.css']
+})
+export class DropdownComponent {
+  isOpen = false;
+  focusedIndex = -1;
+  items = ['Item 1', 'Item 2', 'Item 3'];
+
+  constructor(private el: ElementRef) {}
+
+  toggle() {
+    this.isOpen = !this.isOpen;
+    if (!this.isOpen) {
+      this.focusedIndex = -1;
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: MouseEvent) {
+    if (!this.el.nativeElement.contains(event.target)) {
+      this.isOpen = false;
+      this.focusedIndex = -1;
+    }
+  }
+
+  onKeydown(event: KeyboardEvent) {
+    const max = this.items.length - 1;
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        this.focusedIndex = (this.focusedIndex + 1) > max ? 0 : this.focusedIndex + 1;
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        this.focusedIndex = (this.focusedIndex - 1) < 0 ? max : this.focusedIndex - 1;
+        break;
+      case 'Enter':
+        if (this.focusedIndex >= 0) {
+          this.selectItem(this.items[this.focusedIndex]);
+        }
+        break;
+      case 'Escape':
+        this.isOpen = false;
+        this.focusedIndex = -1;
+        break;
+    }
+  }
+
+  selectItem(item: string) {
+    console.log('Selected:', item);
+    this.isOpen = false;
+    this.focusedIndex = -1;
+  }
+}
