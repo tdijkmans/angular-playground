@@ -2,6 +2,19 @@
   <div class="container">
     <h1>Welcome to My Angular App</h1>
     <p>This is a simple application to demonstrate Angular routing.</p>
+    
+    <section>
+      <h2>Relative Time Pipe Demo (Dutch)</h2>
+      <div class="time-demo">
+        <p><strong>1 hour ago:</strong> {{ oneHourAgo | relativeTime }}</p>
+        <p><strong>30 minutes ago:</strong> {{ thirtyMinutesAgo | relativeTime }}</p>
+        <p><strong>Now:</strong> {{ now | relativeTime }}</p>
+        <p><strong>In 15 minutes:</strong> {{ fifteenMinutesFromNow | relativeTime }}</p>
+        <p><strong>Tomorrow:</strong> {{ tomorrow | relativeTime }}</p>
+        <p><strong>Last week:</strong> {{ lastWeek | relativeTime }}</p>
+        <p><strong>Next month:</strong> {{ nextMonth | relativeTime }}</p>
+      </div>
+    </section>
   </div>
 </main>
 
