@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Combobox } from "./combobox/combobox.model";
-import { ComboboxOption } from "./combobox/ComboboxOption";
+import { Combobox } from "./combobox/combobox.component";
+import { ComboboxOption } from "./combobox/combobox.model";
 
 import { signal, WritableSignal, computed } from '@angular/core';
 import { Observable } from 'rxjs';

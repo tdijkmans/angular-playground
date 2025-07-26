@@ -2,20 +2,13 @@
   <div class="container">
     <h1>Welcome to My Angular App</h1>
   </div>
-  <app-combobox/>
 
+  <app-combobox [id]="'my-combobox'" [label]="'Select a City'" [placeholder]="'Type to search cities...'"
+    [searchFn]="searchCities" (selectedOptionChange)="onCitySelected($event)"></app-combobox>
 
-   <app-combobox
-      [id]="'my-combobox'"
-      [label]="'Select a City'"
-      [placeholder]="'Type to search cities...'"
-      [searchFn]="searchCities"
-      (selectedOptionChange)="onCitySelected($event)"
-    ></app-combobox>
-
-    @if (selectedCity()) {
-      <p>Selected City: {{ selectedCity()!.label }} (Value: {{ selectedCity()!.value }})</p>
-    }
+  @if (selectedCity()) {
+  <p>Selected City: {{ selectedCity()!.label }} (Value: {{ selectedCity()!.value }})</p>
+  }
 </main>
 
 <router-outlet />
