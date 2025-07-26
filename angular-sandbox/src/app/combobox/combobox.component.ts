@@ -11,13 +11,13 @@ import { ComboboxOption } from "./combobox.model";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Combobox implements OnInit, OnDestroy {
-  @Input() id: string = 'combobox';
-  @Input() label: string = 'Select an Option';
-  @Input() placeholder: string = 'Search or select...';
-  @Input() debounceTimeMs: number = 300;
+  @Input() id = 'combobox';
+  @Input() label = 'Select an Option';
+  @Input() placeholder = 'Search or select...';
+  @Input() debounceTimeMs = 300;
   @Input() searchFn!: (searchTerm: string) => Observable<ComboboxOption[]>;
   /** If true, allows multiple selection. Default is false (single select) */
-  @Input() multiple: boolean = false;
+  @Input() multiple = false;
 
   /** Emits selected option(s). Emits ComboboxOption|null for single, ComboboxOption[] for multiple */
   @Output() selectedOptionChange = new EventEmitter<ComboboxOption | null | ComboboxOption[]>();
@@ -26,7 +26,7 @@ export class Combobox implements OnInit, OnDestroy {
   private searchTerm$: Subject<string> = new Subject<string>();
 
   isDropdownOpen = signal(false);
-  options =signal<ComboboxOption[]>([]);
+  options = signal<ComboboxOption[]>([]);
   activeOptionIndex = signal(-1);
   selectedOption = signal<ComboboxOption | null>(null); // Used for single select
   selectedOptions = signal<ComboboxOption[]>([]); // Used for multiple select
