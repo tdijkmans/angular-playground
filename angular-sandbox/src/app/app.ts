@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App  {
+export class App {
   protected title = 'angular-sandbox';
 
   selectedCity = signal<ComboboxOption | null>(null);
@@ -51,8 +51,9 @@ export class App  {
     });
   };
 
-  onCitySelected(option: ComboboxOption | null): void {
-    this.selectedCity.set(option);
+  onCitySelected(option: ComboboxOption | ComboboxOption[] | null): void {
+    const isArray = Array.isArray(option);
+    this.selectedCity.set(isArray ? option[0] || null : option);
     console.log('Selected option:', option);
   }
 
