@@ -3,10 +3,9 @@ import { RouterOutlet } from '@angular/router';
 import { Combobox } from "./combobox/combobox.component";
 import { ComboboxOption } from "./combobox/combobox.model";
 
-import { signal, WritableSignal, computed } from '@angular/core';
+import { signal } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +17,7 @@ export class App  {
   protected title = 'angular-sandbox';
 
   selectedCity = signal<ComboboxOption | null>(null);
+  selectedCities = signal<ComboboxOption[]>([]);
 
   // Example async search function
   searchCities = (searchTerm: string): Observable<ComboboxOption[]> => {
@@ -54,5 +54,16 @@ export class App  {
   onCitySelected(option: ComboboxOption | null): void {
     this.selectedCity.set(option);
     console.log('Selected option:', option);
+  }
+
+  onCitiesSelected(options: ComboboxOption[] | ComboboxOption | null): void {
+    if (Array.isArray(options)) {
+      this.selectedCities.set(options);
+    } else if (options && typeof options === 'object') {
+      this.selectedCities.set([options]);
+    } else {
+      this.selectedCities.set([]);
+    }
+    console.log('Selected cities:', options);
   }
 }

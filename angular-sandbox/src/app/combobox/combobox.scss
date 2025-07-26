@@ -5,6 +5,36 @@
       font-family: sans-serif;
     }
 
+.combobox-selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.combobox-tag {
+  background: #e9ecef;
+  border-radius: 12px;
+  padding: 2px 8px;
+  display: flex;
+  align-items: center;
+  font-size: 0.95em;
+}
+
+.combobox-tag-remove {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1.1em;
+  margin-left: 4px;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+.combobox-tag-remove:hover {
+  color: #d9534f;
+}
+
     .combobox-label {
       display: block;
       margin-bottom: 5px;
@@ -99,6 +129,12 @@
     }
 
     .combobox-options-list li:hover,
+
+.combobox-checkbox {
+  margin-right: 8px;
+  accent-color: #007bff;
+  pointer-events: none;
+}
     .combobox-options-list li.active {
       background-color: #f0f0f0;
     }

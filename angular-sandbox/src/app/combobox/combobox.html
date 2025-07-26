@@ -1,55 +1,70 @@
 <div class="combobox-container">
-      <label [for]="id" class="combobox-label">{{ label }}</label>
-      <div class="combobox-wrapper"
-           (click)="toggleDropdown()"
-           (keydown.arrowdown)="onKeydownArrowDown($event)"
-           (keydown.arrowup)="onKeydownArrowUp($event)"
-           (keydown.enter)="onKeydownEnter($event)"
-           (keydown.escape)="closeDropdown()"
-           (keydown.tab)="closeDropdown()">
-        <input
-          [id]="id"
-          type="text"
-          class="combobox-input"
-          [attr.aria-autocomplete]="'list'"
-          [attr.aria-controls]="id + '-listbox'"
-          [attr.aria-expanded]="isDropdownOpen()"
-          [attr.aria-activedescendant]="activeOptionId()"
-          role="combobox"
-          [(ngModel)]="searchTerm"
-          (ngModelChange)="onSearchTermChange($event)"
-          (focus)="openDropdown()"
-          (blur)="onInputBlur()"
-          placeholder="{{ placeholder }}"
-        />
-        <button type="button" class="combobox-toggle-button" (click)="toggleDropdown()" aria-label="Toggle options">
-          <span [class.arrow-up]="isDropdownOpen()" [class.arrow-down]="!isDropdownOpen()"></span>
-        </button>
-      </div>
+  <label [for]="id" class="combobox-label">{{ label }}</label>
+  <div class="combobox-wrapper"
+       (click)="toggleDropdown()"
+       (keydown.arrowdown)="onKeydownArrowDown($event)"
+       (keydown.arrowup)="onKeydownArrowUp($event)"
+       (keydown.enter)="onKeydownEnter($event)"
+       (keydown.escape)="closeDropdown()"
+       (keydown.tab)="closeDropdown()">
+    <input
+      [id]="id"
+      type="text"
+      class="combobox-input"
+      [attr.aria-autocomplete]="'list'"
+      [attr.aria-controls]="id + '-listbox'"
+      [attr.aria-expanded]="isDropdownOpen()"
+      [attr.aria-activedescendant]="activeOptionId()"
+      role="combobox"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onSearchTermChange($event)"
+      (focus)="openDropdown()"
+      (blur)="onInputBlur()"
+      [placeholder]="placeholder"
+    />
+    <button type="button" class="combobox-toggle-button" (click)="toggleDropdown()" aria-label="Toggle options">
+      <span [class.arrow-up]="isDropdownOpen()" [class.arrow-down]="!isDropdownOpen()"></span>
+    </button>
+  </div>
 
-      @if (isDropdownOpen() && filteredOptions().length > 0) {
-        <ul
-          [id]="id + '-listbox'"
-          role="listbox"
-          class="combobox-options-list"
-          tabindex="-1"
-          (mousedown)="$event.preventDefault()"
-        >
-          @for (option of filteredOptions(); track option.value; let i = $index) {
-            <li
-              [id]="id + '-option-' + i"
-              role="option"
-              [attr.aria-selected]="activeOptionIndex() === i"
-              [class.active]="activeOptionIndex() === i"
-              (click)="selectOption(option)"
-              (mouseenter)="setActiveOption(i)"
-              tabindex="-1"
-            >
-              {{ option.label }}
-            </li>
-          }
-        </ul>
-      } @else if (isDropdownOpen() && filteredOptions().length === 0 && searchTerm.length > 0) {
-        <div class="combobox-no-results">No results found for "{{ searchTerm }}"</div>
+  <!-- Selected tags for multiple mode -->
+  @if (multiple && selectedOptions().length > 0) {
+    <div class="combobox-selected-tags">
+      @for (option of selectedOptions(); track option.value) {
+        <span class="combobox-tag">
+          {{ option.label }}
+          <button type="button" class="combobox-tag-remove" (click)="selectOption(option)">&times;</button>
+        </span>
       }
     </div>
+  }
+
+  @if (isDropdownOpen() && filteredOptions().length > 0) {
+    <ul
+      [id]="id + '-listbox'"
+      role="listbox"
+      class="combobox-options-list"
+      tabindex="-1"
+      (mousedown)="$event.preventDefault()"
+    >
+      @for (option of filteredOptions(); track option.value; let i = $index) {
+        <li
+          [id]="id + '-option-' + i"
+          role="option"
+          [attr.aria-selected]="activeOptionIndex() === i"
+          [class.active]="activeOptionIndex() === i"
+          (click)="selectOption(option)"
+          (mouseenter)="setActiveOption(i)"
+          tabindex="-1"
+        >
+          @if (multiple) {
+            <input type="checkbox" [checked]="isOptionSelected(option)" tabindex="-1" readonly class="combobox-checkbox" />
+          }
+          {{ option.label }}
+        </li>
+      }
+    </ul>
+  } @else if (isDropdownOpen() && filteredOptions().length === 0 && searchTerm.length > 0) {
+    <div class="combobox-no-results">No results found for "{{ searchTerm }}"</div>
+  }
+</div>

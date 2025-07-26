@@ -16,8 +16,11 @@ export class Combobox implements OnInit, OnDestroy {
   @Input() placeholder: string = 'Search or select...';
   @Input() debounceTimeMs: number = 300;
   @Input() searchFn!: (searchTerm: string) => Observable<ComboboxOption[]>;
+  /** If true, allows multiple selection. Default is false (single select) */
+  @Input() multiple: boolean = false;
 
-  @Output() selectedOptionChange = new EventEmitter<ComboboxOption | null>();
+  /** Emits selected option(s). Emits ComboboxOption|null for single, ComboboxOption[] for multiple */
+  @Output() selectedOptionChange = new EventEmitter<ComboboxOption | null | ComboboxOption[]>();
 
   searchTerm: string = '';
   private searchTerm$: Subject<string> = new Subject<string>();
@@ -25,7 +28,8 @@ export class Combobox implements OnInit, OnDestroy {
   isDropdownOpen: WritableSignal<boolean> = signal(false);
   options: WritableSignal<ComboboxOption[]> = signal([]);
   activeOptionIndex: WritableSignal<number> = signal(-1);
-  selectedOption: WritableSignal<ComboboxOption | null> = signal(null);
+  selectedOption: WritableSignal<ComboboxOption | null> = signal(null); // Used for single select
+  selectedOptions: WritableSignal<ComboboxOption[]> = signal([]); // Used for multiple select
 
   // Computed signal for the active option's ID for ARIA
   activeOptionId = computed(() => {
@@ -79,8 +83,13 @@ export class Combobox implements OnInit, OnDestroy {
     this.searchTerm = term as unknown as string;
     this.searchTerm$.next(this.searchTerm);
     this.openDropdown();
-    this.selectedOption.set(null); // Deselect when typing
-    this.selectedOptionChange.emit(null);
+    if (this.multiple) {
+      this.selectedOptions.set([]);
+      this.selectedOptionChange.emit([]);
+    } else {
+      this.selectedOption.set(null);
+      this.selectedOptionChange.emit(null);
+    }
   }
 
   toggleDropdown(): void {
@@ -103,10 +112,25 @@ export class Combobox implements OnInit, OnDestroy {
   }
 
   selectOption(option: ComboboxOption): void {
-    this.selectedOption.set(option);
-    this.searchTerm = option.label; // Set input value to selected option's label
-    this.selectedOptionChange.emit(option);
-    this.closeDropdown();
+    if (this.multiple) {
+      const current = this.selectedOptions();
+      // Toggle selection
+      const exists = current.find(o => o.value === option.value);
+      let updated: ComboboxOption[];
+      if (exists) {
+        updated = current.filter(o => o.value !== option.value);
+      } else {
+        updated = [...current, option];
+      }
+      this.selectedOptions.set(updated);
+      this.selectedOptionChange.emit(updated);
+      // For multiple, keep dropdown open
+    } else {
+      this.selectedOption.set(option);
+      this.searchTerm = option.label; // Set input value to selected option's label
+      this.selectedOptionChange.emit(option);
+      this.closeDropdown();
+    }
   }
 
   onKeydownArrowDown(event: Event): void {
@@ -143,12 +167,9 @@ export class Combobox implements OnInit, OnDestroy {
         event.preventDefault(); // Prevent form submission if applicable
       }
     } else if (!this.isDropdownOpen() && this.searchTerm.length > 0) {
-      // If pressing enter on a closed combobox with text, and no option selected,
-      // you might want to consider it a "search and select first result" or similar.
-      // For now, it just closes if no active option.
       this.closeDropdown();
     } else {
-      this.toggleDropdown(); // If no search term and enter, just toggle
+      this.toggleDropdown();
     }
   }
 
@@ -169,6 +190,14 @@ export class Combobox implements OnInit, OnDestroy {
     this.activeOptionIndex.set(index);
   }
 
+  /** Helper to check if option is selected (for multiple mode) */
+  isOptionSelected(option: ComboboxOption): boolean {
+    if (this.multiple) {
+      return this.selectedOptions().some(o => o.value === option.value);
+    } else {
+      return this.selectedOption()?.value === option.value;
+    }
+  }
   private scrollActiveOptionIntoView(): void {
     setTimeout(() => {
       const activeElement = document.getElementById(this.activeOptionId());
