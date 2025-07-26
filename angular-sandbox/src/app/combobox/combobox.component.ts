@@ -25,11 +25,11 @@ export class Combobox implements OnInit, OnDestroy {
   searchTerm: string = '';
   private searchTerm$: Subject<string> = new Subject<string>();
 
-  isDropdownOpen: WritableSignal<boolean> = signal(false);
-  options: WritableSignal<ComboboxOption[]> = signal([]);
-  activeOptionIndex: WritableSignal<number> = signal(-1);
-  selectedOption: WritableSignal<ComboboxOption | null> = signal(null); // Used for single select
-  selectedOptions: WritableSignal<ComboboxOption[]> = signal([]); // Used for multiple select
+  isDropdownOpen = signal(false);
+  options =signal<ComboboxOption[]>([]);
+  activeOptionIndex = signal(-1);
+  selectedOption = signal<ComboboxOption | null>(null); // Used for single select
+  selectedOptions = signal<ComboboxOption[]>([]); // Used for multiple select
 
   // Computed signal for the active option's ID for ARIA
   activeOptionId = computed(() => {
@@ -83,13 +83,11 @@ export class Combobox implements OnInit, OnDestroy {
     this.searchTerm = term as unknown as string;
     this.searchTerm$.next(this.searchTerm);
     this.openDropdown();
-    if (this.multiple) {
-      this.selectedOptions.set([]);
-      this.selectedOptionChange.emit([]);
-    } else {
+    if (!this.multiple) {
       this.selectedOption.set(null);
       this.selectedOptionChange.emit(null);
     }
+    // In multiple mode, do NOT clear selectedOptions when typing/searching
   }
 
   toggleDropdown(): void {
@@ -124,6 +122,7 @@ export class Combobox implements OnInit, OnDestroy {
       }
       this.selectedOptions.set(updated);
       this.selectedOptionChange.emit(updated);
+      this.searchTerm = '';
       // For multiple, keep dropdown open
     } else {
       this.selectedOption.set(option);
