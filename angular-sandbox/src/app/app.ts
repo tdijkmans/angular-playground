@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Combobox } from "./combobox/combobox.component";
 import { ComboboxOption } from "./combobox/combobox.model";
+import { SkipLink } from "./skip-link/skip-link";
 
 import { signal } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -9,7 +10,7 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Combobox],
+  imports: [RouterOutlet, Combobox, SkipLink],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
