@@ -1,41 +1,56 @@
+<!-- Skip link for accessibility -->
+<app-skip-link target="#main-navigation" text="Skip to main navigation"></app-skip-link>
+
+<!-- Main navigation -->
+<nav id="main-navigation" role="navigation" aria-label="Main navigation">
+  <ul>
+    <li><a href="#single-select-demo">Single Select Demo</a></li>
+    <li><a href="#multiple-select-demo">Multiple Select Demo</a></li>
+  </ul>
+</nav>
+
 <main class="main">
   <div class="container">
     <h1>Welcome to My Angular App</h1>
   </div>
 
   <!-- Single select demo -->
-  <h2>Single Select Combobox</h2>
-  <app-combobox
-    [id]="'single-combobox'"
-    [label]="'Select a City (Single)'"
-    [placeholder]="'Type to search cities...'"
-    [searchFn]="searchCities"
-    (selectedOptionChange)="onCitySelected($event)"
-  ></app-combobox>
+  <section id="single-select-demo">
+    <h2>Single Select Combobox</h2>
+    <app-combobox
+      [id]="'single-combobox'"
+      [label]="'Select a City (Single)'"
+      [placeholder]="'Type to search cities...'"
+      [searchFn]="searchCities"
+      (selectedOptionChange)="onCitySelected($event)"
+    ></app-combobox>
 
-  @if (selectedCity()) {
-    <p>Selected City: {{ selectedCity()!.label }} (Value: {{ selectedCity()!.value }})</p>
-  }
+    @if (selectedCity()) {
+      <p>Selected City: {{ selectedCity()!.label }} (Value: {{ selectedCity()!.value }})</p>
+    }
+  </section>
 
   <!-- Multiple select demo -->
-  <h2>Multiple Select Combobox</h2>
-  <app-combobox
-    [id]="'multi-combobox'"
-    [label]="'Select Cities (Multiple)'"
-    [placeholder]="'Type to search cities...'"
-    [searchFn]="searchCities"
-    [multiple]="true"
-    (selectedOptionChange)="onCitiesSelected($event)"
-  ></app-combobox>
+  <section id="multiple-select-demo">
+    <h2>Multiple Select Combobox</h2>
+    <app-combobox
+      [id]="'multi-combobox'"
+      [label]="'Select Cities (Multiple)'"
+      [placeholder]="'Type to search cities...'"
+      [searchFn]="searchCities"
+      [multiple]="true"
+      (selectedOptionChange)="onCitiesSelected($event)"
+    ></app-combobox>
 
-  @if (selectedCities() && selectedCities().length > 0) {
-    <p>Selected Cities:</p>
-    <ul>
-      @for (city of selectedCities(); track city.value) {
-        <li>{{ city.label }} (Value: {{ city.value }})</li>
-      }
-    </ul>
-  }
+    @if (selectedCities() && selectedCities().length > 0) {
+      <p>Selected Cities:</p>
+      <ul>
+        @for (city of selectedCities(); track city.value) {
+          <li>{{ city.label }} (Value: {{ city.value }})</li>
+        }
+      </ul>
+    }
+  </section>
 </main>
 
 <router-outlet />
