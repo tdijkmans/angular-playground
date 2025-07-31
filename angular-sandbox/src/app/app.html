@@ -1,17 +1,22 @@
 <main class="main">
   <div class="container">
     <h1>Welcome to My Angular App</h1>
+    <p class="help-hint">
+      Press <kbd>?</kbd> or <kbd>F1</kbd> to see available keyboard shortcuts
+    </p>
   </div>
 
   <!-- Single select demo -->
   <h2>Single Select Combobox</h2>
-  <app-combobox
-    [id]="'single-combobox'"
-    [label]="'Select a City (Single)'"
-    [placeholder]="'Type to search cities...'"
-    [searchFn]="searchCities"
-    (selectedOptionChange)="onCitySelected($event)"
-  ></app-combobox>
+  <div #singleCombobox>
+    <app-combobox
+      [id]="'single-combobox'"
+      [label]="'Select a City (Single)'"
+      [placeholder]="'Type to search cities...'"
+      [searchFn]="searchCities"
+      (selectedOptionChange)="onCitySelected($event)"
+    ></app-combobox>
+  </div>
 
   @if (selectedCity()) {
     <p>Selected City: {{ selectedCity()!.label }} (Value: {{ selectedCity()!.value }})</p>
@@ -19,14 +24,16 @@
 
   <!-- Multiple select demo -->
   <h2>Multiple Select Combobox</h2>
-  <app-combobox
-    [id]="'multi-combobox'"
-    [label]="'Select Cities (Multiple)'"
-    [placeholder]="'Type to search cities...'"
-    [searchFn]="searchCities"
-    [multiple]="true"
-    (selectedOptionChange)="onCitiesSelected($event)"
-  ></app-combobox>
+  <div #multiCombobox>
+    <app-combobox
+      [id]="'multi-combobox'"
+      [label]="'Select Cities (Multiple)'"
+      [placeholder]="'Type to search cities...'"
+      [searchFn]="searchCities"
+      [multiple]="true"
+      (selectedOptionChange)="onCitiesSelected($event)"
+    ></app-combobox>
+  </div>
 
   @if (selectedCities() && selectedCities().length > 0) {
     <p>Selected Cities:</p>
@@ -38,4 +45,5 @@
   }
 </main>
 
+<app-keyboard-shortcuts-help></app-keyboard-shortcuts-help>
 <router-outlet />

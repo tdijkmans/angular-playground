@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Combobox } from './combobox';
+import { Combobox } from './combobox.component';
 
 describe('Combobox', () => {
   let component: Combobox;

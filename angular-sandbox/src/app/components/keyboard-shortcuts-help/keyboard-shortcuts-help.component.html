@@ -1,0 +1,51 @@
+<div class="keyboard-shortcuts-help-overlay" 
+     [class.visible]="isVisible()"
+     (click)="onBackdropClick($event)"
+     (keydown)="onKeydown($event)"
+     tabindex="-1">
+  
+  <div class="keyboard-shortcuts-help-modal">
+    <div class="modal-header">
+      <h2>Keyboard Shortcuts</h2>
+      <button class="close-button" 
+              (click)="hide()"
+              aria-label="Close keyboard shortcuts help">
+        ×
+      </button>
+    </div>
+    
+    <div class="modal-content">
+      @if (shortcutsByCategory() | keyvalue; as categories) {
+        @for (category of categories; track category.key) {
+          <div class="shortcut-category">
+            <h3>{{ category.key }}</h3>
+            <div class="shortcuts-list">
+              @for (shortcut of category.value; track shortcut.id) {
+                <div class="shortcut-item">
+                  <div class="shortcut-keys">
+                    <kbd>{{ formatKeys(shortcut.keys) }}</kbd>
+                  </div>
+                  <div class="shortcut-description">
+                    {{ shortcut.description }}
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      }
+      
+      @if (hasNoShortcuts()) {
+        <div class="no-shortcuts">
+          <p>No keyboard shortcuts are currently available.</p>
+        </div>
+      }
+    </div>
+    
+    <div class="modal-footer">
+      <p class="help-text">
+        Press <kbd>ESC</kbd> to close this dialog
+      </p>
+    </div>
+  </div>
+</div>
