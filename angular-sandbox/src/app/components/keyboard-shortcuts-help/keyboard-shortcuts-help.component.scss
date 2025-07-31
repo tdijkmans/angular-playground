@@ -1,0 +1,216 @@
+.keyboard-shortcuts-help-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+
+    .keyboard-shortcuts-help-modal {
+      transform: translateY(0);
+    }
+  }
+}
+
+.keyboard-shortcuts-help-modal {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  max-height: 80vh;
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(-20px);
+  transition: transform 0.2s ease-in-out;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+
+  h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #6b7280;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    &:focus {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+  }
+}
+
+.modal-content {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.shortcut-category {
+  margin-bottom: 32px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 8px;
+  }
+}
+
+.shortcuts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.shortcut-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+
+  .shortcut-keys {
+    min-width: 140px;
+    flex-shrink: 0;
+  }
+
+  .shortcut-description {
+    color: #4b5563;
+    line-height: 1.5;
+  }
+}
+
+kbd {
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  padding: 2px 6px;
+  display: inline-block;
+  line-height: 1.4;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+
+  .help-text {
+    margin: 0;
+    font-size: 14px;
+    color: #6b7280;
+    text-align: center;
+  }
+}
+
+.no-shortcuts {
+  text-align: center;
+  color: #6b7280;
+  
+  p {
+    margin: 40px 0;
+    font-size: 16px;
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .keyboard-shortcuts-help-modal {
+    background: #1f2937;
+    color: #f9fafb;
+
+    .modal-header {
+      border-bottom-color: #374151;
+
+      h2 {
+        color: #f9fafb;
+      }
+
+      .close-button {
+        color: #9ca3af;
+
+        &:hover {
+          background: #374151;
+          color: #d1d5db;
+        }
+      }
+    }
+
+    .shortcut-category h3 {
+      color: #d1d5db;
+      border-bottom-color: #374151;
+    }
+
+    .shortcut-description {
+      color: #9ca3af;
+    }
+
+    kbd {
+      background: #374151;
+      border-color: #4b5563;
+      color: #d1d5db;
+    }
+
+    .modal-footer {
+      background: #111827;
+      border-top-color: #374151;
+
+      .help-text {
+        color: #9ca3af;
+      }
+    }
+
+    .no-shortcuts {
+      color: #9ca3af;
+    }
+  }
+}
