@@ -1,0 +1,130 @@
+<div class="tdd-container">
+  <div class="header-section">
+    <h1>Test Driven Development (TDD) Explained</h1>
+    <p class="intro">
+      TDD is a development approach where you write tests before writing the actual code. 
+      But like any tool, it works great in some situations and can be challenging in others.
+    </p>
+  </div>
+
+  <!-- TDD Cycle Visualization -->
+  <section class="tdd-cycle">
+    <h2>The TDD Cycle</h2>
+    <div class="cycle-container">
+      <div class="steps">
+        @for (step of tddSteps; track step.step) {
+          <div 
+            class="step" 
+            [class.active]="currentStep() === $index"
+            [style.background-color]="currentStep() === $index ? step.color : '#f8f9fa'"
+            [style.color]="currentStep() === $index ? 'white' : '#333'"
+          >
+            <h3>{{ step.step }}</h3>
+            <p>{{ step.description }}</p>
+          </div>
+        }
+      </div>
+      <button class="next-btn" (click)="nextStep()">Next Step</button>
+    </div>
+  </section>
+
+  <!-- Scenarios Section -->
+  <section class="scenarios">
+    <h2>When Does TDD Work Best?</h2>
+    <div class="scenario-tabs">
+      @for (scenario of scenarios; track scenario.title) {
+        <button 
+          class="tab-btn"
+          [class.active]="selectedScenario() === $index"
+          (click)="selectScenario($index)"
+        >
+          {{ scenario.title }}
+        </button>
+      }
+    </div>
+
+    <div class="scenario-content">
+      @if (scenarios[selectedScenario()]; as scenario) {
+        <div class="scenario">
+          <h3>{{ scenario.title }}</h3>
+          <p class="scenario-description">{{ scenario.description }}</p>
+          
+          <div class="pros-cons">
+            <div class="pros">
+              <h4>✅ Pros</h4>
+              <ul>
+                @for (pro of scenario.pros; track pro) {
+                  <li>{{ pro }}</li>
+                }
+              </ul>
+            </div>
+            <div class="cons">
+              <h4>❌ Cons</h4>
+              <ul>
+                @for (con of scenario.cons; track con) {
+                  <li>{{ con }}</li>
+                }
+              </ul>
+            </div>
+          </div>
+
+          <div class="code-example">
+            <h4>{{ scenario.example.title }}</h4>
+            <p>{{ scenario.example.description }}</p>
+            <pre><code>{{ scenario.example.code }}</code></pre>
+            @if (scenario.example.result) {
+              <div class="result">
+                <strong>Result:</strong> {{ scenario.example.result }}
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Key Takeaways -->
+  <section class="takeaways">
+    <h2>Key Takeaways</h2>
+    <div class="takeaway-cards">
+      <div class="card">
+        <h3>🎯 Use TDD When</h3>
+        <ul>
+          <li>Requirements are clear and well-defined</li>
+          <li>Working with business logic or algorithms</li>
+          <li>Building APIs or data processing functions</li>
+          <li>You need high confidence in correctness</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🤔 TDD is Challenging When</h3>
+        <ul>
+          <li>Building complex UI interactions</li>
+          <li>Working with third-party integrations</li>
+          <li>Requirements are unclear or changing rapidly</li>
+          <li>Dealing with visual or timing-dependent features</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🚀 Consider Development-First When</h3>
+        <ul>
+          <li>Prototyping or exploring new ideas</li>
+          <li>Learning a new technology or framework</li>
+          <li>Building proof-of-concepts</li>
+          <li>Time constraints require rapid iteration</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-note">
+    <div class="note-card">
+      <h3>💡 Remember</h3>
+      <p>
+        TDD is a valuable tool, but it's not a silver bullet. The best developers know when to use TDD 
+        and when other approaches might be more effective. The goal is always to write reliable, 
+        maintainable code - and there are multiple paths to achieve that goal.
+      </p>
+    </div>
+  </section>
+</div>
