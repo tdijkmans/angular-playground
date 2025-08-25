@@ -40,7 +40,7 @@ p {
 }
 
 /* Base table styles */
-table {
+table[app-table] {
   width: 100%;
   border-collapse: collapse;
   background: white;
@@ -50,11 +50,11 @@ table {
 }
 
 /* Table header styles */
-thead {
+thead[app-thead] {
   background: #007bff;
 }
 
-th {
+th[app-th] {
   padding: 1rem;
   text-align: left;
   color: white;
@@ -64,20 +64,20 @@ th {
 }
 
 /* Table body styles */
-tbody tr {
+tbody[app-tbody] tr[app-tr] {
   border-bottom: 1px solid #e9ecef;
   transition: background-color 0.2s ease;
 }
 
-tbody tr:hover {
+tbody[app-tbody] tr[app-tr]:hover {
   background-color: #f8f9fa;
 }
 
-tbody tr:last-child {
+tbody[app-tbody] tr[app-tr]:last-child {
   border-bottom: none;
 }
 
-td {
+td[app-td] {
   padding: 1rem;
   color: #333;
   font-size: 0.9rem;
@@ -85,36 +85,36 @@ td {
 }
 
 /* Email link styling */
-td a {
+td[app-td] a {
   color: #007bff;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-td a:hover {
+td[app-td] a:hover {
   color: #0056b3;
   text-decoration: underline;
 }
 
-td a:focus {
+td[app-td] a:focus {
   outline: 2px solid #007bff;
   outline-offset: 2px;
   border-radius: 2px;
 }
 
 /* Hide data labels by default */
-td::before {
+td[app-td]::before {
   display: none;
 }
 
 /* Container query for medium containers */
 @container table-wrapper (max-width: 768px) {
-  table {
+  table[app-table] {
     font-size: 0.85rem;
   }
   
-  th,
-  td {
+  th[app-th],
+  td[app-td] {
     padding: 0.75rem;
   }
   
@@ -125,24 +125,24 @@ td::before {
 
 /* Container query for small containers - stack layout */
 @container table-wrapper (max-width: 600px) {
-  table,
-  thead,
-  tbody,
-  th,
-  td,
-  tr {
+  table[app-table],
+  thead[app-thead],
+  tbody[app-tbody],
+  th[app-th],
+  td[app-td],
+  tr[app-tr] {
     display: block;
   }
   
   /* Hide table header */
-  thead tr {
+  thead[app-thead] tr[app-tr] {
     position: absolute;
     top: -9999px;
     left: -9999px;
   }
   
   /* Style each row as a card */
-  tbody tr {
+  tbody[app-tbody] tr[app-tr] {
     background: white;
     border: 1px solid #e9ecef;
     border-radius: 6px;
@@ -151,13 +151,13 @@ td::before {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   }
   
-  tbody tr:hover {
+  tbody[app-tbody] tr[app-tr]:hover {
     background: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
   /* Style each cell */
-  td {
+  td[app-td] {
     border: none;
     padding: 0.5rem 0;
     text-align: left;
@@ -166,12 +166,12 @@ td::before {
     padding-left: 40%;
   }
   
-  td:last-child {
+  td[app-td]:last-child {
     border-bottom: none;
   }
   
   /* Show data labels for each cell */
-  td::before {
+  td[app-td]::before {
     content: attr(data-label) ": ";
     position: absolute;
     left: 0;
@@ -206,17 +206,17 @@ td::before {
     font-size: 0.85rem;
   }
   
-  tbody tr {
+  tbody[app-tbody] tr[app-tr] {
     padding: 0.75rem;
   }
   
-  td {
+  td[app-td] {
     font-size: 0.85rem;
     padding: 0.4rem 0;
     padding-left: 45%;
   }
   
-  td::before {
+  td[app-td]::before {
     width: 40%;
     font-size: 0.8rem;
   }

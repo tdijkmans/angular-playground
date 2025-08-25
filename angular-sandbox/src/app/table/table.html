@@ -10,33 +10,33 @@
       Employee directory showing names, positions, departments, contact information, start dates, and salaries
     </caption>
     
-    <thead>
-      <tr>
-        <th scope="col" aria-sort="none">ID</th>
-        <th scope="col" aria-sort="none">Name</th>
-        <th scope="col" aria-sort="none">Position</th>
-        <th scope="col" aria-sort="none">Department</th>
-        <th scope="col" aria-sort="none">Email</th>
-        <th scope="col" aria-sort="none">Start Date</th>
-        <th scope="col" aria-sort="none">Salary</th>
+    <thead app-thead>
+      <tr app-tr>
+        <th app-th scope="col" aria-sort="none">ID</th>
+        <th app-th scope="col" aria-sort="none">Name</th>
+        <th app-th scope="col" aria-sort="none">Position</th>
+        <th app-th scope="col" aria-sort="none">Department</th>
+        <th app-th scope="col" aria-sort="none">Email</th>
+        <th app-th scope="col" aria-sort="none">Start Date</th>
+        <th app-th scope="col" aria-sort="none">Salary</th>
       </tr>
     </thead>
     
-    <tbody>
+    <tbody app-tbody>
       @for (employee of employees; track employee.id) {
-        <tr>
-          <td data-label="ID">{{ employee.id }}</td>
-          <td data-label="Name">{{ employee.name }}</td>
-          <td data-label="Position">{{ employee.position }}</td>
-          <td data-label="Department">{{ employee.department }}</td>
-          <td data-label="Email">
+        <tr app-tr>
+          <td app-td data-label="ID">{{ employee.id }}</td>
+          <td app-td data-label="Name">{{ employee.name }}</td>
+          <td app-td data-label="Position">{{ employee.position }}</td>
+          <td app-td data-label="Department">{{ employee.department }}</td>
+          <td app-td data-label="Email">
             <a href="mailto:{{ employee.email }}" 
                [attr.aria-label]="'Send email to ' + employee.name">
               {{ employee.email }}
             </a>
           </td>
-          <td data-label="Start Date">{{ employee.startDate }}</td>
-          <td data-label="Salary">${{ employee.salary.toLocaleString() }}</td>
+          <td app-td data-label="Start Date">{{ employee.startDate }}</td>
+          <td app-td data-label="Salary">${{ employee.salary.toLocaleString() }}</td>
         </tr>
       }
     </tbody>

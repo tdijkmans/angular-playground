@@ -11,7 +11,7 @@ export interface Employee {
 }
 
 @Component({
-  selector: 'app-table',
+  selector: 'table[app-table]',
   imports: [],
   templateUrl: './table.html',
   styleUrl: './table.scss'
