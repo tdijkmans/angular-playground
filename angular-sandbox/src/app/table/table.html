@@ -1,0 +1,44 @@
+<div class="table-container">
+  <h2 id="employee-table-title">Employee Directory</h2>
+  <p id="employee-table-description">A comprehensive list of company employees with their contact information and role details.</p>
+  
+  <table 
+    role="table" 
+    aria-labelledby="employee-table-title"
+    aria-describedby="employee-table-description">
+    <caption class="sr-only">
+      Employee directory showing names, positions, departments, contact information, start dates, and salaries
+    </caption>
+    
+    <thead>
+      <tr>
+        <th scope="col" aria-sort="none">ID</th>
+        <th scope="col" aria-sort="none">Name</th>
+        <th scope="col" aria-sort="none">Position</th>
+        <th scope="col" aria-sort="none">Department</th>
+        <th scope="col" aria-sort="none">Email</th>
+        <th scope="col" aria-sort="none">Start Date</th>
+        <th scope="col" aria-sort="none">Salary</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      @for (employee of employees; track employee.id) {
+        <tr>
+          <td data-label="ID">{{ employee.id }}</td>
+          <td data-label="Name">{{ employee.name }}</td>
+          <td data-label="Position">{{ employee.position }}</td>
+          <td data-label="Department">{{ employee.department }}</td>
+          <td data-label="Email">
+            <a href="mailto:{{ employee.email }}" 
+               [attr.aria-label]="'Send email to ' + employee.name">
+              {{ employee.email }}
+            </a>
+          </td>
+          <td data-label="Start Date">{{ employee.startDate }}</td>
+          <td data-label="Salary">${{ employee.salary.toLocaleString() }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
