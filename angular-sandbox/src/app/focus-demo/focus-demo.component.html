@@ -1,0 +1,145 @@
+<div class="focus-demo-container">
+  <h1>Focus Service Examples</h1>
+  <p class="intro">
+    This page demonstrates comprehensive usage of the FocusService for managing focus in Angular applications.
+  </p>
+
+  <!-- Example 1: Dialog Focus Management -->
+  <section class="demo-section">
+    <h2>1. Dialog Focus Management</h2>
+    <p>When opening a dialog, focus should move to the dialog and restore when closed.</p>
+    
+    <button 
+      #triggerButton
+      class="primary-button" 
+      (click)="saveCurrentFocus(); openDialog()">
+      Open Dialog
+    </button>
+
+    @if (showDialog()) {
+      <div class="dialog-overlay" (click)="closeDialog()">
+        <div class="dialog" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+          <h3>Example Dialog</h3>
+          <p>Focus is automatically set to the first button in this dialog.</p>
+          <div class="dialog-actions">
+            <button #dialogButton class="dialog-button" (click)="closeDialog()">Cancel</button>
+            <button #dialogButton class="dialog-button primary" (click)="closeDialog()">Confirm</button>
+          </div>
+        </div>
+      </div>
+    }
+  </section>
+
+  <!-- Example 2: Form Validation Focus -->
+  <section class="demo-section">
+    <h2>2. Form Validation & Error Focus</h2>
+    <p>Invalid form fields are automatically focused when submission fails.</p>
+
+    <button class="primary-button" (click)="toggleForm()">
+      {{ showForm() ? 'Hide' : 'Show' }} Form
+    </button>
+
+    @if (showForm()) {
+      <form [formGroup]="demoForm" (ngSubmit)="submitForm()" class="demo-form">
+        <div class="form-field">
+          <label for="name">Name *</label>
+          <input 
+            #formInput
+            id="name" 
+            type="text" 
+            formControlName="name"
+            [class.error]="demoForm.get('name')?.invalid && demoForm.get('name')?.touched"
+          />
+          @if (demoForm.get('name')?.invalid && demoForm.get('name')?.touched) {
+            <span class="error-message">Name is required</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label for="email">Email *</label>
+          <input 
+            #formInput
+            id="email" 
+            type="email" 
+            formControlName="email"
+            [class.error]="demoForm.get('email')?.invalid && demoForm.get('email')?.touched"
+          />
+          @if (demoForm.get('email')?.invalid && demoForm.get('email')?.touched) {
+            <span class="error-message">Valid email is required</span>
+          }
+        </div>
+
+        <div class="form-field">
+          <label for="phone">Phone *</label>
+          <input 
+            #formInput
+            id="phone" 
+            type="tel" 
+            formControlName="phone"
+            [class.error]="demoForm.get('phone')?.invalid && demoForm.get('phone')?.touched"
+          />
+          @if (demoForm.get('phone')?.invalid && demoForm.get('phone')?.touched) {
+            <span class="error-message">Phone is required</span>
+          }
+        </div>
+
+        <button type="submit" class="primary-button">Submit Form</button>
+      </form>
+    }
+  </section>
+
+  <!-- Example 3: List Navigation -->
+  <section class="demo-section">
+    <h2>3. List Item Focus Navigation</h2>
+    <p>Programmatically focus items in a list.</p>
+
+    <div class="list-controls">
+      <button class="small-button" (click)="focusListItem(0)">Focus Item 1</button>
+      <button class="small-button" (click)="focusListItem(1)">Focus Item 2</button>
+      <button class="small-button" (click)="focusListItem(2)">Focus Item 3</button>
+    </div>
+
+    <ul class="demo-list">
+      <li #listItem tabindex="0" class="list-item">
+        <strong>Item 1:</strong> First focusable list item
+      </li>
+      <li #listItem tabindex="0" class="list-item">
+        <strong>Item 2:</strong> Second focusable list item
+      </li>
+      <li #listItem tabindex="0" class="list-item">
+        <strong>Item 3:</strong> Third focusable list item
+      </li>
+    </ul>
+  </section>
+
+  <!-- Example 4: Save and Restore Focus -->
+  <section class="demo-section">
+    <h2>4. Save & Restore Focus</h2>
+    <p>Save focus on a specific element and restore it later.</p>
+
+    <div class="focus-controls">
+      <button #saveButton class="primary-button" (click)="saveButtonFocus()">
+        Save Focus (this button)
+      </button>
+      <button class="secondary-button" (click)="restoreSavedFocus()">
+        Restore Saved Focus
+      </button>
+      <button class="secondary-button" (click)="clearFocus()">
+        Clear Saved Focus
+      </button>
+    </div>
+  </section>
+
+  <!-- Example 5: Focus Origin Detection -->
+  <section class="demo-section">
+    <h2>5. Focus Origin Information</h2>
+    <p>
+      The FocusService uses Angular CDK's FocusMonitor to track how focus was applied:
+    </p>
+    <ul class="info-list">
+      <li><strong>keyboard:</strong> Focus via keyboard (Tab key)</li>
+      <li><strong>mouse:</strong> Focus via mouse click</li>
+      <li><strong>program:</strong> Focus set programmatically</li>
+    </ul>
+  </section>
+</div>

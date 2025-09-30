@@ -1,0 +1,260 @@
+.focus-demo-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.intro {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.demo-section {
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.demo-section h2 {
+  margin-top: 0;
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 0.5rem;
+}
+
+.demo-section p {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+/* Buttons */
+.primary-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.primary-button:hover {
+  background-color: #0056b3;
+}
+
+.primary-button:focus {
+  outline: 2px solid #0056b3;
+  outline-offset: 2px;
+}
+
+.secondary-button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.secondary-button:hover {
+  background-color: #545b62;
+}
+
+.secondary-button:focus {
+  outline: 2px solid #545b62;
+  outline-offset: 2px;
+}
+
+.small-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.small-button:hover {
+  background-color: #218838;
+}
+
+.small-button:focus {
+  outline: 2px solid #218838;
+  outline-offset: 2px;
+}
+
+/* Dialog */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 90%;
+}
+
+.dialog h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.dialog-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dialog-button:hover {
+  background-color: #f0f0f0;
+}
+
+.dialog-button.primary {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.dialog-button.primary:hover {
+  background-color: #0056b3;
+}
+
+.dialog-button:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Form */
+.demo-form {
+  margin-top: 1rem;
+  max-width: 500px;
+}
+
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.form-field input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.form-field input.error {
+  border-color: #dc3545;
+}
+
+.form-field input.error:focus {
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* List */
+.list-controls {
+  margin-bottom: 1rem;
+}
+
+.demo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list-item {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  background-color: white;
+  transition: background-color 0.2s;
+}
+
+.list-item:hover {
+  background-color: #f8f9fa;
+}
+
+.list-item:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+  background-color: #e7f3ff;
+}
+
+/* Focus controls */
+.focus-controls {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Info list */
+.info-list {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 4px;
+  border-left: 4px solid #17a2b8;
+}
+
+.info-list li {
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.info-list strong {
+  color: #17a2b8;
+}
