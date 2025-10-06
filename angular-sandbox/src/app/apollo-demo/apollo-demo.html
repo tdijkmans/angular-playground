@@ -1,0 +1,99 @@
+<div class="apollo-demo">
+  <h2>Apollo Client POC - SpaceX Launches</h2>
+  
+  <div class="controls">
+    <h3>Technique Showcase</h3>
+    
+    <div class="button-group">
+      <button (click)="refresh()">Refresh (watchQuery)</button>
+      <button (click)="clearCache()">Clear Cache</button>
+    </div>
+
+    <div class="cache-policy">
+      <h4>Cache Policy (Technique 3):</h4>
+      <div class="button-group">
+        <button 
+          [class.active]="cachePolicy() === 'cache-first'"
+          (click)="loadWithCachePolicy('cache-first')">
+          Cache First
+        </button>
+        <button 
+          [class.active]="cachePolicy() === 'network-only'"
+          (click)="loadWithCachePolicy('network-only')">
+          Network Only
+        </button>
+        <button 
+          [class.active]="cachePolicy() === 'cache-and-network'"
+          (click)="loadWithCachePolicy('cache-and-network')">
+          Cache & Network
+        </button>
+      </div>
+      <p class="policy-info">Current policy: <strong>{{ cachePolicy() }}</strong></p>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="loading">Loading launches...</div>
+  }
+
+  @if (error()) {
+    <div class="error">{{ error() }}</div>
+  }
+
+  @if (!loading() && launches().length > 0) {
+    <div class="launches">
+      <h3>Recent Launches (Technique 1 - watchQuery)</h3>
+      <div class="launch-list">
+        @for (launch of launches(); track launch.id) {
+          <div class="launch-card" (click)="loadLaunchById(launch.id)">
+            <h4>{{ launch.mission_name }}</h4>
+            <p><strong>Rocket:</strong> {{ launch.rocket.rocket_name }}</p>
+            <p><strong>Date:</strong> {{ launch.launch_date_local | date:'medium' }}</p>
+            <p><strong>Status:</strong> 
+              @if (launch.launch_success === true) {
+                <span class="success">✓ Success</span>
+              } @else if (launch.launch_success === false) {
+                <span class="failure">✗ Failed</span>
+              } @else {
+                <span class="unknown">? Unknown</span>
+              }
+            </p>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (selectedLaunch()) {
+    <div class="selected-launch">
+      <h3>Selected Launch Details (Technique 2 - query)</h3>
+      <div class="detail-card">
+        <h4>{{ selectedLaunch()!.mission_name }}</h4>
+        <p><strong>ID:</strong> {{ selectedLaunch()!.id }}</p>
+        <p><strong>Rocket:</strong> {{ selectedLaunch()!.rocket.rocket_name }}</p>
+        <p><strong>Launch Date:</strong> {{ selectedLaunch()!.launch_date_local | date:'full' }}</p>
+        <p><strong>Success:</strong> 
+          @if (selectedLaunch()!.launch_success === true) {
+            <span class="success">✓ Success</span>
+          } @else if (selectedLaunch()!.launch_success === false) {
+            <span class="failure">✗ Failed</span>
+          } @else {
+            <span class="unknown">? Unknown</span>
+          }
+        </p>
+        <button (click)="selectedLaunch.set(null)">Close</button>
+      </div>
+    </div>
+  }
+
+  <div class="info">
+    <h3>Techniques Demonstrated:</h3>
+    <ul>
+      <li><strong>Technique 1:</strong> Simple query using watchQuery - watches for changes</li>
+      <li><strong>Technique 2:</strong> One-time query - fetches single launch by ID</li>
+      <li><strong>Technique 3:</strong> Custom fetch policies - cache-first, network-only, cache-and-network</li>
+      <li><strong>Technique 4:</strong> Cache management - clearing and refreshing data</li>
+    </ul>
+    <p class="note">Using SpaceX GraphQL API: https://spacex-production.up.railway.app/</p>
+  </div>
+</div>
