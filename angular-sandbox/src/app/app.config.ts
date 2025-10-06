@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideApollo(() => {
       const httpLink = inject(HttpLink);
       return {
-        link: httpLink.create({ uri: 'https://spacex-production.up.railway.app/' }),
+        link: httpLink.create({ uri: 'https://api.spacex.land/graphql/' }),
         cache: new InMemoryCache(),
       };
     }),
