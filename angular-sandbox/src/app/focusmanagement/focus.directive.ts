@@ -1,25 +1,23 @@
 import {
   DestroyRef,
   Directive,
-  ElementRef,
   effect,
+  ElementRef,
+  HostListener,
   input,
 } from '@angular/core';
 import { FocusManagerService } from './focus.service';
 
 @Directive({ selector: '[appFocus]', standalone: true })
 export class FocusDirective {
-  /** If true, focuses the element when the directive is initialized. */
   autoFocus = input(false);
-
-  /** Optional ID to register the element for programmatic focus. */
   focusId = input<string | null>(null);
-
-  /** If true, selects the text content of the element upon focus (for inputs/textareas). */
+  focusGroup = input<string | null>(null);
+  focusOrder = input(0);
   selectText = input(false);
-
-  /** If true, scrolls the element into the center of the viewport upon focus. */
   scrollIntoView = input(false);
+  orientation = input<'vertical' | 'horizontal'>('vertical');
+  loop = input(true);
 
   constructor(
     private el: ElementRef<HTMLElement>,
@@ -29,22 +27,22 @@ export class FocusDirective {
     const nativeEl = this.el.nativeElement;
     let prev = false;
 
+    // Register element
     effect(() => {
       const id = this.focusId();
+      const group = this.focusGroup();
+      const order = this.focusOrder();
       if (id) {
-        this.focusManager.register(id, nativeEl);
+        this.focusManager.register(id, nativeEl, group ?? undefined, order);
       }
     });
 
+    // AutoFocus reactive effect
     effect(() => {
       const curr = this.autoFocus();
       if (curr && !prev) {
         this.focusManager.focus(nativeEl);
-
-        if (this.selectText()) {
-          this.handleSelection(nativeEl);
-        }
-
+        if (this.selectText()) this.selectTextContent(nativeEl);
         if (this.scrollIntoView()) {
           nativeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
@@ -52,6 +50,7 @@ export class FocusDirective {
       prev = curr;
     });
 
+    // Cleanup
     destroyRef.onDestroy(() => {
       const id = this.focusId();
       if (id) this.focusManager.unregister(id);
@@ -59,15 +58,56 @@ export class FocusDirective {
     });
   }
 
-  private handleSelection(nativeEl: HTMLElement): void {
+  @HostListener('keydown.ArrowDown', ['$event'])
+  onArrowDown(e: Event) {
+    if (this.orientation() === 'vertical') {
+      const id = this.focusId();
+      if (id) {
+        e.preventDefault();
+        this.focusManager.focusNext(id, this.loop());
+      }
+    }
+  }
+
+  @HostListener('keydown.ArrowUp', ['$event'])
+  onArrowUp(e: Event) {
+    if (this.orientation() === 'vertical') {
+      const id = this.focusId();
+      if (id) {
+        e.preventDefault();
+        this.focusManager.focusPrevious(id, this.loop());
+      }
+    }
+  }
+
+  @HostListener('keydown.ArrowRight', ['$event'])
+  onArrowRight(e: Event) {
+    if (this.orientation() === 'horizontal') {
+      const id = this.focusId();
+      if (id) {
+        e.preventDefault();
+        this.focusManager.focusNext(id, this.loop());
+      }
+    }
+  }
+
+  @HostListener('keydown.ArrowLeft', ['$event'])
+  onArrowLeft(e: Event) {
+    if (this.orientation() === 'horizontal') {
+      const id = this.focusId();
+      if (id) {
+        e.preventDefault();
+        this.focusManager.focusPrevious(id, this.loop());
+      }
+    }
+  }
+
+  private selectTextContent(nativeEl: HTMLElement): void {
     if (
       nativeEl instanceof HTMLInputElement ||
       nativeEl instanceof HTMLTextAreaElement
     ) {
-      // Defer select() to a microtask to ensure the element has fully received focus.
-      queueMicrotask(() => {
-        nativeEl.select();
-      });
+      queueMicrotask(() => nativeEl.select());
     }
   }
 }

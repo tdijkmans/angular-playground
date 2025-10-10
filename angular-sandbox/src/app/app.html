@@ -15,15 +15,14 @@
     This is a secondary themed box.
   </div>
 
-  <div appBgColor="primary-100" class="container">
+  <div appBgColor="secondary-50" class="container">
     <input
       type="text"
       placeholder="Your name"
       appFocus
+      value="Geselecteerde tekst1"
       [autoFocus]="true"
       [selectText]="true"
-      [scrollIntoView]="true"
-      value="Geselecteerde tekst1"
     />
 
     <input
@@ -51,7 +50,7 @@
     />
   </div>
 
-  <div appBgColor="primary-100" class="container">
+  <div appBgColor="secondary-50" class="container">
     <button type="button" (click)="changeFocus(appFocusId())">
       Focus on {{ appFocusId() === 3 ? 2 : 3 }}
     </button>
@@ -62,6 +61,53 @@
   @if (isModalOpen()) {
   <app-modal (closed)="isModalOpen.set(false)" />
   }
+
+  <div appBgColor="secondary-50" class="container">
+    <div>
+      <h2>Focus Group Example</h2>
+      <p>Focus is trapped within this menu.</p>
+      <p>Use arrow keys up/down to navigate.</p>
+    </div>
+
+    @for (item of menu; track item.id; let idx = $index) {
+    <button
+      type="button"
+      appFocus
+      [focusId]="'menu-' + item.id"
+      focusGroup="mainMenu"
+      [focusOrder]="idx"
+      tabindex="0"
+    >
+      {{ item.label }}
+    </button>
+    }
+  </div>
+
+  <div appBgColor="secondary-50" class="container">
+    <div>
+      <h2>Focus Group Example</h2>
+      <p>Focus is trapped within this menu.</p>
+      <p>Use arrow keys left/right to navigate.</p>
+    </div>
+
+    <div appBgColor="secondary-100">
+      @for (tab of tabs; track tab.id; let idx = $index) {
+
+      <button
+        type="button"
+        appFocus
+        [focusId]="'tab-' + tab.id"
+        focusGroup="tabs"
+        [focusOrder]="idx"
+        orientation="horizontal"
+        [loop]="false"
+        tabindex="0"
+      >
+        {{ tab.label }}
+      </button>
+      }
+    </div>
+  </div>
 </main>
 
 <router-outlet />

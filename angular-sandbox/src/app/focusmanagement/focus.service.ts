@@ -1,15 +1,15 @@
 // focus-manager.service.ts
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Injectable, OnDestroy, signal } from '@angular/core';
+import { FocusEntry } from './focus.interface';
 
 @Injectable({ providedIn: 'root' })
 export class FocusManagerService implements OnDestroy {
-  /** The currently focused element. Exposed as a readonly signal. */
   private readonly _focusedEl = signal<HTMLElement | null>(null);
   readonly focusedEl = this._focusedEl.asReadonly();
 
-  /** A manually set element to return focus to later. */
   private _focusAnchor: HTMLElement | null = null;
+  private registry = new Map<string, FocusEntry>();
 
   constructor(private fm: FocusMonitor) {
     // Monitor focus changes on the entire document.
@@ -41,60 +41,40 @@ export class FocusManagerService implements OnDestroy {
     }
   }
 
-  /**
-   * Programmatically focus by ID or element. The state will be updated reactively
-   * by the FocusMonitor.
-   */
+  /** Programmatically focus by ID or element */
   focus(target: string | HTMLElement | null): void {
     const el =
-      typeof target === 'string' ? this.registry.get(target) || null : target;
-
-    if (!el) return;
-    // We only trigger the focus event. The monitor will handle the state update.
-    el.focus();
+      typeof target === 'string'
+        ? this.registry.get(target)?.el || null
+        : target;
+    if (el) el.focus();
   }
 
-  /**
-   * Sets a specific element as the focus return point (anchor).
-   * If no element is provided, it uses the currently focused element.
-   * Call with `null` to clear the anchor.
-   * @param target The target element or ID to set as the anchor, or null to clear
-   */
-  setFocusAnchor(target?: string | HTMLElement | null): void {
+  setFocusAnchor(target?: string | HTMLElement | null) {
     if (target === null) {
       this._focusAnchor = null;
       return;
     }
     const element =
-      typeof target === 'string' ? this.registry.get(target) : target;
-
-    // Default to the currently focused element if none provided.
+      typeof target === 'string' ? this.registry.get(target)?.el : target;
     const elToSet = element === undefined ? this._focusedEl() : element;
     this._focusAnchor = elToSet;
   }
 
-  /**
-   * Restores focus to the element previously saved as the anchor.
-   * The anchor is cleared after use.
-   */
   returnToAnchor(): void {
     if (this._focusAnchor) {
       this.focus(this._focusAnchor);
-      this._focusAnchor = null; // Clear the anchor after returning to it
+      this._focusAnchor = null;
     }
   }
 
-  /** Checks if the given element is currently focused. */
   isFocused(el: HTMLElement | null): boolean {
     return el === this._focusedEl();
   }
 
-  /** A simple registry to map string IDs to elements for easier focus management. */
-  private registry = new Map<string, HTMLElement>();
-
-  /** Register an element by ID */
-  register(id: string, el: HTMLElement) {
-    this.registry.set(id, el);
+  /** Register element with ID, optional group, and order */
+  register(id: string, el: HTMLElement, group?: string, order = 0) {
+    this.registry.set(id, { id, el, group, order });
   }
 
   /** Unregister on destroy */
@@ -107,5 +87,40 @@ export class FocusManagerService implements OnDestroy {
     if (this.isFocused(el)) {
       this.setFocused(null);
     }
+  }
+
+  // -----------------------------------------------------------
+  // 🔄 Focus Navigation
+  // -----------------------------------------------------------
+
+  private navigate(currentId: string, direction: 1 | -1, loop: boolean): void {
+    const current = this.registry.get(currentId);
+    if (!current) return;
+
+    const items = [...this.registry.values()]
+      .filter((x) => x.group === current.group)
+      .sort((a, b) => a.order - b.order);
+
+    const i = items.findIndex((x) => x.id === currentId);
+    let targetIndex = i + direction;
+
+    if (loop) {
+      targetIndex = (targetIndex + items.length) % items.length;
+    } else {
+      if (targetIndex < 0 || targetIndex >= items.length) return;
+    }
+
+    const target = items[targetIndex];
+    if (target) this.focus(target.el);
+  }
+
+  /** Move to next item in the same group */
+  focusNext(currentId: string, loop = true) {
+    this.navigate(currentId, 1, loop);
+  }
+
+  /** Move to previous item in the same group */
+  focusPrevious(currentId: string, loop = true) {
+    this.navigate(currentId, -1, loop);
   }
 }
