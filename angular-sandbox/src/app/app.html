@@ -108,6 +108,34 @@
       }
     </div>
   </div>
+
+  <div appBgColor="secondary-50" class="container">
+    <div>
+      <h2>Focus Grid Example</h2>
+      <p>Focus is trapped within this grid.</p>
+      <p>Use arrow keys left/right/up/down to navigate.</p>
+    </div>
+
+    <div appBgColor="secondary-100" class="grid">
+      @for (cell of grid; track cell.id; let idx = $index) {
+      <button
+        type="button"
+        appFocus2D
+        [focusId]="'cell2-' + cell.row + '-' + cell.col"
+        focusGroup="grid2"
+        [focusRow]="cell.row"
+        [focusCol]="cell.col"
+        [selectText]="true"
+        tabindex="0"
+      >
+        {{ cell.label }}
+      </button>
+      }
+    </div>
+    <button type="button" tabindex="0" (click)="focusOnCell()">
+      Focus on center cell
+    </button>
+  </div>
 </main>
 
 <router-outlet />

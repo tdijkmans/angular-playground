@@ -7,6 +7,7 @@ import {
 import { Modal } from './components/modal/modal';
 import { FocusDirective } from './focusmanagement/focus.directive';
 import { FocusManagerService } from './focusmanagement/focus.service';
+import { Focus2DDirective } from './focusmanagement/focus2D.directive';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ import { FocusManagerService } from './focusmanagement/focus.service';
     Modal,
     BackgroundColorDirective,
     TextColorDirective,
+    Focus2DDirective,
   ],
 
   providers: [FocusManagerService],
@@ -60,6 +62,10 @@ export class App {
 
   changeFocus(id: number) {
     this.appFocusId.set(id === 2 ? 3 : 2);
+  }
+
+  focusOnCell() {
+    this.focusManageService.focus('cell-2-2');
   }
 
   openModal() {

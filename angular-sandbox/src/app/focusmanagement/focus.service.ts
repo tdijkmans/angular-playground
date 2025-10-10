@@ -72,9 +72,26 @@ export class FocusManagerService implements OnDestroy {
     return el === this._focusedEl();
   }
 
-  /** Register element with ID, optional group, and order */
+  /** * Register element for 1D navigation (used by FocusDirective).
+   * Sets default 2D properties (row/col) to 0.
+   */
   register(id: string, el: HTMLElement, group?: string, order = 0) {
-    this.registry.set(id, { id, el, group, order });
+    // Note: Default row/col values are added for type safety in the unified registry
+    this.registry.set(id, { id, el, group, order, row: 0, col: 0 });
+  }
+
+  /** * Register element for 2D navigation (used by Focus2DDirective).
+   * Sets default 1D property (order) to 0.
+   */
+  register2D(
+    id: string,
+    el: HTMLElement,
+    row: number,
+    col: number,
+    group?: string
+  ) {
+    // Note: Default order is added for type safety in the unified registry
+    this.registry.set(id, { id, el, group, order: 0, row, col });
   }
 
   /** Unregister on destroy */
@@ -90,13 +107,14 @@ export class FocusManagerService implements OnDestroy {
   }
 
   // -----------------------------------------------------------
-  // 🔄 Focus Navigation
+  // 🔄 1D Focus Navigation (Used by FocusDirective)
   // -----------------------------------------------------------
 
   private navigate(currentId: string, direction: 1 | -1, loop: boolean): void {
     const current = this.registry.get(currentId);
     if (!current) return;
 
+    // 1D navigation filters by group and sorts by 'order'
     const items = [...this.registry.values()]
       .filter((x) => x.group === current.group)
       .sort((a, b) => a.order - b.order);
@@ -114,13 +132,52 @@ export class FocusManagerService implements OnDestroy {
     if (target) this.focus(target.el);
   }
 
-  /** Move to next item in the same group */
+  /** Move to next item in the same group (1D) */
   focusNext(currentId: string, loop = true) {
     this.navigate(currentId, 1, loop);
   }
 
-  /** Move to previous item in the same group */
+  /** Move to previous item in the same group (1D) */
   focusPrevious(currentId: string, loop = true) {
     this.navigate(currentId, -1, loop);
+  }
+
+  // -----------------------------------------------------------
+  // 🌐 2D Focus Navigation (New, used by Focus2DDirective)
+  // -----------------------------------------------------------
+
+  /**
+   * Finds the next element in a 2D grid structure (table-like navigation).
+   * @param currentId The ID of the currently focused element.
+   * @param rowDelta Change in row index (-1, 0, or 1).
+   * @param colDelta Change in col index (-1, 0, or 1).
+   */
+  navigate2D(
+    currentId: string,
+    rowDelta: -1 | 0 | 1,
+    colDelta: -1 | 0 | 1
+  ): void {
+    const current = this.registry.get(currentId);
+    if (!current) return;
+
+    // 2D navigation filters by group
+    const items = [...this.registry.values()].filter(
+      (x) => x.group === current.group
+    );
+
+    if (items.length === 0) return;
+
+    const targetRow = current.row + rowDelta;
+    const targetCol = current.col + colDelta;
+
+    // Look for the target element using the calculated (row, col) indices
+    const target = items.find(
+      (item) => item.row === targetRow && item.col === targetCol
+    );
+
+    if (target) {
+      this.focus(target.el);
+    }
+    // No action if a target at the new coordinate is not found (i.e., edge of the grid)
   }
 }
