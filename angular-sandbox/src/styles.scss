@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid #3498db;
+    background: #3498db;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        background: #217dbb;
+        border-color: #217dbb;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.3);
+    }
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        border-color: #3498db;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+    }
+}

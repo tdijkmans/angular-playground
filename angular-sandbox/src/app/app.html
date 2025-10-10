@@ -3,6 +3,65 @@
     <h1>Welcome to My Angular App</h1>
   </div>
 
+  <div appBgColor="neutral-50" appTextColor="neutral-500">
+    This is a neutral themed box.
+  </div>
+
+  <div appBgColor="primary-100" appTextColor="primary-800">
+    This is a primary themed box.
+  </div>
+
+  <div appBgColor="secondary-100" appTextColor="secondary-800">
+    This is a secondary themed box.
+  </div>
+
+  <div appBgColor="primary-100" class="container">
+    <input
+      type="text"
+      placeholder="Your name"
+      appFocus
+      [autoFocus]="true"
+      [selectText]="true"
+      [scrollIntoView]="true"
+      value="Geselecteerde tekst1"
+    />
+
+    <input
+      type="text"
+      placeholder="Your name"
+      appFocus
+      [autoFocus]="appFocusId() === 2"
+      value="Geselecteerde tekst2"
+    />
+
+    <input
+      type="text"
+      placeholder="Your name"
+      appFocus
+      [autoFocus]="appFocusId() === 3"
+      value="Geselecteerde tekst3"
+    />
+
+    <input
+      type="text"
+      placeholder="Your name"
+      appFocus
+      focusId="look-at-me"
+      value="Geselecteerde tekst4"
+    />
+  </div>
+
+  <div appBgColor="primary-100" class="container">
+    <button type="button" (click)="changeFocus(appFocusId())">
+      Focus on {{ appFocusId() === 3 ? 2 : 3 }}
+    </button>
+    <button type="button" (click)="openModal()">Open Modal</button>
+    <button type="button" appFocus focusId="go-on">Verder</button>
+  </div>
+
+  @if (isModalOpen()) {
+  <app-modal (closed)="isModalOpen.set(false)" />
+  }
 </main>
 
 <router-outlet />
