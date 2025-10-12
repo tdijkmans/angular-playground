@@ -17,9 +17,13 @@ input[type="reset"] {
         border-color: #217dbb;
     }
 
+    /* --- FOCUS STATE IMPROVED --- */
     &:focus {
         outline: none;
-        box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.3);
+        /* Use the darker hover color for a sharper border on focus */
+        border-color: #217dbb;
+        /* Increased opacity of the box-shadow from 0.3 to 0.6 for a strong glow */
+        box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.6);
     }
 }
 
@@ -37,9 +41,29 @@ textarea {
         border-color: #3498db;
     }
 
+    /* --- FOCUS STATE IMPROVED --- */
     &:focus {
         outline: none;
-        border-color: #3498db;
-        box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+        /* Use a darker blue for a higher contrast border */
+        border-color: #217dbb;
+        /* Increased opacity from 0.2 to 0.5 to make the glow much more visible */
+        box-shadow: 0 0 0 4px rgba(33, 125, 187, 0.5);
     }
+}
+
+// Reset some default styles for better consistency across browsers
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
 }

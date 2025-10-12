@@ -1,25 +1,16 @@
 <main class="main">
-  <div class="container">
-    <h1>Welcome to My Angular App</h1>
-  </div>
-
-  <div appBgColor="neutral-50" appTextColor="neutral-500">
-    This is a neutral themed box.
-  </div>
-
-  <div appBgColor="primary-100" appTextColor="primary-800">
-    This is a primary themed box.
-  </div>
-
-  <div appBgColor="secondary-100" appTextColor="secondary-800">
-    This is a secondary themed box.
-  </div>
-
   <div appBgColor="secondary-50" class="container">
+    <div class="info">
+      <h2>Focus Directive Example</h2>
+      <p>Click the buttons to change focus.</p>
+      <p>The first input is focused on load and its text selected.</p>
+    </div>
+
     <input
       type="text"
       placeholder="Your name"
       appFocus
+      focusId="look-at-me1"
       value="Geselecteerde tekst1"
       [autoFocus]="true"
       [selectText]="true"
@@ -29,7 +20,9 @@
       type="text"
       placeholder="Your name"
       appFocus
+      focusId="look-at-me2"
       [autoFocus]="appFocusId() === 2"
+      [selectText]="appFocusId() === 2"
       value="Geselecteerde tekst2"
     />
 
@@ -37,6 +30,7 @@
       type="text"
       placeholder="Your name"
       appFocus
+      focusId="look-at-me3"
       [autoFocus]="appFocusId() === 3"
       value="Geselecteerde tekst3"
     />
@@ -48,14 +42,15 @@
       focusId="look-at-me"
       value="Geselecteerde tekst4"
     />
-  </div>
 
-  <div appBgColor="secondary-50" class="container">
-    <button type="button" (click)="changeFocus(appFocusId())">
-      Focus on {{ appFocusId() === 3 ? 2 : 3 }}
-    </button>
-    <button type="button" (click)="openModal()">Open Modal</button>
-    <button type="button" appFocus focusId="go-on">Verder</button>
+    <div>
+      <button type="button" (click)="changeFocus(appFocusId())">
+        Focus on {{ appFocusId() === 3 ? 2 : 3 }}
+      </button>
+      <button type="button" (click)="openModal()">Open Modal</button>
+      <button type="button" appFocus focusId="go-on">Verder</button>
+      <button type="button" (click)="intoView.set(!intoView())">Onder</button>
+    </div>
   </div>
 
   @if (isModalOpen()) {
@@ -63,19 +58,20 @@
   }
 
   <div appBgColor="secondary-50" class="container">
-    <div>
-      <h2>Focus Group Example</h2>
-      <p>Focus is trapped within this menu.</p>
+    <div class="info">
+      <h2>Focus Group Example I</h2>
+      <p>Focus is trapped within this menu for arrow key navigation.</p>
       <p>Use arrow keys up/down to navigate.</p>
+      <p>Looping is enabled.</p>
     </div>
 
-    @for (item of menu; track item.id; let idx = $index) {
+    @for (item of menu; track item.id; let index = $index) {
     <button
       type="button"
       appFocus
       [focusId]="'menu-' + item.id"
       focusGroup="mainMenu"
-      [focusOrder]="idx"
+      [focusOrder]="index"
       tabindex="0"
     >
       {{ item.label }}
@@ -84,21 +80,22 @@
   </div>
 
   <div appBgColor="secondary-50" class="container">
-    <div>
-      <h2>Focus Group Example</h2>
-      <p>Focus is trapped within this menu.</p>
+    <div class="info">
+      <h2>Focus Group Example II</h2>
+      <p>Focus is trapped within this menu for arrow key navigation.</p>
       <p>Use arrow keys left/right to navigate.</p>
+      <p>Looping is disabled.</p>
     </div>
 
     <div appBgColor="secondary-100">
-      @for (tab of tabs; track tab.id; let idx = $index) {
+      @for (tab of tabs; track tab.id; let index = $index) {
 
       <button
         type="button"
         appFocus
         [focusId]="'tab-' + tab.id"
         focusGroup="tabs"
-        [focusOrder]="idx"
+        [focusOrder]="index"
         orientation="horizontal"
         [loop]="false"
         tabindex="0"
@@ -110,31 +107,46 @@
   </div>
 
   <div appBgColor="secondary-50" class="container">
-    <div>
+    <div class="info">
       <h2>Focus Grid Example</h2>
       <p>Focus is trapped within this grid.</p>
       <p>Use arrow keys left/right/up/down to navigate.</p>
+      <p>Looping is disabled.</p>
     </div>
 
     <div appBgColor="secondary-100" class="grid">
       @for (cell of grid; track cell.id; let idx = $index) {
       <button
         type="button"
-        appFocus2D
-        [focusId]="'cell2-' + cell.row + '-' + cell.col"
+        appFocus
+        [focusId]="'cell-' + cell.row + '-' + cell.col"
         focusGroup="grid2"
         [focusRow]="cell.row"
         [focusCol]="cell.col"
         [selectText]="true"
+        [loop]="false"
         tabindex="0"
       >
         {{ cell.label }}
       </button>
       }
     </div>
-    <button type="button" tabindex="0" (click)="focusOnCell()">
+    <button type="button" tabindex="0" (click)="focusOnCell('cell-2-2')">
       Focus on center cell
     </button>
+  </div>
+
+  <div appBgColor="secondary-50" class="container">
+    <input
+      type="text"
+      placeholder="Your name"
+      appFocus
+      focusId="come-to-me"
+      value="Scroll, focus and select me"
+      [autoFocus]="intoView()"
+      [selectText]="intoView()"
+      [scrollIntoView]="intoView()"
+    />
   </div>
 </main>
 

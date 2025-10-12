@@ -1,7 +1,13 @@
 <div class="backdrop" (click)="close()"></div>
 <div class="modal">
   <h2>Modal Dialog</h2>
-  <input type="text" placeholder="Type here..." appFocus [autoFocus]="true" />
+  <input
+    type="text"
+    placeholder="Type here..."
+    appFocus
+    [autoFocus]="true"
+    focusId="modal-1"
+  />
   <button type="button" (click)="close()">Terug</button>
   <button type="button" (click)="focusLookAtMe()">Focus op input 4</button>
   <button type="button" (click)="goOn()">Verder</button>

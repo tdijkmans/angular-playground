@@ -1,24 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {
-  BackgroundColorDirective,
-  TextColorDirective,
-} from '../design/color.directive';
+import { BackgroundColorDirective } from '../design/color.directive';
 import { Modal } from './components/modal/modal';
 import { FocusDirective } from './focusmanagement/focus.directive';
 import { FocusManagerService } from './focusmanagement/focus.service';
-import { Focus2DDirective } from './focusmanagement/focus2D.directive';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    RouterOutlet,
-    FocusDirective,
-    Modal,
-    BackgroundColorDirective,
-    TextColorDirective,
-    Focus2DDirective,
-  ],
+  imports: [RouterOutlet, FocusDirective, Modal, BackgroundColorDirective],
 
   providers: [FocusManagerService],
   templateUrl: './app.html',
@@ -28,6 +17,7 @@ export class App {
   focusManageService = inject(FocusManagerService);
   isModalOpen = signal(false);
   appFocusId = signal<number>(2);
+  intoView = signal(false);
 
   menu = [
     { id: 1, label: 'Home' },
@@ -48,7 +38,7 @@ export class App {
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         grid.push({
-          label: `Cell ${r + 1}-${c + 1}`,
+          label: `Cell ${r}-${c}`,
           row: r,
           col: c,
           id: r * cols + c + 1,
@@ -64,8 +54,8 @@ export class App {
     this.appFocusId.set(id === 2 ? 3 : 2);
   }
 
-  focusOnCell() {
-    this.focusManageService.focus('cell-2-2');
+  focusOnCell(cell: string) {
+    this.focusManageService.focus(cell);
   }
 
   openModal() {
