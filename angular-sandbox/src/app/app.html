@@ -114,10 +114,12 @@
       <p>Looping is disabled.</p>
     </div>
 
-    <div appBgColor="secondary-100" class="grid">
+    <div appBgColor="secondary-100" class="grid" role="grid">
       @for (cell of grid; track cell.id; let idx = $index) {
       <button
         type="button"
+        [attr.tabindex]="cell.row === 0 && cell.col === 0 ? '0' : '-1'"
+        role="gridcell"
         appFocus
         [focusId]="'cell-' + cell.row + '-' + cell.col"
         focusGroup="grid2"
