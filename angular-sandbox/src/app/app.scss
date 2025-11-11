@@ -1,0 +1,30 @@
+.main {
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.demo-section {
+  margin-top: 2rem;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+
+  h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #555;
+  }
+
+  app-editable-subject {
+    display: block;
+    margin-bottom: 2rem;
+  }
+}

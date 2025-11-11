@@ -1,0 +1,53 @@
+<div class="editable-subject">
+  @if (!editingActive()) {
+    <div class="view-mode">
+      <span class="subject-text">{{ currentValue() || '(No subject)' }}</span>
+      <button 
+        class="edit-button" 
+        (click)="startEditing()"
+        type="button">
+        Edit
+      </button>
+    </div>
+  } @else {
+    <div class="edit-mode">
+      <div class="input-group">
+        <textarea
+          class="subject-input"
+          [value]="currentValue()"
+          (input)="updateCurrentValue($any($event.target).value)"
+          [disabled]="saving()"
+          maxlength="300"
+          rows="3"
+          placeholder="Enter subject..."
+        ></textarea>
+        <div class="char-counter" [class.warning]="remainingChars() < 50">
+          {{ remainingChars() }} characters remaining
+        </div>
+      </div>
+      
+      <div class="button-group">
+        <button
+          class="save-button"
+          (click)="saveChanges()"
+          [disabled]="!changed() || saving()"
+          type="button">
+          {{ saving() ? 'Saving...' : 'Save' }}
+        </button>
+        <button
+          class="cancel-button"
+          (click)="cancelEditing()"
+          [disabled]="saving()"
+          type="button">
+          Cancel
+        </button>
+      </div>
+
+      @if (statusMessage()) {
+        <div class="status-message" [class.error]="statusMessage().includes('Error')">
+          {{ statusMessage() }}
+        </div>
+      }
+    </div>
+  }
+</div>
