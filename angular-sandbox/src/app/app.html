@@ -1,34 +1,14 @@
-<main class="main">
-  <div class="container">
-    <h1>Welcome to My Angular App</h1>
-    
-    <div class="demo-section">
-      <h2>EditableSubjectComponent Demo</h2>
-      
-      <h3>Example 1: Without PATCH URL</h3>
-      <app-editable-subject
-        [subject]="'Click Edit to modify this subject'"
-        (subjectSaved)="onSubjectSaved($event)"
-        (subjectReset)="onSubjectReset()"
-      />
-      
-      <h3>Example 2: With PATCH URL (will fail - no server)</h3>
-      <app-editable-subject
-        [subject]="'This example includes a patchUrl'"
-        [patchUrl]="'https://jsonplaceholder.typicode.com/posts/1'"
-        [patchKey]="'title'"
-        (subjectSaved)="onSubjectSaved($event)"
-        (subjectReset)="onSubjectReset()"
-      />
-      
-      <h3>Example 3: Empty initial value</h3>
-      <app-editable-subject
-        (subjectSaved)="onSubjectSaved($event)"
-        (subjectReset)="onSubjectReset()"
-      />
+<nav class="navbar">
+  <div class="nav-container">
+    <a routerLink="/" class="nav-brand">Angular Editable Subject Demos</a>
+    <div class="nav-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+      <a routerLink="/event-based" routerLinkActive="active">Event-Based</a>
+      <a routerLink="/form-based" routerLinkActive="active">Form-Based</a>
     </div>
   </div>
+</nav>
 
+<main class="main">
+  <router-outlet />
 </main>
-
-<router-outlet />

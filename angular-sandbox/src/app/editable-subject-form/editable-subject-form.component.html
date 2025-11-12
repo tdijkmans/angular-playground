@@ -1,0 +1,43 @@
+<div class="editable-subject-form">
+  @if (!editingActive()) {
+    <div class="view-mode">
+      <span class="subject-text" [class.disabled]="disabled()">
+        {{ value() || '(No subject)' }}
+      </span>
+      <button 
+        class="edit-button" 
+        (click)="startEditing()"
+        [disabled]="disabled()"
+        type="button">
+        Edit
+      </button>
+    </div>
+  } @else {
+    <div class="edit-mode">
+      <div class="input-group">
+        <textarea
+          class="subject-input"
+          [value]="value()"
+          (input)="onInput($event)"
+          (blur)="onBlur()"
+          [disabled]="disabled()"
+          maxlength="300"
+          rows="3"
+          placeholder="Enter subject..."
+          autofocus
+        ></textarea>
+        <div class="char-counter" [class.warning]="remainingChars < 50">
+          {{ remainingChars }} characters remaining
+        </div>
+      </div>
+      
+      <button
+        class="cancel-button"
+        (click)="cancelEditing()"
+        [disabled]="disabled()"
+        type="button">
+        Close
+      </button>
+    </div>
+  }
+</div>
