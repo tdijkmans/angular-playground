@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product, ProductCreatePayload, ProductUpdatePayload } from '../models/product';
 import { AbstractResourceService, ResourceServiceConfig } from './resource.service';
@@ -54,8 +54,16 @@ export class ProductService extends AbstractResourceService<Product, ProductCrea
    * @returns Observable of products in the specified category
    */
   getByCategory(category: string, config?: ResourceServiceConfig): Observable<Product[]> {
+    // Properly handle HttpParams or plain object parameters
+    let params = config?.params;
+    if (params instanceof HttpParams) {
+      params = params.set('category', category);
+    } else {
+      params = { category, ...params };
+    }
+
     return this.http.get<Product[]>(`${this.baseUrl}`, {
-      params: { category, ...config?.params },
+      params,
       headers: config?.headers
     });
   }
@@ -68,8 +76,16 @@ export class ProductService extends AbstractResourceService<Product, ProductCrea
    * @returns Observable of products matching the search term
    */
   search(searchTerm: string, config?: ResourceServiceConfig): Observable<Product[]> {
+    // Properly handle HttpParams or plain object parameters
+    let params = config?.params;
+    if (params instanceof HttpParams) {
+      params = params.set('q', searchTerm);
+    } else {
+      params = { q: searchTerm, ...params };
+    }
+
     return this.http.get<Product[]>(`${this.baseUrl}/search`, {
-      params: { q: searchTerm, ...config?.params },
+      params,
       headers: config?.headers
     });
   }
