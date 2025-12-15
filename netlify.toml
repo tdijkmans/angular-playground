@@ -1,0 +1,9 @@
+[build]
+  base = "angular-sandbox"
+  command = "npm run build"
+  publish = "dist/angular-sandbox/browser"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
