@@ -39,13 +39,13 @@ export class UsersComponent {
   }
 
   /**
-   * Load users from the API
+   * Load users from the API (uses cache if available)
    */
-  private loadUsers(): void {
+  private loadUsers(forceRefresh = false): void {
     this.isLoading.set(true);
     this.error.set(null);
     
-    this.userService.getUsers().subscribe({
+    this.userService.getUsers(forceRefresh).subscribe({
       next: (users) => {
         this.users.set(users);
         this.isLoading.set(false);
@@ -99,7 +99,7 @@ export class UsersComponent {
   }
 
   /**
-   * Create a new user
+   * Create a new user with optimistic update
    */
   protected createUser(): void {
     const userData = this.formData();
@@ -115,21 +115,38 @@ export class UsersComponent {
       website: userData.website
     };
 
+    // Optimistic update: Add user to UI immediately with temporary ID
+    const optimisticUser: User = {
+      id: Date.now(), // Temporary ID
+      ...createDto
+    };
+    
+    const currentUsers = this.users();
+    this.users.set([...currentUsers, optimisticUser]);
+    this.cancelForm();
+
+    // Make API call
     this.userService.createUser(createDto).subscribe({
       next: (newUser) => {
         console.log('User created:', newUser);
-        this.cancelForm();
-        this.refresh();
+        // Replace optimistic user with real user from server
+        this.users.update(users => 
+          users.map(u => u.id === optimisticUser.id ? newUser : u)
+        );
       },
       error: (error) => {
         console.error('Error creating user:', error);
         alert('Failed to create user');
+        // Rollback optimistic update
+        this.users.update(users => 
+          users.filter(u => u.id !== optimisticUser.id)
+        );
       }
     });
   }
 
   /**
-   * Update an existing user
+   * Update an existing user with optimistic update
    */
   protected updateUser(): void {
     const userData = this.formData();
@@ -148,44 +165,69 @@ export class UsersComponent {
       website: userData.website
     };
 
+    // Store original user for rollback
+    const originalUser = { ...selected };
+
+    // Optimistic update: Update user in UI immediately
+    this.users.update(users =>
+      users.map(u => u.id === updateDto.id ? { ...updateDto } as User : u)
+    );
+    this.cancelForm();
+
+    // Make API call
     this.userService.updateUser(updateDto).subscribe({
       next: (updatedUser) => {
         console.log('User updated:', updatedUser);
-        this.cancelForm();
-        this.refresh();
+        // Update with server response (in case server modified data)
+        this.users.update(users =>
+          users.map(u => u.id === updatedUser.id ? updatedUser : u)
+        );
       },
       error: (error) => {
         console.error('Error updating user:', error);
         alert('Failed to update user');
+        // Rollback optimistic update
+        this.users.update(users =>
+          users.map(u => u.id === originalUser.id ? originalUser : u)
+        );
       }
     });
   }
 
   /**
-   * Delete a user
+   * Delete a user with optimistic update
    */
   protected deleteUser(user: User): void {
     if (!confirm(`Are you sure you want to delete ${user.name}?`)) {
       return;
     }
 
+    // Store original users list for rollback
+    const originalUsers = [...this.users()];
+
+    // Optimistic update: Remove user from UI immediately
+    this.users.update(users => users.filter(u => u.id !== user.id));
+
+    // Make API call
     this.userService.deleteUser(user.id).subscribe({
       next: () => {
         console.log('User deleted:', user.id);
-        this.refresh();
+        // Success - optimistic update was correct
       },
       error: (error) => {
         console.error('Error deleting user:', error);
         alert('Failed to delete user');
+        // Rollback optimistic update
+        this.users.set(originalUsers);
       }
     });
   }
 
   /**
-   * Refresh the users list
+   * Refresh the users list (bypasses cache)
    */
   protected refresh(): void {
-    this.loadUsers();
+    this.loadUsers(true);
   }
 
   /**
