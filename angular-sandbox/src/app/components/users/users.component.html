@@ -1,0 +1,163 @@
+<div class="users-container">
+  <header class="header">
+    <h1>User Management</h1>
+    <p class="subtitle">Modern Angular CRUD with Resource API</p>
+  </header>
+
+  <div class="actions">
+    <button class="btn btn-primary" (click)="openCreateForm()" [disabled]="isCreating() || isEditing()">
+      <span class="icon">+</span> Create User
+    </button>
+    <button class="btn btn-secondary" (click)="refresh()" [disabled]="isLoading()">
+      <span class="icon">↻</span> Refresh
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Loading users...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error() && !isLoading()) {
+    <div class="error">
+      <p>⚠️ {{ error() }}</p>
+      <button class="btn btn-secondary" (click)="refresh()">Try Again</button>
+    </div>
+  }
+
+  <!-- Success State with Data -->
+  @if (!isLoading() && !error()) {
+    <div class="content">
+      <!-- Create/Edit Form -->
+      @if (isCreating() || isEditing()) {
+        <div class="form-container">
+          <div class="form-header">
+            <h2>{{ isCreating() ? 'Create New User' : 'Edit User' }}</h2>
+            <button class="btn-close" (click)="cancelForm()">✕</button>
+          </div>
+          
+          <form class="user-form" (ngSubmit)="isCreating() ? createUser() : updateUser()">
+            <div class="form-group">
+              <label for="name">Name *</label>
+              <input 
+                id="name"
+                type="text" 
+                [value]="formData().name"
+                (input)="updateFormField('name', $any($event.target).value)"
+                required
+                placeholder="Enter name"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input 
+                id="email"
+                type="email" 
+                [value]="formData().email"
+                (input)="updateFormField('email', $any($event.target).value)"
+                required
+                placeholder="Enter email"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input 
+                id="phone"
+                type="text" 
+                [value]="formData().phone"
+                (input)="updateFormField('phone', $any($event.target).value)"
+                placeholder="Enter phone number"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="website">Website</label>
+              <input 
+                id="website"
+                type="text" 
+                [value]="formData().website"
+                (input)="updateFormField('website', $any($event.target).value)"
+                placeholder="Enter website"
+              />
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                {{ isCreating() ? 'Create' : 'Update' }}
+              </button>
+              <button type="button" class="btn btn-secondary" (click)="cancelForm()">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      }
+
+      <!-- Users List -->
+      <div class="users-list">
+        <h2>Users ({{ users().length }})</h2>
+        
+        @if (users().length === 0) {
+          <div class="empty-state">
+            <p>No users found</p>
+          </div>
+        } @else {
+          <div class="users-grid">
+            @for (user of users(); track user.id) {
+              <div class="user-card">
+                <div class="user-header">
+                  <h3>{{ user.name }}</h3>
+                  <span class="user-id">#{{ user.id }}</span>
+                </div>
+                
+                <div class="user-details">
+                  <div class="detail">
+                    <span class="label">Email:</span>
+                    <span class="value">{{ user.email }}</span>
+                  </div>
+                  
+                  @if (user.phone) {
+                    <div class="detail">
+                      <span class="label">Phone:</span>
+                      <span class="value">{{ user.phone }}</span>
+                    </div>
+                  }
+                  
+                  @if (user.website) {
+                    <div class="detail">
+                      <span class="label">Website:</span>
+                      <span class="value">{{ user.website }}</span>
+                    </div>
+                  }
+                </div>
+                
+                <div class="user-actions">
+                  <button 
+                    class="btn btn-small btn-edit" 
+                    (click)="openEditForm(user)"
+                    [disabled]="isCreating() || isEditing()"
+                  >
+                    Edit
+                  </button>
+                  <button 
+                    class="btn btn-small btn-delete" 
+                    (click)="deleteUser(user)"
+                    [disabled]="isCreating() || isEditing()"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
