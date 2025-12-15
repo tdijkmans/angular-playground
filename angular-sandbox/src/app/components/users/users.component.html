@@ -21,17 +21,17 @@
     </div>
   }
 
-  <!-- Error State -->
-  @if (error() && !isLoading()) {
-    <div class="error">
-      <p>⚠️ {{ error() }}</p>
-      <button class="btn btn-secondary" (click)="refresh()">Try Again</button>
-    </div>
-  }
-
-  <!-- Success State with Data -->
-  @if (!isLoading() && !error()) {
+  <!-- Content Area -->
+  @if (!isLoading()) {
     <div class="content">
+      <!-- Error State -->
+      @if (error()) {
+        <div class="error">
+          <p>⚠️ {{ error() }}</p>
+          <button class="btn btn-secondary" (click)="refresh()">Try Again</button>
+        </div>
+      }
+
       <!-- Create/Edit Form -->
       @if (isCreating() || isEditing()) {
         <div class="form-container">
