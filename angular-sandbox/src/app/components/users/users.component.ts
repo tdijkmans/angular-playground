@@ -197,4 +197,12 @@ export class UsersComponent {
       [field]: value
     }));
   }
+
+  /**
+   * Handle input event and update form field
+   */
+  protected onInputChange(event: Event, field: keyof User): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.updateFormField(field, value);
+  }
 }

@@ -47,7 +47,7 @@
                 id="name"
                 type="text" 
                 [value]="formData().name"
-                (input)="updateFormField('name', $any($event.target).value)"
+                (input)="onInputChange($event, 'name')"
                 required
                 placeholder="Enter name"
               />
@@ -59,7 +59,7 @@
                 id="email"
                 type="email" 
                 [value]="formData().email"
-                (input)="updateFormField('email', $any($event.target).value)"
+                (input)="onInputChange($event, 'email')"
                 required
                 placeholder="Enter email"
               />
@@ -71,7 +71,7 @@
                 id="phone"
                 type="text" 
                 [value]="formData().phone"
-                (input)="updateFormField('phone', $any($event.target).value)"
+                (input)="onInputChange($event, 'phone')"
                 placeholder="Enter phone number"
               />
             </div>
@@ -82,7 +82,7 @@
                 id="website"
                 type="text" 
                 [value]="formData().website"
-                (input)="updateFormField('website', $any($event.target).value)"
+                (input)="onInputChange($event, 'website')"
                 placeholder="Enter website"
               />
             </div>
