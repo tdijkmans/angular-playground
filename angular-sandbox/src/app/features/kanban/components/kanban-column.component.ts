@@ -1,4 +1,4 @@
-import { CdkDropList, CdkDrag } from '@angular/cdk/drag-drop';
+import { CdkDropList, CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, input, output } from '@angular/core';
 import { Column } from '../models/board.model';
 import { Task } from '../models/task.model';
@@ -120,6 +120,6 @@ import { TaskCardComponent } from './task-card.component';
 export class KanbanColumnComponent {
   column = input.required<Column>();
   connectedLists = input.required<string[]>();
-  onDrop = output<any>();
+  onDrop = output<CdkDragDrop<Task[]>>();
   onDeleteTask = output<number>();
 }

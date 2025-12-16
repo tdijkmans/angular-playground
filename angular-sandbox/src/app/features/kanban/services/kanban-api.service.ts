@@ -19,7 +19,8 @@ export class KanbanApiService {
   
   // In-memory store to simulate a real API with persistence
   private localTasks: Task[] = [];
-  private nextId = 1000; // Start with high ID to avoid conflicts with JSONPlaceholder
+  // Use timestamp-based ID generation for better uniqueness
+  private nextId = Date.now();
 
   /**
    * Fetch all tasks from the API

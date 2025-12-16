@@ -135,7 +135,8 @@ export class KanbanStateService {
       for (const column of updatedBoard.columns) {
         const taskIndex = column.tasks.findIndex(t => t.id === id);
         if (taskIndex !== -1) {
-          const updatedTask = { ...column.tasks[taskIndex], ...dto, updatedAt: new Date().toISOString() };
+          // Don't set updatedAt here - let the API service handle it
+          const updatedTask = { ...column.tasks[taskIndex], ...dto };
           
           // If status changed, move to new column
           if (dto.status && dto.status !== column.status) {
@@ -153,7 +154,6 @@ export class KanbanStateService {
             ];
           }
           
-          taskFound = true;
           break;
         }
       }

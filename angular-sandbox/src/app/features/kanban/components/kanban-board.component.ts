@@ -1,7 +1,7 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit, computed, inject } from '@angular/core';
 import { Column } from '../models/board.model';
-import { TaskStatus } from '../models/task.model';
+import { Task, TaskStatus } from '../models/task.model';
 import { KanbanStateService } from '../services/kanban-state.service';
 import { KanbanColumnComponent } from './kanban-column.component';
 
@@ -217,7 +217,7 @@ export class KanbanBoardComponent implements OnInit {
     this.stateService.clearError();
   }
 
-  onTaskDrop(event: CdkDragDrop<any>): void {
+  onTaskDrop(event: CdkDragDrop<Task[]>): void {
     const { previousContainer, container, previousIndex, currentIndex } = event;
 
     if (previousContainer === container) {
