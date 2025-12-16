@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, delay, map, of } from 'rxjs';
+import { Observable, catchError, delay, map, of, throwError } from 'rxjs';
 import { CreateTaskDto, Task, TaskStatus, UpdateTaskDto } from '../models/task.model';
 
 interface JsonPlaceholderTodo {
@@ -79,7 +79,7 @@ export class KanbanApiService {
     const taskIndex = this.localTasks.findIndex(t => t.id === id);
     
     if (taskIndex === -1) {
-      throw new Error(`Task with id ${id} not found`);
+      return throwError(() => new Error(`Task with id ${id} not found`));
     }
 
     const updatedTask: Task = {
@@ -105,7 +105,7 @@ export class KanbanApiService {
     const taskIndex = this.localTasks.findIndex(t => t.id === id);
     
     if (taskIndex === -1) {
-      throw new Error(`Task with id ${id} not found`);
+      return throwError(() => new Error(`Task with id ${id} not found`));
     }
 
     // Simulate API delay

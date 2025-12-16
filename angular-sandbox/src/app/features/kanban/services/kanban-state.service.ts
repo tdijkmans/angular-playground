@@ -165,10 +165,12 @@ export class KanbanStateService {
     this.apiService.updateTask(id, dto).pipe(
       catchError(error => {
         console.error('Failed to update task:', error);
+        const errorMessage = error.message || 'Failed to update task';
         this.rollbackSnapshot();
+        // Update error after rollback
         this._state.update(state => ({
           ...state,
-          error: error.message || 'Failed to update task',
+          error: errorMessage,
         }));
         return of(null);
       }),
@@ -206,10 +208,12 @@ export class KanbanStateService {
     this.apiService.deleteTask(id).pipe(
       catchError(error => {
         console.error('Failed to delete task:', error);
+        const errorMessage = error.message || 'Failed to delete task';
         this.rollbackSnapshot();
+        // Update error after rollback
         this._state.update(state => ({
           ...state,
-          error: error.message || 'Failed to delete task',
+          error: errorMessage,
         }));
         return of(null);
       }),
@@ -237,7 +241,18 @@ export class KanbanStateService {
    * Take a snapshot of current state for rollback
    */
   private takeSnapshot(): void {
-    this.stateSnapshot = { ...this._state() };
+    const currentState = this._state();
+    // Deep clone the board to ensure rollback works correctly
+    this.stateSnapshot = {
+      ...currentState,
+      board: currentState.board ? {
+        ...currentState.board,
+        columns: currentState.board.columns.map(col => ({
+          ...col,
+          tasks: [...col.tasks]
+        }))
+      } : null
+    };
   }
 
   /**
