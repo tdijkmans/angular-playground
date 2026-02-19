@@ -1,0 +1,34 @@
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0.5rem 1rem;
+  margin: 0 0 1.5rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+  gap: 0;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+
+  + .breadcrumb-item::before {
+    content: '/';
+    padding: 0 0.5rem;
+    color: #6c757d;
+  }
+
+  a {
+    color: #0d6efd;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &.active span {
+    color: #6c757d;
+  }
+}

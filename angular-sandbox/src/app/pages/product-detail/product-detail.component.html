@@ -1,0 +1,9 @@
+@if (product$ | async; as product) {
+  <div class="product-detail">
+    <h2>{{ product.name }}</h2>
+    <p>{{ product.description }}</p>
+    <a routerLink="/products">← Back to Products</a>
+  </div>
+} @else {
+  <p>Loading…</p>
+}
