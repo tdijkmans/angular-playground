@@ -1,0 +1,9 @@
+<h3>Sizes</h3>
+<ul class="item-list">
+  @for (size of sizes$ | async; track size.id) {
+    <li>
+      <a [routerLink]="[size.id]">{{ size.name }}</a>
+    </li>
+  }
+</ul>
+<router-outlet />

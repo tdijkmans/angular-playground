@@ -1,15 +1,15 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { ApiService, Product } from '../../services/api.service';
 import { Observable } from 'rxjs';
+import { ApiService, Color } from '../../services/api.service';
 
 @Component({
-  selector: 'app-products',
+  selector: 'app-colors',
   imports: [AsyncPipe, RouterLink, RouterOutlet],
-  templateUrl: './products.component.html',
+  templateUrl: './colors.component.html',
 })
-export class ProductsComponent {
+export class ColorsComponent {
   private readonly apiService = inject(ApiService);
-  readonly products$: Observable<Product[]> = this.apiService.getProducts();
+  readonly colors$: Observable<Color[]> = this.apiService.getColors();
 }

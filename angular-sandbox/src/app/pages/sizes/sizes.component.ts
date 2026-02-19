@@ -1,15 +1,15 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { ApiService, Product } from '../../services/api.service';
 import { Observable } from 'rxjs';
+import { ApiService, Size } from '../../services/api.service';
 
 @Component({
-  selector: 'app-products',
+  selector: 'app-sizes',
   imports: [AsyncPipe, RouterLink, RouterOutlet],
-  templateUrl: './products.component.html',
+  templateUrl: './sizes.component.html',
 })
-export class ProductsComponent {
+export class SizesComponent {
   private readonly apiService = inject(ApiService);
-  readonly products$: Observable<Product[]> = this.apiService.getProducts();
+  readonly sizes$: Observable<Size[]> = this.apiService.getSizes();
 }

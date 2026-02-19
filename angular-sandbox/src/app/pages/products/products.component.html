@@ -1,8 +1,9 @@
 <h2>Products</h2>
-<ul class="product-list">
+<ul class="item-list">
   @for (product of products$ | async; track product.id) {
     <li>
-      <a [routerLink]="['/products', product.id]">{{ product.name }}</a>
+      <a [routerLink]="[product.id]">{{ product.name }}</a>
     </li>
   }
 </ul>
+<router-outlet />

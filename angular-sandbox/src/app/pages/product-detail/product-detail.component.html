@@ -1,8 +1,9 @@
 @if (product$ | async; as product) {
-  <div class="product-detail">
-    <h2>{{ product.name }}</h2>
+  <div class="detail-block">
+    <h3>{{ product.name }}</h3>
     <p>{{ product.description }}</p>
-    <a routerLink="/products">← Back to Products</a>
+    <a [routerLink]="['colors']">View Colors →</a>
+    <router-outlet />
   </div>
 } @else {
   <p>Loading…</p>

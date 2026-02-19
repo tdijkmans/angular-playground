@@ -1,0 +1,9 @@
+@if (color$ | async; as color) {
+  <div class="detail-block">
+    <h4>{{ color.name }}</h4>
+    <a [routerLink]="['sizes']">View Sizes →</a>
+    <router-outlet />
+  </div>
+} @else {
+  <p>Loading…</p>
+}

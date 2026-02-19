@@ -42,9 +42,11 @@ export class BreadcrumbService {
       if (crumbData !== null) {
         current$ = of([{ label: crumbData as string, url: currentUrl }]);
       } else {
-        const id: string | undefined = route.params['id'];
+        const paramName: string = route.data['breadcrumbParam'] ?? 'id';
+        const resource: string = route.data['breadcrumbResource'] ?? 'product';
+        const id: string | undefined = route.params[paramName];
         if (id) {
-          current$ = this.apiService.getProductName(id).pipe(
+          current$ = this.apiService.getLabel(resource, id).pipe(
             map(name => [{ label: name, url: currentUrl }]),
           );
         }

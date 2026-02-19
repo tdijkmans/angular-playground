@@ -2,20 +2,20 @@ import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 import { Observable, filter, map, switchMap } from 'rxjs';
-import { ApiService, Product } from '../../services/api.service';
+import { ApiService, Color } from '../../services/api.service';
 
 @Component({
-  selector: 'app-product-detail',
+  selector: 'app-color-detail',
   imports: [AsyncPipe, RouterLink, RouterOutlet],
-  templateUrl: './product-detail.component.html',
+  templateUrl: './color-detail.component.html',
 })
-export class ProductDetailComponent {
+export class ColorDetailComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly apiService = inject(ApiService);
 
-  readonly product$: Observable<Product | undefined> = this.route.paramMap.pipe(
-    map(params => params.get('id')),
+  readonly color$: Observable<Color | undefined> = this.route.paramMap.pipe(
+    map(params => params.get('colorId')),
     filter((id): id is string => id !== null),
-    switchMap(id => this.apiService.getProduct(id)),
+    switchMap(id => this.apiService.getColor(id)),
   );
 }

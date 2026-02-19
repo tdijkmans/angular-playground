@@ -1,0 +1,9 @@
+<h3>Colors</h3>
+<ul class="item-list">
+  @for (color of colors$ | async; track color.id) {
+    <li>
+      <a [routerLink]="[color.id]">{{ color.name }}</a>
+    </li>
+  }
+</ul>
+<router-outlet />

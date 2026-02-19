@@ -1,0 +1,7 @@
+@if (size$ | async; as size) {
+  <div class="detail-block">
+    <h4>{{ size.name }}</h4>
+  </div>
+} @else {
+  <p>Loading…</p>
+}
