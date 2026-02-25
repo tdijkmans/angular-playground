@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { GraphQLRequest } from './graphql-query-builder';
 import { GraphQLService, User } from './graphql.service';
 
 describe('GraphQLService', () => {
@@ -61,6 +62,27 @@ describe('GraphQLService', () => {
 
       const req = httpMock.expectOne('/graphql');
       req.error(new ProgressEvent('network error'));
+    });
+  });
+
+  describe('execute', () => {
+    it('should send a typed request and return the data', () => {
+      const mockUser: User = { id: '2', name: 'Bob', email: 'bob@example.com' };
+      const request: GraphQLRequest<{ id: string }> = {
+        query: 'query GetUser($id: ID!) { user(id: $id) { id name email } }',
+        variables: { id: '2' },
+      };
+
+      service.execute<{ user: User }, { id: string }>(request).subscribe((data) => {
+        expect(data.user).toEqual(mockUser);
+      });
+
+      const req = httpMock.expectOne('/graphql');
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(
+        jasmine.objectContaining({ variables: { id: '2' } }),
+      );
+      req.flush({ data: { user: mockUser } });
     });
   });
 });

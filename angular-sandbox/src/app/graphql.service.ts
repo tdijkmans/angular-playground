@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
+import { GraphQLQueryBuilder, GraphQLRequest } from './graphql-query-builder';
 
 export interface GraphQLResponse<T> {
   data: T;
@@ -20,15 +21,9 @@ export interface User {
   email: string;
 }
 
-const GET_USER_QUERY = `
-  query GetUser($id: ID!) {
-    user(id: $id) {
-      id
-      name
-      email
-    }
-  }
-`;
+interface GetUserVariables {
+  id: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -59,9 +54,26 @@ export class GraphQLService {
       );
   }
 
+  /**
+   * Execute any typed GraphQL request built with {@link GraphQLQueryBuilder}.
+   * `TData` is the shape of `response.data`; `TVariables` types the variables payload.
+   */
+  execute<TData, TVariables = Record<string, unknown>>(
+    request: GraphQLRequest<TVariables>,
+  ): Observable<TData> {
+    return this.query<TData>(request.query, request.variables as Record<string, unknown>);
+  }
+
   getUser(id: string): Observable<User> {
-    return this.query<{ user: User }>(GET_USER_QUERY, { id }).pipe(
-      map((data) => data.user),
-    );
+    const queryString = new GraphQLQueryBuilder()
+      .operation('query', 'GetUser')
+      .withVariable('id', 'ID!')
+      .select({ name: 'user', args: { id: '$id' }, fields: ['id', 'name', 'email'] })
+      .build();
+
+    return this.execute<{ user: User }, GetUserVariables>({
+      query: queryString,
+      variables: { id },
+    }).pipe(map((data) => data.user));
   }
 }
