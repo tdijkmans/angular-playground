@@ -1,8 +1,33 @@
 <main class="main">
   <div class="container">
     <h1>Welcome to My Angular App</h1>
-  </div>
 
+    <!--
+      ShowBetweenDutchTime usage example.
+      The SVG is only rendered when the current Dutch time (Europe/Amsterdam)
+      falls between svgStart and svgEnd.
+
+      Explicit <ng-template> form (equivalent to the * shorthand):
+        - appShowBetweenDutchTime: matches the directive selector
+        - [appShowBetweenDutchTimeStart] / [appShowBetweenDutchTimeEnd]: input bindings
+    -->
+    <ng-template
+      appShowBetweenDutchTime
+      [appShowBetweenDutchTimeStart]="svgStart"
+      [appShowBetweenDutchTimeEnd]="svgEnd"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 100 100"
+        width="100"
+        height="100"
+        aria-label="Visible during Dutch promotional period"
+      >
+        <circle cx="50" cy="50" r="40" fill="orange" />
+        <text x="50" y="55" text-anchor="middle" font-size="14" fill="white">NL</text>
+      </svg>
+    </ng-template>
+  </div>
 </main>
 
 <router-outlet />
