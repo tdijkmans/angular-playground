@@ -1,10 +1,10 @@
 import {
   Directive,
-  Input,
   OnDestroy,
   OnInit,
   TemplateRef,
   ViewContainerRef,
+  input,
 } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
 
@@ -29,9 +29,9 @@ import { Subscription, timer } from 'rxjs';
 })
 export class ShowBetweenDutchTimeDirective implements OnInit, OnDestroy {
   /** ISO date-time string representing the start of the visible window (e.g. '2026-03-01T00:00:00'). */
-  @Input() appShowBetweenDutchTimeStart = '';
+  readonly appShowBetweenDutchTimeStart = input('');
   /** ISO date-time string representing the end of the visible window (e.g. '2026-03-31T23:59:59'). */
-  @Input() appShowBetweenDutchTimeEnd = '';
+  readonly appShowBetweenDutchTimeEnd = input('');
 
   private subscription?: Subscription;
 
@@ -65,12 +65,12 @@ export class ShowBetweenDutchTimeDirective implements OnInit, OnDestroy {
    * Returns true when the current Dutch time is within [start, end].
    */
   private isBetweenDutchTime(): boolean {
-    if (!this.appShowBetweenDutchTimeStart || !this.appShowBetweenDutchTimeEnd) {
+    if (!this.appShowBetweenDutchTimeStart() || !this.appShowBetweenDutchTimeEnd()) {
       return false;
     }
     const dutchNow = this.getDutchNow();
-    const start = new Date(this.appShowBetweenDutchTimeStart);
-    const end = new Date(this.appShowBetweenDutchTimeEnd);
+    const start = new Date(this.appShowBetweenDutchTimeStart());
+    const end = new Date(this.appShowBetweenDutchTimeEnd());
     return dutchNow >= start && dutchNow <= end;
   }
 
