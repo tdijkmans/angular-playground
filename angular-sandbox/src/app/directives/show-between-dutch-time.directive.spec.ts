@@ -34,6 +34,11 @@ function setup(start = '', end = '') {
   return fixture;
 }
 
+/** Casts the directive to `any` to access private members for testing. */
+function asAny(d: ShowBetweenDutchTimeDirective): any {
+  return d as any;
+}
+
 describe('ShowBetweenDutchTimeDirective', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -43,7 +48,7 @@ describe('ShowBetweenDutchTimeDirective', () => {
 
   it('should render the element when current Dutch time is within the range', fakeAsync(() => {
     const fixture = setup('2026-06-15T11:00:00', '2026-06-15T13:00:00');
-    spyOn(fixture.componentInstance.directive, 'getDutchNow').and.returnValue(
+    spyOn(asAny(fixture.componentInstance.directive), 'getDutchNow').and.returnValue(
       new Date('2026-06-15T12:00:00'),
     );
 
@@ -55,7 +60,7 @@ describe('ShowBetweenDutchTimeDirective', () => {
 
   it('should NOT render the element when current Dutch time is before the range', fakeAsync(() => {
     const fixture = setup('2026-06-15T11:00:00', '2026-06-15T13:00:00');
-    spyOn(fixture.componentInstance.directive, 'getDutchNow').and.returnValue(
+    spyOn(asAny(fixture.componentInstance.directive), 'getDutchNow').and.returnValue(
       new Date('2026-06-15T10:00:00'),
     );
 
@@ -67,7 +72,7 @@ describe('ShowBetweenDutchTimeDirective', () => {
 
   it('should NOT render the element when current Dutch time is after the range', fakeAsync(() => {
     const fixture = setup('2026-06-15T11:00:00', '2026-06-15T13:00:00');
-    spyOn(fixture.componentInstance.directive, 'getDutchNow').and.returnValue(
+    spyOn(asAny(fixture.componentInstance.directive), 'getDutchNow').and.returnValue(
       new Date('2026-06-15T14:00:00'),
     );
 
@@ -87,7 +92,7 @@ describe('ShowBetweenDutchTimeDirective', () => {
 
   it('should re-check visibility every 30 seconds', fakeAsync(() => {
     const fixture = setup('2026-06-15T11:00:00', '2026-06-15T13:00:00');
-    const spy = spyOn(fixture.componentInstance.directive, 'getDutchNow').and.returnValue(
+    const spy = spyOn(asAny(fixture.componentInstance.directive), 'getDutchNow').and.returnValue(
       new Date('2026-06-15T10:59:00'), // outside range
     );
 
@@ -107,28 +112,28 @@ describe('ShowBetweenDutchTimeDirective', () => {
     fixture.detectChanges();
 
     const { directive } = fixture.componentInstance;
-    expect((directive as any).subscription).toBeTruthy();
+    expect(asAny(directive).subscription).toBeTruthy();
 
     fixture.destroy();
-    expect((directive as any).subscription?.closed).toBeTrue();
+    expect(asAny(directive).subscription?.closed).toBeTrue();
   }));
 
   it('isBetweenDutchTime returns false when start is empty', () => {
     const fixture = setup('', '2026-06-15T13:00:00');
     const { directive } = fixture.componentInstance;
-    expect(directive.isBetweenDutchTime()).toBeFalse();
+    expect(asAny(directive).isBetweenDutchTime()).toBeFalse();
   });
 
   it('isBetweenDutchTime returns false when end is empty', () => {
     const fixture = setup('2026-06-15T11:00:00', '');
     const { directive } = fixture.componentInstance;
-    expect(directive.isBetweenDutchTime()).toBeFalse();
+    expect(asAny(directive).isBetweenDutchTime()).toBeFalse();
   });
 
   it('getDutchNow returns a valid Date object', () => {
     const fixture = setup();
     const { directive } = fixture.componentInstance;
-    const dutchNow = directive.getDutchNow();
+    const dutchNow = asAny(directive).getDutchNow();
     expect(dutchNow instanceof Date).toBeTrue();
     expect(isNaN(dutchNow.getTime())).toBeFalse();
   });

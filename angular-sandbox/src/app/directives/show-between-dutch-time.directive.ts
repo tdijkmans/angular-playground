@@ -64,7 +64,7 @@ export class ShowBetweenDutchTimeDirective implements OnInit, OnDestroy {
   /**
    * Returns true when the current Dutch time is within [start, end].
    */
-  isBetweenDutchTime(): boolean {
+  private isBetweenDutchTime(): boolean {
     if (!this.appShowBetweenDutchTimeStart || !this.appShowBetweenDutchTimeEnd) {
       return false;
     }
@@ -79,7 +79,7 @@ export class ShowBetweenDutchTimeDirective implements OnInit, OnDestroy {
    * expressed as a plain (timezone-free) Date object so that it can be compared
    * directly against the ISO strings supplied via the inputs.
    */
-  getDutchNow(): Date {
+  private getDutchNow(): Date {
     const now = new Date();
     const formatter = new Intl.DateTimeFormat('en-CA', {
       timeZone: 'Europe/Amsterdam',
