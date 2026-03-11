@@ -1,0 +1,71 @@
+<div class="chat-wrapper">
+  <!-- Header -->
+  <header class="chat-header">
+    <div class="header-avatar">
+      <span>B</span>
+    </div>
+    <div class="header-info">
+      <span class="header-name">Bot</span>
+      <span class="header-status" [class.online]="isConnected">
+        {{ isConnected ? 'online' : 'offline' }}
+      </span>
+    </div>
+  </header>
+
+  <!-- Connection error banner -->
+  @if (connectionError) {
+    <div class="connection-error">
+      <span>⚠ Could not connect to <strong>{{ wsUrl }}</strong>. Make sure the WebSocket server is running.</span>
+      <button class="retry-btn" (click)="connectToServer()">Retry</button>
+    </div>
+  }
+
+  <!-- URL bar (collapsed by default, useful for reconfiguring) -->
+  <div class="url-bar">
+    <label>WebSocket URL</label>
+    <input type="text" [(ngModel)]="wsUrl" placeholder="ws://localhost:8080" />
+    <button (click)="connectToServer()">Connect</button>
+  </div>
+
+  <!-- Messages -->
+  <div class="messages-container" #messagesContainer>
+    @if (messages.length === 0) {
+      <div class="empty-state">
+        <p>No messages yet. Say hello! 👋</p>
+      </div>
+    }
+    @for (msg of messages; track msg.id) {
+      <div class="message-row" [class.self]="msg.isSelf">
+        <div class="bubble" [class.self]="msg.isSelf">
+          @if (!msg.isSelf) {
+            <span class="sender-name">{{ msg.sender }}</span>
+          }
+          <p class="message-text">{{ msg.text }}</p>
+          <span class="message-time">{{ msg.timestamp | date: 'HH:mm' }}</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Input bar -->
+  <div class="input-bar">
+    <input
+      type="text"
+      class="message-input"
+      placeholder="Type a message"
+      [(ngModel)]="newMessage"
+      (keyup.enter)="sendMessage()"
+      [disabled]="!isConnected"
+    />
+    <button
+      class="send-btn"
+      (click)="sendMessage()"
+      [disabled]="!newMessage.trim() || !isConnected"
+      aria-label="Send message"
+    >
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+      </svg>
+    </button>
+  </div>
+</div>
