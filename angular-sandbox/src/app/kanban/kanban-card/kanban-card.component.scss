@@ -1,0 +1,162 @@
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  padding: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  transition: box-shadow 0.2s;
+  cursor: grab;
+
+  &:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+  }
+
+  &.cdk-drag-preview {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    opacity: 0.9;
+  }
+
+  &.cdk-drag-placeholder {
+    opacity: 0.3;
+    background: #c8d4e3;
+  }
+
+  &.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.card-drag-handle {
+  cursor: grab;
+  color: #9ca3af;
+  font-size: 18px;
+  line-height: 1;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-title {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  word-break: break-word;
+}
+
+.card-description {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+  word-break: break-word;
+}
+
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s;
+
+  .card:hover & {
+    opacity: 1;
+  }
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: background 0.15s;
+}
+
+.btn-edit {
+  color: #3b82f6;
+
+  &:hover {
+    background: #dbeafe;
+  }
+}
+
+.btn-delete {
+  color: #ef4444;
+
+  &:hover {
+    background: #fee2e2;
+  }
+}
+
+/* Editing state */
+.card.editing {
+  display: block;
+  cursor: default;
+}
+
+.edit-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  border: 2px solid #3b82f6;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  outline: none;
+}
+
+.edit-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 13px;
+  resize: vertical;
+  outline: none;
+  margin-bottom: 8px;
+  font-family: inherit;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn {
+  padding: 5px 14px;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-save {
+  background: #3b82f6;
+  color: #fff;
+
+  &:hover {
+    background: #2563eb;
+  }
+}
+
+.btn-cancel {
+  background: #e2e8f0;
+  color: #475569;
+
+  &:hover {
+    background: #cbd5e1;
+  }
+}

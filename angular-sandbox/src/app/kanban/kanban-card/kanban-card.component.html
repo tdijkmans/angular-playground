@@ -1,0 +1,38 @@
+@if (editing()) {
+  <div class="card editing" (click)="$event.stopPropagation()">
+    <input
+      class="edit-input"
+      [(ngModel)]="editTitle"
+      placeholder="Card title"
+      (keydown.enter)="saveEdit()"
+      (keydown.escape)="cancelEdit()"
+      autofocus
+    />
+    <textarea
+      class="edit-textarea"
+      [(ngModel)]="editDescription"
+      placeholder="Description (optional)"
+      rows="3"
+    ></textarea>
+    <div class="edit-actions">
+      <button class="btn btn-save" (click)="saveEdit()">Save</button>
+      <button class="btn btn-cancel" (click)="cancelEdit()">Cancel</button>
+    </div>
+  </div>
+} @else {
+  <div class="card" cdkDrag [cdkDragData]="card">
+    <div class="card-drag-handle" cdkDragHandle>
+      <span class="drag-icon">⠿</span>
+    </div>
+    <div class="card-body" (dblclick)="startEdit()">
+      <h4 class="card-title">{{ card.title }}</h4>
+      @if (card.description) {
+        <p class="card-description">{{ card.description }}</p>
+      }
+    </div>
+    <div class="card-actions">
+      <button class="btn-icon btn-edit" title="Edit" (click)="startEdit()">✎</button>
+      <button class="btn-icon btn-delete" title="Delete" (click)="onDelete()">✕</button>
+    </div>
+  </div>
+}

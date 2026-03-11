@@ -1,0 +1,55 @@
+<div class="column">
+  <div class="column-header">
+    <h3 class="column-title">{{ column.title }}</h3>
+    <div class="column-meta">
+      <span class="card-count">{{ column.cards.length }}</span>
+      <button class="btn-icon btn-delete-col" title="Delete column" (click)="onDeleteColumn()">✕</button>
+    </div>
+  </div>
+
+  <div
+    class="card-list"
+    cdkDropList
+    [id]="column.id"
+    [cdkDropListData]="column.cards"
+    [cdkDropListConnectedTo]="connectedTo"
+    (cdkDropListDropped)="onDrop($event)"
+  >
+    @for (card of column.cards; track card.id) {
+      <app-kanban-card
+        [card]="card"
+        (deleteCard)="onDeleteCard($event)"
+        (updateCard)="onUpdateCard(card.id, $event)"
+      />
+    }
+
+    @if (column.cards.length === 0) {
+      <div class="empty-placeholder">Drop cards here</div>
+    }
+  </div>
+
+  @if (addingCard()) {
+    <div class="add-card-form">
+      <input
+        class="add-input"
+        [(ngModel)]="newCardTitle"
+        placeholder="Card title"
+        (keydown.enter)="submitCard()"
+        (keydown.escape)="cancelAdd()"
+        autofocus
+      />
+      <textarea
+        class="add-textarea"
+        [(ngModel)]="newCardDescription"
+        placeholder="Description (optional)"
+        rows="2"
+      ></textarea>
+      <div class="form-actions">
+        <button class="btn btn-save" (click)="submitCard()">Add card</button>
+        <button class="btn btn-cancel" (click)="cancelAdd()">Cancel</button>
+      </div>
+    </div>
+  } @else {
+    <button class="btn-add-card" (click)="startAddCard()">+ Add a card</button>
+  }
+</div>

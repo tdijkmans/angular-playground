@@ -1,0 +1,164 @@
+.column {
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 14px;
+  width: 280px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 180px);
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.column-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.column-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-count {
+  font-size: 13px;
+  font-weight: 600;
+  background: #e2e8f0;
+  color: #64748b;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-delete-col {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 13px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+
+  &:hover {
+    color: #ef4444;
+    background: #fee2e2;
+  }
+}
+
+.card-list {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 60px;
+  padding: 4px 0;
+
+  &.cdk-drop-list-dragging .card:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.empty-placeholder {
+  color: #94a3b8;
+  font-size: 13px;
+  text-align: center;
+  padding: 20px 0;
+  border: 2px dashed #cbd5e1;
+  border-radius: 8px;
+}
+
+.btn-add-card {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 6px;
+  text-align: left;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+  width: 100%;
+  margin-top: 4px;
+
+  &:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+  }
+}
+
+.add-card-form {
+  margin-top: 8px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  border: 2px solid #3b82f6;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  outline: none;
+}
+
+.add-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 13px;
+  resize: none;
+  outline: none;
+  margin-bottom: 8px;
+  font-family: inherit;
+}
+
+.form-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn {
+  padding: 5px 14px;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-save {
+  background: #3b82f6;
+  color: #fff;
+
+  &:hover {
+    background: #2563eb;
+  }
+}
+
+.btn-cancel {
+  background: #e2e8f0;
+  color: #475569;
+
+  &:hover {
+    background: #cbd5e1;
+  }
+}

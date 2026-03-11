@@ -1,0 +1,49 @@
+<div class="board-wrapper">
+  <header class="board-header">
+    <h1 class="board-title">Kanban Board</h1>
+    <div class="connection-status">
+      @if (isConnected$ | async) {
+        <span class="status-dot connected"></span>
+        <span class="status-label">Live</span>
+      } @else {
+        <span class="status-dot disconnected"></span>
+        <span class="status-label">Connecting…</span>
+      }
+    </div>
+  </header>
+
+  @if (board$ | async; as board) {
+    <div class="board-columns">
+      @for (column of board.columns; track column.id) {
+        <app-kanban-column
+          [column]="column"
+          [connectedTo]="getColumnIds(board.columns)"
+          (cardDropped)="onCardDropped($event, board.columns)"
+          (addCard)="onAddCard($event)"
+          (deleteCard)="onDeleteCard($event)"
+          (updateCard)="onUpdateCard($event)"
+          (deleteColumn)="onDeleteColumn($event)"
+        />
+      }
+
+      @if (addingColumn()) {
+        <div class="new-column-form">
+          <input
+            class="new-col-input"
+            [(ngModel)]="newColumnTitle"
+            placeholder="Column title"
+            (keydown.enter)="submitColumn()"
+            (keydown.escape)="cancelAddColumn()"
+            autofocus
+          />
+          <div class="form-actions">
+            <button class="btn btn-save" (click)="submitColumn()">Add column</button>
+            <button class="btn btn-cancel" (click)="cancelAddColumn()">Cancel</button>
+          </div>
+        </div>
+      } @else {
+        <button class="btn-add-column" (click)="startAddColumn()">+ Add column</button>
+      }
+    </div>
+  }
+</div>
