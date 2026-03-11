@@ -1,0 +1,62 @@
+<div class="tracker-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>📍 Location Tracker</h2>
+
+    <section class="setup-section">
+      <label for="name-input">Your display name</label>
+      <input
+        id="name-input"
+        type="text"
+        placeholder="e.g. Alice"
+        [ngModel]="myName()"
+        (ngModelChange)="myName.set($event)"
+        [disabled]="isTracking()"
+      />
+    </section>
+
+    <div class="controls">
+      @if (!isTracking()) {
+        <button class="btn btn-primary" (click)="startTracking()" [disabled]="!isConnected()">
+          ▶ Start Sharing
+        </button>
+      } @else {
+        <button class="btn btn-danger" (click)="stopTracking()">
+          ⏹ Stop Sharing
+        </button>
+      }
+    </div>
+
+    <div class="status-bar" [class.connected]="isConnected()" [class.disconnected]="!isConnected()">
+      <span class="status-dot"></span>
+      {{ statusMessage() }}
+    </div>
+
+    <section class="device-list">
+      <h3>Connected devices ({{ deviceCount() }})</h3>
+      @if (deviceList.length === 0) {
+        <p class="empty-state">No devices on the map yet.</p>
+      }
+      @for (device of deviceList(); track device.id) {
+        <div class="device-item" [class.is-me]="device.id === myId">
+          <span class="device-dot" [style.background]="device.id === myId ? '#e74c3c' : '#3498db'"></span>
+          <div class="device-info">
+            <span class="device-name">{{ device.name }}{{ device.id === myId ? ' (you)' : '' }}</span>
+            <span class="device-coords">{{ device.lat | number:'1.4-4' }}, {{ device.lng | number:'1.4-4' }}</span>
+          </div>
+        </div>
+      }
+    </section>
+
+    <div class="token-notice">
+      <small>
+        ℹ️ Replace <code>YOUR_MAPBOX_TOKEN_HERE</code> in
+        <code>environments/environment.ts</code> with your
+        <a href="https://account.mapbox.com/access-tokens/" target="_blank">Mapbox access token</a>.
+      </small>
+    </div>
+  </aside>
+
+  <!-- Map -->
+  <div #mapContainer class="map-container"></div>
+</div>

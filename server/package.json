@@ -1,0 +1,12 @@
+{
+  "name": "location-tracker-server",
+  "version": "1.0.0",
+  "description": "WebSocket server for real-time device location tracking",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}
