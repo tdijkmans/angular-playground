@@ -1,0 +1,50 @@
+<section class="todo-container">
+  <h2>Todo List</h2>
+
+  <form class="add-form" (ngSubmit)="addItem()">
+    <input
+      type="text"
+      [(ngModel)]="newItemText"
+      name="newItem"
+      placeholder="Add a new task…"
+      class="add-input"
+    />
+    <button type="submit" class="add-btn">Add</button>
+  </form>
+
+  <ul
+    cdkDropList
+    class="todo-items"
+    (cdkDropListDropped)="drop($event)"
+  >
+    @for (item of items; track item.id) {
+      <li
+        cdkDrag
+        class="todo-item"
+        [class.completed]="item.completed"
+      >
+        <span class="drag-handle" cdkDragHandle [attr.aria-label]="'Drag to reorder: ' + item.text">⠿</span>
+        <input
+          type="checkbox"
+          [id]="'todo-' + item.id"
+          [checked]="item.completed"
+          (change)="item.completed = !item.completed"
+          class="todo-checkbox"
+        />
+        <label [for]="'todo-' + item.id" class="todo-text">{{ item.text }}</label>
+        <button
+          type="button"
+          class="delete-btn"
+          (click)="deleteItem(item.id)"
+          [attr.aria-label]="'Delete task: ' + item.text"
+        >✕</button>
+
+        <div *cdkDragPlaceholder class="drag-placeholder"></div>
+      </li>
+    }
+  </ul>
+
+  @if (items.length === 0) {
+    <p class="empty-state">No tasks yet. Add one above!</p>
+  }
+</section>
