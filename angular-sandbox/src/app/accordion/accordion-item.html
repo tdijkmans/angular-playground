@@ -1,0 +1,11 @@
+<details class="accordion-item" [attr.open]="open || null">
+  <summary class="accordion-item__summary">
+    <span class="accordion-item__label">{{ summary }}</span>
+    <!-- Decorative chevron – hidden from assistive technology -->
+    <span class="accordion-item__icon" aria-hidden="true"></span>
+  </summary>
+
+  <div class="accordion-item__content" role="region">
+    <ng-content />
+  </div>
+</details>

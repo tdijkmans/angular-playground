@@ -1,1 +1,54 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* ─── Accordion design tokens ─── */
+:root {
+  /* Colors – parent variant */
+  --accordion-parent-header-bg: #0f172a;
+  --accordion-parent-header-fg: #f8fafc;
+  --accordion-parent-header-hover-bg: #1e293b;
+  --accordion-parent-content-bg: #f8fafc;
+  --accordion-parent-border: #334155;
+
+  /* Colors – child variant */
+  --accordion-child-header-bg: #e2e8f0;
+  --accordion-child-header-fg: #0f172a;
+  --accordion-child-header-hover-bg: #cbd5e1;
+  --accordion-child-content-bg: #ffffff;
+  --accordion-child-border: #cbd5e1;
+
+  /* Shared spacing */
+  --accordion-gap: 8px;
+  --accordion-padding-sm: 8px 14px;
+  --accordion-padding-md: 10px 16px;
+  --accordion-padding-lg: 14px 20px;
+
+  /* Border */
+  --accordion-border-width: 1px;
+  --accordion-border-radius-sm: 6px;
+  --accordion-border-radius-md: 10px;
+
+  /* Typography */
+  --accordion-font-size-sm: 0.875rem;
+  --accordion-font-size-md: 1rem;
+  --accordion-font-weight-header: 600;
+
+  /* Elevation */
+  --accordion-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --accordion-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.07);
+
+  /* Interaction */
+  --accordion-transition: 0.2s ease;
+  --accordion-focus-ring: #3b82f6;
+}
+
+/* ─── Global reset ─── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #0f172a;
+  background: #f1f5f9;
+}

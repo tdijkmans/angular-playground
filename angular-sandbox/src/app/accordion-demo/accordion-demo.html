@@ -1,0 +1,68 @@
+<div class="demo">
+  <h1 class="demo__title">Accordion Component</h1>
+  <p class="demo__subtitle">
+    Open/close delegated entirely to native
+    <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code> — no JS state machine.
+  </p>
+
+  <!-- ── Parent variant ── -->
+  <section class="demo__section">
+    <h2 class="demo__section-title">Parent variant</h2>
+
+    <app-accordion-group variant="parent" label="Product FAQ">
+      <app-accordion-item summary="What is compound-component architecture?">
+        <p>
+          Compound components are a pattern where a parent component and one or more
+          child components share implicit state and work together as a cohesive unit.
+          The parent provides a visual and behavioural context; children inherit it.
+        </p>
+      </app-accordion-item>
+
+      <app-accordion-item summary="How is open/close handled?" [open]="true">
+        <p>
+          The browser's native <code>&lt;details&gt;</code> element manages all
+          toggle behaviour. No JavaScript state, no event listeners, no
+          <code>isOpen</code> flag — full a11y out of the box.
+        </p>
+      </app-accordion-item>
+
+      <app-accordion-item summary="Can items be nested?">
+        <p>
+          Yes. Place a <strong>child-variant</strong> accordion group inside any item's
+          content slot. The child variant inherits a lighter colour scheme that looks
+          good against the parent's content background.
+        </p>
+
+        <!-- ── Child variant (nested) ── -->
+        <app-accordion-group variant="child" label="Nested options" class="demo__nested">
+          <app-accordion-item summary="Child item A">
+            Nested content A — styled with the child design token set.
+          </app-accordion-item>
+          <app-accordion-item summary="Child item B">
+            Nested content B — indented and lighter than the parent items.
+          </app-accordion-item>
+          <app-accordion-item summary="Child item C">
+            Nested content C — further items can be added freely.
+          </app-accordion-item>
+        </app-accordion-group>
+      </app-accordion-item>
+    </app-accordion-group>
+  </section>
+
+  <!-- ── Child variant standalone ── -->
+  <section class="demo__section">
+    <h2 class="demo__section-title">Child variant (standalone)</h2>
+
+    <app-accordion-group variant="child" label="Settings">
+      <app-accordion-item summary="Notifications">
+        Control how and when you receive alerts.
+      </app-accordion-item>
+      <app-accordion-item summary="Privacy">
+        Manage your data and visibility settings.
+      </app-accordion-item>
+      <app-accordion-item summary="Accessibility">
+        Adjust contrast, text size, and motion preferences.
+      </app-accordion-item>
+    </app-accordion-group>
+  </section>
+</div>

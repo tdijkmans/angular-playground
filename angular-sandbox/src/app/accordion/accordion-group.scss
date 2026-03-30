@@ -1,0 +1,37 @@
+:host {
+  display: block;
+}
+
+.accordion-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--accordion-gap);
+}
+
+/* ── Parent variant: sets themed CSS custom properties for child items ── */
+.accordion-group--parent {
+  --accordion-item-summary-bg: var(--accordion-parent-header-bg);
+  --accordion-item-summary-fg: var(--accordion-parent-header-fg);
+  --accordion-item-summary-hover-bg: var(--accordion-parent-header-hover-bg);
+  --accordion-item-content-bg: var(--accordion-parent-content-bg);
+  --accordion-item-border: var(--accordion-parent-border);
+  --accordion-item-border-radius: var(--accordion-border-radius-md);
+  --accordion-item-shadow: var(--accordion-shadow);
+  --accordion-item-padding: var(--accordion-padding-lg);
+  --accordion-item-font-size: var(--accordion-font-size-md);
+  --accordion-item-icon-size: 20px;
+}
+
+/* ── Child variant: lighter context for nested items ── */
+.accordion-group--child {
+  --accordion-item-summary-bg: var(--accordion-child-header-bg);
+  --accordion-item-summary-fg: var(--accordion-child-header-fg);
+  --accordion-item-summary-hover-bg: var(--accordion-child-header-hover-bg);
+  --accordion-item-content-bg: var(--accordion-child-content-bg);
+  --accordion-item-border: var(--accordion-child-border);
+  --accordion-item-border-radius: var(--accordion-border-radius-sm);
+  --accordion-item-shadow: var(--accordion-shadow-sm);
+  --accordion-item-padding: var(--accordion-padding-md);
+  --accordion-item-font-size: var(--accordion-font-size-sm);
+  --accordion-item-icon-size: 16px;
+}

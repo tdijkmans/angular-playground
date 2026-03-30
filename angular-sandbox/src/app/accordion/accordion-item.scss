@@ -1,0 +1,77 @@
+:host {
+  display: block;
+}
+
+/* ── Item shell ── */
+.accordion-item {
+  border: var(--accordion-border-width) solid var(--accordion-item-border, #e2e8f0);
+  border-radius: var(--accordion-item-border-radius, 8px);
+  background: var(--accordion-item-content-bg, #fff);
+  box-shadow: var(--accordion-item-shadow, none);
+  overflow: hidden;
+
+  /* ── Summary / trigger row ── */
+  &__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: var(--accordion-item-padding, 14px 20px);
+    background: var(--accordion-item-summary-bg, #f5f5f5);
+    color: var(--accordion-item-summary-fg, #0f172a);
+    cursor: pointer;
+    font-size: var(--accordion-item-font-size, 1rem);
+    font-weight: var(--accordion-font-weight-header);
+    user-select: none;
+
+    /* Remove browser-native disclosure triangle */
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:hover {
+      background: var(--accordion-item-summary-hover-bg, #e5e5e5);
+    }
+
+    /* High-contrast keyboard focus indicator */
+    &:focus-visible {
+      outline: 3px solid var(--accordion-focus-ring);
+      outline-offset: -3px;
+    }
+  }
+
+  /* ── Chevron icon (pure CSS) ── */
+  &__icon {
+    flex-shrink: 0;
+    width: var(--accordion-item-icon-size, 20px);
+    height: var(--accordion-item-icon-size, 20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--accordion-transition);
+
+    &::before {
+      content: '';
+      display: block;
+      width: calc(var(--accordion-item-icon-size, 20px) * 0.45);
+      height: calc(var(--accordion-item-icon-size, 20px) * 0.45);
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg) translate(-2px, -2px);
+      transition: transform var(--accordion-transition);
+    }
+  }
+
+  /* Rotate chevron when open */
+  &[open] > &__summary > &__icon {
+    transform: rotate(180deg);
+  }
+
+  /* ── Content panel ── */
+  &__content {
+    padding: var(--accordion-item-padding, 14px 20px);
+    background: var(--accordion-item-content-bg, #fff);
+  }
+}

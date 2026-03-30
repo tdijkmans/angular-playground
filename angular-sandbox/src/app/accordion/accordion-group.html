@@ -1,0 +1,9 @@
+<div
+  class="accordion-group"
+  [class.accordion-group--parent]="variant === 'parent'"
+  [class.accordion-group--child]="variant === 'child'"
+  role="group"
+  [attr.aria-label]="label || null"
+>
+  <ng-content />
+</div>
