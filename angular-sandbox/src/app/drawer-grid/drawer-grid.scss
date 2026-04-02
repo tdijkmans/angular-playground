@@ -1,0 +1,258 @@
+/* ─── Layout ──────────────────────────────────────────────────────────────── */
+$half-w: 200px;
+$full-w: 420px;
+$speed: 0.3s;
+
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.layout {
+  display: flex;
+  height: 100%;
+  background: #f0f4f8;
+  font-family: system-ui, sans-serif;
+}
+
+/* ─── Open button (shown when drawer is closed) ───────────────────────────── */
+.open-btn {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 30;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  background: #4f46e5;
+  color: #fff;
+  font-size: 1.25rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  transition: background $speed;
+
+  &:hover {
+    background: #4338ca;
+  }
+}
+
+/* ─── Drawer ──────────────────────────────────────────────────────────────── */
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #1e1b4b;
+  color: #fff;
+  overflow: hidden;
+  transition: width $speed ease;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+
+  &[data-state='closed'] {
+    width: 0;
+  }
+
+  &[data-state='half'] {
+    width: $half-w;
+  }
+
+  &[data-state='full'] {
+    width: $full-w;
+  }
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  min-width: $half-w; /* prevent header collapsing during animation */
+  white-space: nowrap;
+}
+
+.drawer-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.drawer-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.btn-icon {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background $speed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+}
+
+/* ─── Item grid ───────────────────────────────────────────────────────────── */
+.grid {
+  padding: 0.85rem;
+  gap: 0.6rem;
+  min-width: $half-w;
+  display: grid;
+
+  &[data-cols='1'] {
+    grid-template-columns: 1fr;
+  }
+
+  &[data-cols='2'] {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 1rem 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background $speed, border-color $speed, transform 0.15s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.16);
+    transform: translateY(-1px);
+  }
+
+  &.active {
+    background: #10b981;
+    border-color: #059669;
+    font-weight: 700;
+  }
+}
+
+.item-number {
+  font-size: 1.2rem;
+  font-weight: 700;
+  opacity: 0.6;
+
+  .active & {
+    opacity: 1;
+  }
+}
+
+.item-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+
+/* ─── Main content ────────────────────────────────────────────────────────── */
+.content {
+  flex: 1;
+  padding: 2rem 2.5rem;
+  overflow-y: auto;
+  transition: margin-left $speed ease;
+
+  &[data-drawer='closed'] {
+    margin-left: 0;
+  }
+
+  &[data-drawer='half'] {
+    margin-left: $half-w;
+  }
+
+  &[data-drawer='full'] {
+    margin-left: $full-w;
+  }
+}
+
+.content-header h1 {
+  margin: 0 0 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e1b4b;
+}
+
+/* ─── Status card ─────────────────────────────────────────────────────────── */
+.status-card {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem 1.4rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  .label {
+    font-size: 0.85rem;
+    color: #6b7280;
+    min-width: 80px;
+  }
+}
+
+.badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: #e0e7ff;
+  color: #4f46e5;
+
+  &[data-state='closed'] {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+
+  &[data-state='half'] {
+    background: #fef9c3;
+    color: #92400e;
+  }
+
+  &[data-state='full'] {
+    background: #dcfce7;
+    color: #166534;
+  }
+}
+
+.active-badge {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+/* ─── Info section ────────────────────────────────────────────────────────── */
+.info {
+  max-width: 520px;
+  color: #4b5563;
+  line-height: 1.7;
+  font-size: 0.95rem;
+
+  p + p {
+    margin-top: 0.75rem;
+  }
+}
