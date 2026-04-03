@@ -19,7 +19,7 @@
   box-shadow: var(--acc-shadow);
   overflow: hidden;
 
-  &[open] .acc-chevron {
+  &--open .acc-chevron {
     transform: rotate(180deg);
   }
 }
@@ -27,32 +27,7 @@
 .acc-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 0;
   background: var(--acc-header-bg);
-  cursor: pointer;
-  list-style: none;
-  outline: none;
-  user-select: none;
-
-  &::-webkit-details-marker {
-    display: none;
-  }
-
-  &:hover .acc-toggle-area {
-    background: var(--acc-header-hover-bg);
-  }
-
-  &:focus-visible .acc-toggle-area {
-    outline: var(--acc-header-focus-outline);
-    outline-offset: -2px;
-    border-radius: 4px;
-  }
-
-  &--disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
 }
 
 .acc-left-slot,
@@ -67,7 +42,7 @@
   }
 
   > * {
-    border-radius: 4px;
+    border-radius: 50%;
     transition: background var(--acc-transition);
 
     &:hover {
@@ -81,15 +56,40 @@
   }
 }
 
-.acc-toggle-area {
+.acc-toggle {
+  flex: 1;
+  min-width: 0;
+}
+
+.acc-summary {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex: 1;
   padding: 12px 8px;
-  min-width: 0;
-  transition: background var(--acc-transition);
+  cursor: pointer;
+  list-style: none;
+  outline: none;
+  user-select: none;
   border-radius: 4px;
+  transition: background var(--acc-transition);
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:hover {
+    background: var(--acc-header-hover-bg);
+  }
+
+  &:focus-visible {
+    outline: var(--acc-header-focus-outline);
+    outline-offset: -2px;
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 }
 
 .acc-chevron {
@@ -127,4 +127,8 @@
   padding: var(--acc-body-padding);
   background: var(--acc-body-bg);
   border-top: var(--acc-border);
+
+  &--hidden {
+    display: none;
+  }
 }

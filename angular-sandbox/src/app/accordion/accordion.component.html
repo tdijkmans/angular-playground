@@ -1,33 +1,35 @@
-<details class="acc-wrapper" [attr.open]="open || null">
-  <summary
-    class="acc-header"
-    [class.acc-header--disabled]="disabled"
-    (click)="onSummaryClick($event)"
-  >
-    <div class="acc-left-slot" (click)="stopPropagation($event)">
+<div class="acc-wrapper" [class.acc-wrapper--open]="isOpen()">
+  <div class="acc-header">
+    <div class="acc-left-slot">
       <ng-content select="[left]"></ng-content>
     </div>
 
-    <div class="acc-toggle-area">
-      <span class="acc-chevron">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
-          <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
-        </svg>
-      </span>
-      <div class="acc-labels">
-        <span class="acc-title">{{ title }}</span>
-        @if (subtitle) {
-          <span class="acc-subtitle">{{ subtitle }}</span>
-        }
-      </div>
-    </div>
+    <details class="acc-toggle" [attr.open]="open || null" (toggle)="onToggle($event)">
+      <summary
+        class="acc-summary"
+        [class.acc-summary--disabled]="disabled"
+        (click)="onSummaryClick($event)"
+      >
+        <span class="acc-chevron">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+            <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+          </svg>
+        </span>
+        <div class="acc-labels">
+          <span class="acc-title">{{ title }}</span>
+          @if (subtitle) {
+            <span class="acc-subtitle">{{ subtitle }}</span>
+          }
+        </div>
+      </summary>
+    </details>
 
-    <div class="acc-right-slot" (click)="stopPropagation($event)">
+    <div class="acc-right-slot">
       <ng-content select="[right]"></ng-content>
     </div>
-  </summary>
+  </div>
 
-  <div class="acc-body">
+  <div class="acc-body" [class.acc-body--hidden]="!isOpen()">
     <ng-content></ng-content>
   </div>
-</details>
+</div>

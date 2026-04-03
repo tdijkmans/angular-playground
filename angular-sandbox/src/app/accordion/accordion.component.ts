@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, signal, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,14 +9,21 @@ import { CommonModule } from '@angular/common';
   styleUrl: './accordion.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccordionComponent {
+export class AccordionComponent implements OnInit {
   @Input() title = '';
   @Input() subtitle = '';
   @Input() open = false;
   @Input() disabled = false;
 
-  stopPropagation(event: MouseEvent): void {
-    event.stopPropagation();
+  protected isOpen = signal(false);
+
+  ngOnInit(): void {
+    this.isOpen.set(this.open);
+  }
+
+  onToggle(event: Event): void {
+    const details = event.target as HTMLDetailsElement;
+    this.isOpen.set(details.open);
   }
 
   onSummaryClick(event: MouseEvent): void {
