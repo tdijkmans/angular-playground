@@ -12,56 +12,37 @@
   --acc-transition: 0.2s ease;
 }
 
+// details is a CSS grid:
+//   columns: [left-slot] [summary/toggle] [right-slot]
+//   row 1  : header bar (left-slot | summary | right-slot)
+//   row 2  : body (spans all three columns)
+//
+// .acc-left-slot and .acc-right-slot use explicit display:flex so they
+// remain visible when <details> is closed (overrides UA hiding of
+// non-summary children).
+
 .acc-wrapper {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
   border: var(--acc-border);
   border-radius: var(--acc-radius);
   background: var(--acc-bg);
   box-shadow: var(--acc-shadow);
   overflow: hidden;
 
-  &--open .acc-chevron {
+  &[open] .acc-chevron {
     transform: rotate(180deg);
   }
-}
 
-.acc-header {
-  display: flex;
-  align-items: center;
-  background: var(--acc-header-bg);
-}
-
-.acc-left-slot,
-.acc-right-slot {
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  flex-shrink: 0;
-
-  &:not(:has(*)) {
+  &:not([open]) .acc-body {
     display: none;
   }
-
-  > * {
-    border-radius: 50%;
-    transition: background var(--acc-transition);
-
-    &:hover {
-      background: rgba(0, 0, 0, 0.08);
-    }
-
-    &:focus-visible {
-      outline: var(--acc-header-focus-outline);
-      outline-offset: 2px;
-    }
-  }
-}
-
-.acc-toggle {
-  flex: 1;
-  min-width: 0;
 }
 
 .acc-summary {
+  grid-column: 2;
+  grid-row: 1;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -70,6 +51,7 @@
   list-style: none;
   outline: none;
   user-select: none;
+  background: var(--acc-header-bg);
   border-radius: 4px;
   transition: background var(--acc-transition);
 
@@ -90,6 +72,41 @@
     cursor: not-allowed;
     opacity: 0.6;
   }
+}
+
+.acc-left-slot,
+.acc-right-slot {
+  grid-row: 1;
+  display: flex; // explicit: overrides UA hiding of non-summary children when closed
+  align-items: center;
+  padding: 8px;
+  background: var(--acc-header-bg);
+
+  &:not(:has(*)) {
+    display: none;
+  }
+
+  > * {
+    border-radius: 50%;
+    transition: background var(--acc-transition);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    &:focus-visible {
+      outline: var(--acc-header-focus-outline);
+      outline-offset: 2px;
+    }
+  }
+}
+
+.acc-left-slot {
+  grid-column: 1;
+}
+
+.acc-right-slot {
+  grid-column: 3;
 }
 
 .acc-chevron {
@@ -124,11 +141,9 @@
 }
 
 .acc-body {
+  grid-column: 1 / -1;
+  grid-row: 2;
   padding: var(--acc-body-padding);
   background: var(--acc-body-bg);
   border-top: var(--acc-border);
-
-  &--hidden {
-    display: none;
-  }
 }
