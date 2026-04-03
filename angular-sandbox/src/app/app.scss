@@ -1,0 +1,17 @@
+.nav {
+  padding: 0.75rem 2rem;
+  background: #1a1a2e;
+  display: flex;
+  gap: 1.5rem;
+
+  a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-size: 0.95rem;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
