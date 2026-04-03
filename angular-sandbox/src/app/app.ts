@@ -32,6 +32,13 @@ export class App {
     tall: { minHeight: 240 },
   };
 
+  protected readonly bothBreakpoints: CqBreakpointsInput = {
+    'small-short': { maxWidth: 459, maxHeight: 229 },
+    'small-tall': { maxWidth: 459, minHeight: 230 },
+    'wide-short': { minWidth: 460, maxHeight: 229 },
+    'wide-tall': { minWidth: 460, minHeight: 230 },
+  };
+
   constructor() {
     effect((onCleanup) => {
       const cq = this.cqBasic();

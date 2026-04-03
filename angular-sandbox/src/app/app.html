@@ -28,6 +28,22 @@
     </section>
 
     <section>
+      <h2>Combined width + height (both)</h2>
+      <div
+        class="demo-box both-demo"
+        [appCq]="bothBreakpoints"
+        [cqComparisonStrategy]="'both'"
+        [cqClassPrefix]="'both'"
+        #cqBoth="cq"
+      >
+        Resize width and height.
+      </div>
+      <p>Active combined breakpoint: {{ cqBoth.breakpoint() ?? 'none' }}</p>
+      <p>Dimensions: {{ cqBoth.dimensions().width }} x {{ cqBoth.dimensions().height }}</p>
+      <button type="button" (click)="logFromComponent(cqBoth, 'both')">Log combined-size logic</button>
+    </section>
+
+    <section>
       <h2>Using observable</h2>
       <div
         class="demo-box"

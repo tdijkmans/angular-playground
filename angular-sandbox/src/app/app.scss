@@ -70,6 +70,30 @@ section {
     border-color: #3ea35a;
 }
 
+.both-demo.both-small-short {
+    background: #ffe8f0;
+    color: #8e1b47;
+    border-color: #cf4f83;
+}
+
+.both-demo.both-small-tall {
+    background: #efe8ff;
+    color: #51329d;
+    border-color: #7b62d6;
+}
+
+.both-demo.both-wide-short {
+    background: #fff3e0;
+    color: #8a4b00;
+    border-color: #d58b2e;
+}
+
+.both-demo.both-wide-tall {
+    background: #e6f7ef;
+    color: #1d6d4e;
+    border-color: #3fb386;
+}
+
 .trigger-source {
     width: 420px;
     resize: horizontal;
