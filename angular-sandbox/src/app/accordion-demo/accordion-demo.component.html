@@ -1,0 +1,92 @@
+<div class="demo-page">
+  <h1 class="demo-page__title">Accordion Component</h1>
+
+  <!-- BASIC SCENARIO -->
+  <section class="demo-section">
+    <h2 class="demo-section__title">Basic</h2>
+    <p class="demo-section__desc">Standard text-only accordion items.</p>
+
+    <div class="demo-stack">
+      <app-accordion title="What is an accordion?" subtitle="Frequently asked">
+        <p>An accordion is a UI component that allows showing and hiding sections of content. It's useful for FAQs, settings pages, and navigation menus.</p>
+      </app-accordion>
+
+      <app-accordion title="How does it work?" subtitle="Under the hood" [open]="true">
+        <p>This accordion uses a native <code>&lt;details&gt;</code> / <code>&lt;summary&gt;</code> HTML element for toggle behavior, ensuring semantic markup and built-in keyboard support.</p>
+      </app-accordion>
+
+      <app-accordion title="Can I customize it?" subtitle="Theming & CSS variables">
+        <p>Yes! Use CSS custom properties to override <code>--acc-radius</code>, <code>--acc-bg</code>, <code>--acc-border</code>, and more without touching the component internals.</p>
+      </app-accordion>
+
+      <app-accordion title="Disabled example" subtitle="Non-interactive" [disabled]="true">
+        <p>This section cannot be toggled.</p>
+      </app-accordion>
+    </div>
+  </section>
+
+  <!-- COMPLEX SCENARIO -->
+  <section class="demo-section">
+    <h2 class="demo-section__title">Complex – Reorderable List</h2>
+    <p class="demo-section__desc">
+      7 reorderable accordion items using Angular CDK drag-drop.
+      Use the <span class="demo-icon-ref">drag_handle</span> icon to reorder.
+      Use the lock button to prevent editing.
+    </p>
+
+    <div
+      cdkDropList
+      class="demo-stack demo-stack--draggable"
+      [cdkDropListData]="items()"
+      (cdkDropListDropped)="drop($event)"
+    >
+      @for (item of items(); track item.id) {
+        <div cdkDrag class="demo-drag-item">
+          <!-- Drag placeholder -->
+          <div *cdkDragPlaceholder class="demo-drag-placeholder"></div>
+
+          <app-accordion
+            [title]="item.title"
+            [subtitle]="item.subtitle"
+            [disabled]="item.locked"
+          >
+            <!-- Left Slot: drag handle -->
+            <button
+              left
+              class="slot-btn slot-btn--drag"
+              cdkDragHandle
+              [attr.aria-label]="'Drag to reorder ' + item.title"
+              title="Drag to reorder"
+            >
+              <span class="material-icons" aria-hidden="true">drag_handle</span>
+            </button>
+
+            <!-- Body content -->
+            <div [class.acc-content--locked]="item.locked">
+              <p>{{ item.content }}</p>
+              @if (item.locked) {
+                <p class="acc-locked-notice">
+                  <span class="material-icons" aria-hidden="true">lock</span>
+                  This item is locked for editing.
+                </p>
+              }
+            </div>
+
+            <!-- Right Slot: lock/unlock button -->
+            <button
+              right
+              class="slot-btn slot-btn--lock"
+              [attr.aria-label]="item.locked ? 'Unlock ' + item.title : 'Lock ' + item.title"
+              [title]="item.locked ? 'Unlock' : 'Lock'"
+              (click)="toggleLock(item, $event)"
+            >
+              <span class="material-icons" aria-hidden="true">
+                {{ item.locked ? 'lock' : 'lock_open' }}
+              </span>
+            </button>
+          </app-accordion>
+        </div>
+      }
+    </div>
+  </section>
+</div>

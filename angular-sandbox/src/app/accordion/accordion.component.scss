@@ -1,0 +1,130 @@
+:host {
+  display: block;
+  --acc-radius: 8px;
+  --acc-bg: #ffffff;
+  --acc-border: 1px solid #e0e0e0;
+  --acc-header-bg: #f8f8f8;
+  --acc-header-hover-bg: #eeeeee;
+  --acc-header-focus-outline: 2px solid #1976d2;
+  --acc-body-bg: #ffffff;
+  --acc-body-padding: 16px;
+  --acc-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  --acc-transition: 0.2s ease;
+}
+
+.acc-wrapper {
+  border: var(--acc-border);
+  border-radius: var(--acc-radius);
+  background: var(--acc-bg);
+  box-shadow: var(--acc-shadow);
+  overflow: hidden;
+
+  &[open] .acc-chevron {
+    transform: rotate(180deg);
+  }
+}
+
+.acc-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  background: var(--acc-header-bg);
+  cursor: pointer;
+  list-style: none;
+  outline: none;
+  user-select: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:hover .acc-toggle-area {
+    background: var(--acc-header-hover-bg);
+  }
+
+  &:focus-visible .acc-toggle-area {
+    outline: var(--acc-header-focus-outline);
+    outline-offset: -2px;
+    border-radius: 4px;
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.acc-left-slot,
+.acc-right-slot {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  flex-shrink: 0;
+
+  &:not(:has(*)) {
+    display: none;
+  }
+
+  > * {
+    border-radius: 4px;
+    transition: background var(--acc-transition);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    &:focus-visible {
+      outline: var(--acc-header-focus-outline);
+      outline-offset: 2px;
+    }
+  }
+}
+
+.acc-toggle-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  padding: 12px 8px;
+  min-width: 0;
+  transition: background var(--acc-transition);
+  border-radius: 4px;
+}
+
+.acc-chevron {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: #555;
+  transition: transform var(--acc-transition);
+}
+
+.acc-labels {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.acc-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.acc-subtitle {
+  font-size: 0.8rem;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.acc-body {
+  padding: var(--acc-body-padding);
+  background: var(--acc-body-bg);
+  border-top: var(--acc-border);
+}

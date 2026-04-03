@@ -1,0 +1,27 @@
+.app-nav {
+  display: flex;
+  gap: 16px;
+  padding: 12px 24px;
+  background: #1976d2;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+
+  a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.15s;
+
+    &:hover {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+
+    &.active {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+  }
+}
