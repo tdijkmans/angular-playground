@@ -3,7 +3,6 @@
     class="acc-header"
     [class.acc-header--disabled]="disabled"
     (click)="onSummaryClick($event)"
-    tabindex="0"
   >
     <div class="acc-left-slot" (click)="stopPropagation($event)">
       <ng-content select="[left]"></ng-content>
