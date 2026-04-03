@@ -1,6 +1,99 @@
 <main class="main">
-  <div class="container">
+  <div class="container examples">
     <h1>Welcome to My Angular App</h1>
+
+    <section>
+      <h2>Basic usage</h2>
+      <div class="demo-box" [appCq]="basicBreakpoints" #cqBasic="cq">
+        Resize me using devtools.
+      </div>
+      <p>Active breakpoint: {{ cqBasic.breakpoint() ?? 'none' }}</p>
+      <p>Dimensions: {{ cqBasic.dimensions().width }} x {{ cqBasic.dimensions().height }}</p>
+      <button type="button" (click)="logFromComponent(cqBasic, 'basic')">Log size from component</button>
+    </section>
+
+    <section>
+      <h2>Multiple breakpoints (array input)</h2>
+      <div class="demo-box" [appCq]="cardBreakpoints" [cqClassPrefix]="'card'" #cqCards="cq">
+        Card mode: {{ cqCards.breakpoint() ?? 'none' }}
+      </div>
+    </section>
+
+    <section>
+      <h2>Using signals</h2>
+      <div class="demo-box" [appCq]="sizeBreakpoints" [cqComparisonStrategy]="'height'" #cqSignal="cq">
+        Signal breakpoint: {{ cqSignal.breakpoint() ?? 'none' }}
+      </div>
+      <button type="button" (click)="cqSignal.recalculate()">Manual recalculation</button>
+    </section>
+
+    <section>
+      <h2>Using observable</h2>
+      <div
+        class="demo-box"
+        [appCq]="basicBreakpoints"
+        [cqEmitOnBreakpointChangeOnly]="true"
+        #cqObservable="cq"
+      >
+        Observable stream demo
+      </div>
+      <p>Latest observable breakpoint: {{ (cqObservable.state$ | async)?.breakpoint ?? 'none' }}</p>
+    </section>
+
+    <section>
+      <h2>Using CSS variables</h2>
+      <div
+        #cssVarBox
+        class="demo-box css-var-demo"
+        [appCq]="basicBreakpoints"
+        [cqCssVariables]="true"
+        [cqCssVarPrefix]="'demo-cq'"
+        #cqVars="cq"
+      >
+        CSS vars active: {{ cqVars.breakpoint() ?? 'none' }}
+      </div>
+      <p>--demo-cq-width: {{ cssVarValue(cssVarBox, '--demo-cq-width') || 'unset' }}</p>
+      <p>--demo-cq-height: {{ cssVarValue(cssVarBox, '--demo-cq-height') || 'unset' }}</p>
+      <p>--demo-cq-breakpoint: {{ cssVarValue(cssVarBox, '--demo-cq-breakpoint') || 'unset' }}</p>
+    </section>
+
+    <section>
+      <h2>Observe parent container</h2>
+      <div class="resize-parent demo-parent">
+        <div class="demo-box inner-target" [appCq]="basicBreakpoints" [cqObserveParent]="true" #cqParent="cq">
+          This target reacts to parent size.
+        </div>
+      </div>
+      <p>Parent-driven breakpoint: {{ cqParent.breakpoint() ?? 'none' }}</p>
+      <button type="button" (click)="logFromComponent(cqParent, 'parent')">Log parent-observed size</button>
+    </section>
+
+    <section>
+      <h2>Observe another element (custom target)</h2>
+      <div class="demo-box trigger-source" #externalTrigger>
+        Resize this source box
+      </div>
+      <div
+        class="demo-box target-receiver"
+        [appCq]="basicBreakpoints"
+        [cqObserveTarget]="externalTrigger"
+        [cqClassPrefix]="'source'"
+        #cqExternal="cq"
+      >
+        This target reacts to the source box above.
+      </div>
+      <p>Source-driven breakpoint: {{ cqExternal.breakpoint() ?? 'none' }}</p>
+      <button type="button" (click)="logFromComponent(cqExternal, 'external-target')">
+        Log custom-target size
+      </button>
+    </section>
+
+    <section>
+      <h2>Class prefix customization</h2>
+      <div class="demo-box" [appCq]="basicBreakpoints" [cqClassPrefix]="'layout'" #cqPrefix="cq">
+        Custom class prefix applied. Active: {{ cqPrefix.state().activeClass ?? 'none' }}
+      </div>
+    </section>
   </div>
 
 </main>

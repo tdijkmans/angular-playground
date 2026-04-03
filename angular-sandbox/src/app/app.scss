@@ -1,0 +1,109 @@
+.examples {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: grid;
+    gap: 1rem;
+}
+
+section {
+    border: 1px solid #d8d8d8;
+    border-radius: 12px;
+    padding: 1rem;
+    background: #fafafa;
+}
+
+.demo-box {
+    resize: both;
+    overflow: auto;
+    min-width: 220px;
+    max-width: 100%;
+    width: 360px;
+    min-height: 120px;
+    border: 2px dashed #4c4c4c;
+    border-radius: 10px;
+    padding: 0.8rem;
+    margin-bottom: 0.6rem;
+}
+
+.css-var-demo {
+    background: linear-gradient(120deg, #f4f7ff, #fff6e6);
+    border-color: #2f5bba;
+    box-shadow: inset 0 0 0 9999px rgba(47, 91, 186, 0.05);
+    border-width: clamp(2px, calc(var(--demo-cq-width, 320px) / 80), 12px);
+    min-height: clamp(120px, calc(var(--demo-cq-height, 180px) / 2), 260px);
+}
+
+.demo-parent {
+    resize: horizontal;
+    overflow: auto;
+    width: 520px;
+    max-width: 100%;
+    min-width: 240px;
+    border: 1px solid #b8b8b8;
+    border-radius: 10px;
+    padding: 0.75rem;
+    background: #ffffff;
+}
+
+.inner-target {
+    width: auto;
+    min-height: 90px;
+    resize: none;
+}
+
+.inner-target.cq-compact {
+    background: #ffe8e8;
+    color: #8f1f1f;
+    border-color: #d44343;
+}
+
+.inner-target.cq-regular {
+    background: #fff6de;
+    color: #8a5a00;
+    border-color: #d8a034;
+}
+
+.inner-target.cq-wide {
+    background: #e7f8ea;
+    color: #1e6c2f;
+    border-color: #3ea35a;
+}
+
+.trigger-source {
+    width: 420px;
+    resize: horizontal;
+    border-color: #1f7a4c;
+    background: #effaf4;
+}
+
+.target-receiver {
+    border-color: #a85c14;
+    background: #fff5ea;
+}
+
+.target-receiver.source-compact {
+    background: #ffe9ef;
+    color: #9b2048;
+    border-color: #d2457a;
+}
+
+.target-receiver.source-regular {
+    background: #eef2ff;
+    color: #2f44a0;
+    border-color: #4a6ed8;
+}
+
+.target-receiver.source-wide {
+    background: #e8fbf4;
+    color: #1f7a5d;
+    border-color: #2fba87;
+}
+
+button {
+    border: 0;
+    border-radius: 8px;
+    padding: 0.45rem 0.75rem;
+    background: #264653;
+    color: #fff;
+}
