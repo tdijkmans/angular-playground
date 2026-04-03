@@ -65,8 +65,4 @@ export class App {
       state: cq.state(),
     });
   }
-
-  protected cssVarValue(element: HTMLElement, varName: string): string {
-    return getComputedStyle(element).getPropertyValue(varName).trim();
-  }
 }

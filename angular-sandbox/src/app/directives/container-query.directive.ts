@@ -4,7 +4,6 @@ import {
     ElementRef,
     NgZone,
     Renderer2,
-    RendererStyleFlags2,
     computed,
     effect,
     inject,
@@ -61,11 +60,9 @@ export class ContainerQueryDirective {
   readonly observeParent = input<boolean>(false, { alias: 'cqObserveParent' });
   readonly observeTarget = input<CqObserveTargetInput>(null, { alias: 'cqObserveTarget' });
   readonly classPrefix = input<string>('cq', { alias: 'cqClassPrefix' });
-  readonly cssVarPrefix = input<string>('cq', { alias: 'cqCssVarPrefix' });
   readonly comparisonStrategy = input<CqComparisonStrategy>('width', {
     alias: 'cqComparisonStrategy',
   });
-  readonly writeCssVariables = input<boolean>(false, { alias: 'cqCssVariables' });
 
   private readonly hostElementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly renderer = inject(Renderer2);
@@ -100,9 +97,7 @@ export class ContainerQueryDirective {
         this.observeParent();
         this.observeTarget();
         this.classPrefix();
-        this.cssVarPrefix();
         this.comparisonStrategy();
-        this.writeCssVariables();
 
         this.connectObserver();
         this.recalculate();
@@ -138,7 +133,6 @@ export class ContainerQueryDirective {
     const nextClass = active ? `${classPrefix}-${toKebab(active.name)}` : null;
 
     this.updateHostClass(nextClass);
-    this.updateCssVariables(dimensions, active?.name ?? null);
 
     const nextState: CqState = {
       breakpoint: active?.name ?? null,
@@ -244,44 +238,6 @@ export class ContainerQueryDirective {
 
     this.renderer.removeClass(this.hostElementRef.nativeElement, this.appliedClass);
     this.appliedClass = null;
-  }
-
-  private updateCssVariables(dimensions: CqDimensions, breakpoint: string | null): void {
-    const host = this.hostElementRef.nativeElement;
-    const prefix = sanitizeToken(this.cssVarPrefix(), 'cq');
-
-    if (!this.writeCssVariables()) {
-      this.renderer.removeStyle(host, `--${prefix}-width`, RendererStyleFlags2.DashCase);
-      this.renderer.removeStyle(host, `--${prefix}-height`, RendererStyleFlags2.DashCase);
-      this.renderer.removeStyle(host, `--${prefix}-size`, RendererStyleFlags2.DashCase);
-      this.renderer.removeStyle(host, `--${prefix}-breakpoint`, RendererStyleFlags2.DashCase);
-      return;
-    }
-
-    this.renderer.setStyle(
-      host,
-      `--${prefix}-width`,
-      `${dimensions.width}px`,
-      RendererStyleFlags2.DashCase,
-    );
-    this.renderer.setStyle(
-      host,
-      `--${prefix}-height`,
-      `${dimensions.height}px`,
-      RendererStyleFlags2.DashCase,
-    );
-    this.renderer.setStyle(
-      host,
-      `--${prefix}-size`,
-      `${dimensions.width}x${dimensions.height}`,
-      RendererStyleFlags2.DashCase,
-    );
-    this.renderer.setStyle(
-      host,
-      `--${prefix}-breakpoint`,
-      breakpoint ?? 'none',
-      RendererStyleFlags2.DashCase,
-    );
   }
 }
 

@@ -46,8 +46,6 @@ class MockResizeObserver implements ResizeObserver {
       [appCq]="breakpoints"
       [cqComparisonStrategy]="strategy"
       [cqClassPrefix]="classPrefix"
-      [cqCssVariables]="cssVars"
-      [cqCssVarPrefix]="cssVarPrefix"
       [cqDefaultBreakpoint]="defaultBreakpoint"
       [cqEmitOnBreakpointChangeOnly]="emitOnChangeOnly"
       #cq="cq"
@@ -70,8 +68,6 @@ class HostComponent {
 
   strategy: 'width' | 'height' | 'both' = 'width';
   classPrefix = 'cq';
-  cssVars = false;
-  cssVarPrefix = 'cq';
   defaultBreakpoint: string | null = null;
   emitOnChangeOnly = false;
 
@@ -182,20 +178,6 @@ describe('ContainerQueryDirective', () => {
     hostComponent.cqDirective.recalculate();
 
     expect(hostComponent.cqDirective.breakpoint()).toBe('huge');
-  });
-
-  it('should write css variables when enabled', () => {
-    hostComponent.cssVars = true;
-    hostComponent.cssVarPrefix = 'demo';
-
-    setRect(hostEl, 640, 360);
-    fixture.detectChanges();
-    hostComponent.cqDirective.recalculate();
-
-    expect(hostEl.style.getPropertyValue('--demo-width')).toBe('640px');
-    expect(hostEl.style.getPropertyValue('--demo-height')).toBe('360px');
-    expect(hostEl.style.getPropertyValue('--demo-size')).toBe('640x360');
-    expect(hostEl.style.getPropertyValue('--demo-breakpoint')).toBe('medium');
   });
 
   it('should support observing parent container size', () => {

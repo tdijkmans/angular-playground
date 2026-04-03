@@ -57,23 +57,6 @@
     </section>
 
     <section>
-      <h2>Using CSS variables</h2>
-      <div
-        #cssVarBox
-        class="demo-box css-var-demo"
-        [appCq]="basicBreakpoints"
-        [cqCssVariables]="true"
-        [cqCssVarPrefix]="'demo-cq'"
-        #cqVars="cq"
-      >
-        CSS vars active: {{ cqVars.breakpoint() ?? 'none' }}
-      </div>
-      <p>--demo-cq-width: {{ cssVarValue(cssVarBox, '--demo-cq-width') || 'unset' }}</p>
-      <p>--demo-cq-height: {{ cssVarValue(cssVarBox, '--demo-cq-height') || 'unset' }}</p>
-      <p>--demo-cq-breakpoint: {{ cssVarValue(cssVarBox, '--demo-cq-breakpoint') || 'unset' }}</p>
-    </section>
-
-    <section>
       <h2>Observe parent container</h2>
       <div class="resize-parent demo-parent">
         <div class="demo-box inner-target" [appCq]="basicBreakpoints" [cqObserveParent]="true" #cqParent="cq">
