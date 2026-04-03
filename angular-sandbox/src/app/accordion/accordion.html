@@ -1,0 +1,18 @@
+<details class="accordion" [attr.open]="open ? '' : null">
+  <summary class="accordion-summary">
+    <span class="slot-left">
+      <ng-content select="[slot=left]"></ng-content>
+    </span>
+    <span class="accordion-title">{{ title }}</span>
+    <span class="slot-right">
+      <ng-content select="[slot=right]"></ng-content>
+    </span>
+    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <title>Toggle</title>
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </summary>
+  <div class="accordion-body">
+    <ng-content></ng-content>
+  </div>
+</details>
