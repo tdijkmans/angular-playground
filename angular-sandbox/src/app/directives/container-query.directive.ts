@@ -112,8 +112,6 @@ export class ContainerQueryDirective implements AfterViewInit {
 
     const className = match ? `${this.classPrefix()}-${match.name}` : null;
 
-    if (this.currentClass === className) return;
-
     this.applyClass(className);
 
     const state: CqState = {
