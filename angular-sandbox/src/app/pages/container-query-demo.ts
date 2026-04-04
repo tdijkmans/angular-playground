@@ -8,25 +8,34 @@ import {
 } from '../directives/container-query.directive';
 
 const WIDTH_BREAKPOINTS: CqBreakpoint[] = [
-  { name: 'compact', maxWidth: 359 },
-  { name: 'comfortable', minWidth: 360, maxWidth: 559 },
-  { name: 'expanded', minWidth: 560 },
+  { name: 'compact' },
+  { name: 'comfortable', width: 360 },
+  { name: 'expanded', width: 560 },
 ];
 
 const HEIGHT_BREAKPOINTS: CqBreakpoint[] = [
-  { name: 'short', maxHeight: 239 },
-  { name: 'tall', minHeight: 240 },
+  { name: 'short' },
+  { name: 'tall', height: 240 },
 ];
 
 const PANEL_BREAKPOINTS: CqBreakpoint[] = [
-  { name: 'stack', maxWidth: 419, maxHeight: 239 },
-  { name: 'balanced', minWidth: 420, minHeight: 240 },
+  { name: 'stack' },
+  { name: 'balanced', width: 420, height: 240 },
+  { name: 'spread', width: 560, height: 320 },
+
+];
+
+const BOTH_BREAKPOINTS: CqBreakpoint[] = [
+  { name: 'narrow-short' },
+  { name: 'wide-short', width: 360 },
+  { name: 'narrow-tall', height: 240 },
+  { name: 'wide-tall', width: 360, height: 240 },
 ];
 
 const TARGET_BREAKPOINTS: CqBreakpoint[] = [
-  { name: 'narrow', maxWidth: 299 },
-  { name: 'mid', minWidth: 300, maxWidth: 499 },
-  { name: 'wide', minWidth: 500 },
+  { name: 'narrow' },
+  { name: 'mid', width: 300 },
+  { name: 'wide', width: 500 },
 ];
 
 @Component({
@@ -37,6 +46,7 @@ const TARGET_BREAKPOINTS: CqBreakpoint[] = [
 })
 export class ContainerQueryDemoComponent {
   private widthCq = viewChild.required<ContainerQueryDirective>('widthCq');
+  private bothCq = viewChild.required<ContainerQueryDirective>('bothCq');
   private panelCq = viewChild.required<ContainerQueryDirective>('panelCq');
 
   private destroyRef = inject(DestroyRef);
@@ -44,6 +54,7 @@ export class ContainerQueryDemoComponent {
   protected readonly widthBreakpoints = WIDTH_BREAKPOINTS;
   protected readonly heightBreakpoints = HEIGHT_BREAKPOINTS;
   protected readonly panelBreakpoints = PANEL_BREAKPOINTS;
+  protected readonly bothBreakpoints = BOTH_BREAKPOINTS;
   protected readonly targetBreakpoints = TARGET_BREAKPOINTS;
 
   constructor() {
@@ -51,6 +62,10 @@ export class ContainerQueryDemoComponent {
       this.widthCq().state$
         .pipe(distinctUntilKeyChanged('breakpoint'), takeUntilDestroyed(this.destroyRef))
         .subscribe(s => console.log(`[width] breakpoint=${s.breakpoint} width=${s.width}px`));
+
+      this.bothCq().state$
+        .pipe(distinctUntilKeyChanged('breakpoint'), takeUntilDestroyed(this.destroyRef))
+        .subscribe(s => console.log(`[both] breakpoint=${s.breakpoint} ${s.width}x${s.height}`));
 
       this.panelCq().state$
         .pipe(distinctUntilKeyChanged('breakpoint'), takeUntilDestroyed(this.destroyRef))

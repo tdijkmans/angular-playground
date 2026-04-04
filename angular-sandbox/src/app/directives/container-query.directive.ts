@@ -1,13 +1,13 @@
 import {
-    AfterViewInit,
-    DestroyRef,
-    Directive,
-    ElementRef,
-    NgZone,
-    Renderer2,
-    inject,
-    input,
-    signal,
+  AfterViewInit,
+  DestroyRef,
+  Directive,
+  ElementRef,
+  NgZone,
+  Renderer2,
+  inject,
+  input,
+  signal,
 } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 
@@ -15,10 +15,8 @@ export type CqStrategy = 'width' | 'height' | 'both';
 
 export interface CqBreakpoint {
   name: string;
-  minWidth?: number;
-  maxWidth?: number;
-  minHeight?: number;
-  maxHeight?: number;
+  width?: number;
+  height?: number;
 }
 
 export interface CqState {
@@ -35,7 +33,6 @@ export interface CqState {
 })
 export class ContainerQueryDirective implements AfterViewInit {
   readonly breakpoints = input.required<CqBreakpoint[]>({ alias: 'appCq' });
-  readonly defaultBreakpoint = input<string | null>(null);
   readonly observeParent = input(false);
   readonly observeTarget = input<HTMLElement | string | null>(null);
   readonly strategy = input<CqStrategy>('width');
@@ -112,10 +109,9 @@ export class ContainerQueryDirective implements AfterViewInit {
     const width = Math.round(rect.width);
     const height = Math.round(rect.height);
 
-    const match =
-      this.breakpoints().find((bp) => this.matches(bp, width, height)) ??
-      this.breakpoints().find((bp) => bp.name === this.defaultBreakpoint()) ??
-      null;
+   const match = [...this.breakpoints()]
+  .reverse()
+  .find(bp => this.matches(bp, width, height)) ?? null;
 
     const className = match ? `${this.classPrefix()}-${match.name}` : null;
 
@@ -132,23 +128,15 @@ export class ContainerQueryDirective implements AfterViewInit {
     this.subject.next(state);
   }
 
-  private matches(bp: CqBreakpoint, width: number, height: number) {
-    const widthOk =
-      (bp.minWidth === undefined || width >= bp.minWidth) &&
-      (bp.maxWidth === undefined || width <= bp.maxWidth);
+ private matches(bp: CqBreakpoint, w: number, h: number) {
+  const strategy = this.strategy();
 
-    const heightOk =
-      (bp.minHeight === undefined || height >= bp.minHeight) &&
-      (bp.maxHeight === undefined || height <= bp.maxHeight);
-
-    const strategy = this.strategy();
-
-    return strategy === 'width'
-      ? widthOk
-      : strategy === 'height'
-        ? heightOk
-        : widthOk && heightOk;
-  }
+  return strategy === 'width'
+    ? w >= (bp.width ?? 0)
+    : strategy === 'height'
+    ? h >= (bp.height ?? 0)
+    : w >= (bp.width ?? 0) && h >= (bp.height ?? 0);
+}
 
   private applyClass(next: string | null) {
     if (this.currentClass === next) return;
