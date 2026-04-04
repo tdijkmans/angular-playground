@@ -120,8 +120,33 @@
     box-shadow: var(--shadow-sm);
 }
 
+.demo-box-both {
+    min-height: 200px;
+}
+
+.demo-box-both.both-narrow-short {
+    background: var(--color-warning-soft);
+    border-color: var(--color-warning-border);
+}
+
+.demo-box-both.both-wide-short {
+    background: var(--color-info-soft);
+    border-color: var(--color-info-border);
+}
+
+.demo-box-both.both-narrow-tall {
+    background: var(--color-violet-soft);
+    border-color: var(--color-violet-border);
+}
+
+.demo-box-both.both-wide-tall {
+    background: var(--color-success-soft);
+    border-color: var(--color-success-border);
+    box-shadow: var(--shadow-sm);
+}
+
 .example-card-parent {
-    align-items: stretch;
+    align-items: start;
 }
 
 .parent-frame {
@@ -129,17 +154,30 @@
 }
 
 .parent-surface {
-    display: grid;
-    align-items: stretch;
-    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-width: 200px;
+    min-height: 160px;
+    max-width: 100%;
+    overflow: auto;
+    resize: both;
     padding: var(--space-4);
     border-radius: var(--radius-md);
     border: var(--border-width) dashed var(--color-border-strong);
     background: var(--color-surface-muted);
 }
 
+.parent-surface-hint {
+    margin: 0;
+    font-size: var(--font-size-100);
+    color: var(--color-text-subtle);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
 .demo-box-parent {
-    min-height: 100%;
+    flex: 0 0 auto;
 }
 
 .demo-box-parent.panel-stack {
@@ -150,6 +188,12 @@
 .demo-box-parent.panel-balanced {
     background: var(--color-success-soft);
     border-color: var(--color-success-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.demo-box-parent.spread {
+    background: var(--color-primary-soft);
+    border-color: var(--color-primary);
     box-shadow: var(--shadow-sm);
 }
 

@@ -11,7 +11,6 @@
       <div
         class="demo-box demo-box-width"
         [appCq]="widthBreakpoints"
-        defaultBreakpoint="comfortable"
         classPrefix="width"
         #widthCq="cq"
       >
@@ -32,7 +31,6 @@
       <div
         class="demo-box demo-box-height"
         [appCq]="heightBreakpoints"
-        defaultBreakpoint="short"
         strategy="height"
         classPrefix="height"
         #heightCq="cq"
@@ -48,15 +46,41 @@
       </div>
     </article>
 
+    <article class="example-card">
+      <p class="example-label">strategy: both</p>
+
+      <div
+        class="demo-box demo-box-both"
+        [appCq]="bothBreakpoints"
+        strategy="both"
+        classPrefix="both"
+        #bothCq="cq"
+      >
+        <div class="demo-heading">
+          <span>Width</span>
+          <strong>{{ bothCq.state().width >= 360 ? 'wide' : 'narrow' }}</strong>
+        </div>
+        <div class="demo-heading">
+          <span>Height</span>
+          <strong>{{ bothCq.state().height >= 240 ? 'tall' : 'short' }}</strong>
+        </div>
+        <div class="demo-metrics">
+          <span>{{ bothCq.state().width }} × {{ bothCq.state().height }}</span>
+          <code>{{ bothCq.state().className ?? '—' }}</code>
+        </div>
+      </div>
+    </article>
+
     <article class="example-card example-card-parent">
-      <p class="example-label">strategy: both · observeParent</p>
+      <p class="example-label">observeParent</p>
 
       <div class="parent-frame">
         <div class="parent-surface">
+          <p class="parent-surface-hint">resizable container</p>
+
           <div
             class="demo-box demo-box-parent"
             [appCq]="panelBreakpoints"
-            defaultBreakpoint="stack"
             strategy="both"
             classPrefix="panel"
             [observeParent]="true"
