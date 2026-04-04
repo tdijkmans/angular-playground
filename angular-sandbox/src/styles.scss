@@ -1,1 +1,100 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --font-family-base: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --font-family-heading: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+
+    --font-size-100: 0.875rem;
+    --font-size-200: 1rem;
+    --font-size-300: 1.125rem;
+    --font-size-400: 1.5rem;
+    --font-size-500: clamp(2.25rem, 4vw, 3.75rem);
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --line-height-tight: 1.1;
+    --line-height-base: 1.5;
+    --line-height-relaxed: 1.65;
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4rem;
+
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+
+    --border-width: 1px;
+
+    --color-background: #f3f4f6;
+    --color-surface: #ffffff;
+    --color-surface-muted: #f9fafb;
+    --color-border: #d1d5db;
+    --color-border-strong: #9ca3af;
+    --color-text: #111827;
+    --color-text-muted: #374151;
+    --color-text-subtle: #6b7280;
+    --color-primary: #2563eb;
+    --color-primary-hover: #1d4ed8;
+    --color-primary-soft: #dbeafe;
+    --color-success-soft: #dcfce7;
+    --color-success-border: #86efac;
+    --color-warning-soft: #fef3c7;
+    --color-warning-border: #fcd34d;
+    --color-danger-soft: #fee2e2;
+    --color-danger-border: #fca5a5;
+    --color-info-soft: #e0f2fe;
+    --color-info-border: #7dd3fc;
+    --color-violet-soft: #ede9fe;
+    --color-violet-border: #c4b5fd;
+
+    --shadow-sm: 0 1px 2px rgba(17, 24, 39, 0.06);
+    --shadow-md: 0 6px 18px rgba(17, 24, 39, 0.08);
+
+    --container-width: 1200px;
+    --transition-base: 160ms ease;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-200);
+    line-height: var(--line-height-base);
+    background: var(--color-background);
+    color: var(--color-text);
+}
+
+h1,
+h2,
+h3,
+p {
+    margin: 0;
+}
+
+a,
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+app-root {
+    display: block;
+    min-height: 100vh;
+}
