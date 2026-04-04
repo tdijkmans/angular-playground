@@ -1,0 +1,106 @@
+<main class="page-shell">
+  <header class="demo-header">
+    <p class="eyebrow">ContainerQueryDirective</p>
+    <p class="demo-subtitle">Resize any panel to see breakpoint classes and reactive state update in real time.</p>
+  </header>
+
+  <section class="example-grid">
+    <article class="example-card">
+      <p class="example-label">strategy: width</p>
+
+      <div
+        class="demo-box demo-box-width"
+        [appCq]="widthBreakpoints"
+        defaultBreakpoint="comfortable"
+        classPrefix="width"
+        #widthCq="cq"
+      >
+        <div class="demo-heading">
+          <span>Breakpoint</span>
+          <strong>{{ widthCq.state().breakpoint ?? '—' }}</strong>
+        </div>
+        <div class="demo-metrics">
+          <span>{{ widthCq.state().width }}px wide</span>
+          <code>{{ widthCq.state().className ?? '—' }}</code>
+        </div>
+      </div>
+    </article>
+
+    <article class="example-card">
+      <p class="example-label">strategy: height</p>
+
+      <div
+        class="demo-box demo-box-height"
+        [appCq]="heightBreakpoints"
+        defaultBreakpoint="short"
+        strategy="height"
+        classPrefix="height"
+        #heightCq="cq"
+      >
+        <div class="demo-heading">
+          <span>Breakpoint</span>
+          <strong>{{ heightCq.state().breakpoint ?? '—' }}</strong>
+        </div>
+        <div class="demo-metrics">
+          <span>{{ heightCq.state().height }}px tall</span>
+          <code>{{ heightCq.state().className ?? '—' }}</code>
+        </div>
+      </div>
+    </article>
+
+    <article class="example-card example-card-parent">
+      <p class="example-label">strategy: both · observeParent</p>
+
+      <div class="parent-frame">
+        <div class="parent-surface">
+          <div
+            class="demo-box demo-box-parent"
+            [appCq]="panelBreakpoints"
+            defaultBreakpoint="stack"
+            strategy="both"
+            classPrefix="panel"
+            [observeParent]="true"
+            #panelCq="cq"
+          >
+            <div class="demo-heading">
+              <span>Breakpoint</span>
+              <strong>{{ panelCq.state().breakpoint ?? '—' }}</strong>
+            </div>
+            <div class="demo-metrics">
+              <span>{{ panelCq.state().width }} × {{ panelCq.state().height }}</span>
+              <code>{{ panelCq.state().className ?? '—' }}</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="example-card">
+      <p class="example-label">strategy: width · observeTarget</p>
+
+      <div class="target-layout">
+        <div class="target-surface" #targetEl>
+          <span class="target-label">Target</span>
+          <span class="target-hint">← resize</span>
+        </div>
+
+        <div
+          class="demo-box demo-box-target"
+          [appCq]="targetBreakpoints"
+          [observeTarget]="targetEl"
+          classPrefix="target"
+          #targetCq="cq"
+        >
+          <div class="demo-heading">
+            <span>Breakpoint</span>
+            <strong>{{ targetCq.state().breakpoint ?? '—' }}</strong>
+          </div>
+          <div class="demo-metrics">
+            <span>{{ targetCq.state().width }}px wide</span>
+            <code>{{ targetCq.state().className ?? '—' }}</code>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+</main>
