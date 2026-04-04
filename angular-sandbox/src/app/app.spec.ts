@@ -18,17 +18,19 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render app shell title', () => {
+  it('should render app shell kicker', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.app-title')?.textContent).toContain('Programmatic container query demos');
+    expect(compiled.querySelector('.app-kicker')?.textContent).toContain('Angular sandbox');
   });
 
   it('should render the demo nav link', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.nav-link')?.textContent).toContain('Container Query Demo');
+    const navLinks = Array.from(compiled.querySelectorAll('.nav-link')).map(link => link.textContent?.trim());
+    expect(navLinks).toContain('Container Query Demo');
+    expect(navLinks).toContain('Accordion Demo');
   });
 });

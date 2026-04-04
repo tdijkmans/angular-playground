@@ -1,0 +1,184 @@
+.page-shell {
+    width: min(var(--container-width), 100% - (2 * var(--space-5)));
+    margin: 0 auto;
+    padding: var(--space-6) 0 var(--space-7);
+    display: grid;
+    gap: var(--space-5);
+}
+
+.demo-header {
+    display: grid;
+    gap: var(--space-3);
+}
+
+.eyebrow {
+    font-size: var(--font-size-100);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    font-weight: var(--font-weight-bold);
+}
+
+.demo-title {
+    font-family: var(--font-family-heading);
+    font-size: clamp(1.9rem, 2.8vw, 2.4rem);
+    line-height: var(--line-height-tight);
+}
+
+.demo-subtitle {
+    color: var(--color-text-muted);
+    max-width: 70ch;
+}
+
+.example-grid {
+    display: grid;
+    gap: var(--space-5);
+}
+
+.example-card {
+    display: grid;
+    gap: var(--space-4);
+    background: linear-gradient(175deg, var(--color-surface), #f7fafc);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-sm);
+}
+
+.example-label {
+    font-size: var(--font-size-100);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+}
+
+.accordion-list {
+    display: grid;
+    gap: var(--space-3);
+}
+
+.accordion-item {
+    border-radius: var(--radius-lg);
+}
+
+.accordion-item.cdk-drag-preview {
+    box-shadow: 0 14px 28px rgba(17, 24, 39, 0.2);
+}
+
+.drag-placeholder {
+    min-height: 3.25rem;
+    border: 2px dashed var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: repeating-linear-gradient(45deg,
+            #eef2ff,
+            #eef2ff 10px,
+            #e2e8f0 10px,
+            #e2e8f0 20px);
+}
+
+.accordion-list.cdk-drop-list-dragging .accordion-item:not(.cdk-drag-placeholder) {
+    transition: transform var(--transition-base);
+}
+
+.slot-button {
+    inline-size: 2rem;
+    block-size: 2rem;
+    border: none;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--color-text-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition:
+        background-color var(--transition-base),
+        color var(--transition-base),
+        box-shadow var(--transition-base);
+}
+
+.slot-button:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--color-primary);
+}
+
+.slot-button svg {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.drag-handle:hover {
+    background: var(--color-primary-soft);
+    color: var(--color-primary-hover);
+}
+
+.drag-handle {
+    cursor: grab;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.drag-handle:focus-visible,
+.lock-toggle:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+.drag-handle.is-disabled {
+    cursor: not-allowed;
+    color: var(--color-text-subtle);
+    background: transparent;
+}
+
+.lock-toggle:hover {
+    background: var(--color-warning-soft);
+    color: #9a6700;
+}
+
+.lock-toggle[aria-pressed='true'] {
+    background: var(--color-danger-soft);
+    color: #9f1239;
+}
+
+.item-body {
+    display: grid;
+    gap: var(--space-4);
+}
+
+.item-body label {
+    display: grid;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-medium);
+}
+
+.item-body textarea,
+.item-body input {
+    width: 100%;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-surface);
+    color: var(--color-text);
+}
+
+.item-body textarea:focus-visible,
+.item-body input:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-soft);
+}
+
+.item-body.is-locked {
+    opacity: 0.75;
+}
+
+@media (max-width: 700px) {
+    .page-shell {
+        width: min(var(--container-width), 100% - (2 * var(--space-4)));
+        padding-top: var(--space-5);
+    }
+}

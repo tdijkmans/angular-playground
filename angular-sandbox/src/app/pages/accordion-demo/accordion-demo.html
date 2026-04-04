@@ -1,0 +1,125 @@
+<main class="page-shell">
+  <header class="demo-header">
+    <p class="eyebrow">Wrapper Architecture</p>
+    <h1 class="demo-title">Standalone Accordion Demo</h1>
+    <p class="demo-subtitle">Left and right slot controls stay independently interactive while the summary remains a native, text-only toggle.</p>
+  </header>
+
+  <section class="example-grid">
+    <article class="example-card">
+      <p class="example-label">Basic</p>
+
+      <app-wrapper-accordion>
+        <details appAccordionDetails [appAccordionOpen]="true">
+          <summary appAccordionSummary>
+            <span class="label">Product overview</span>
+            <svg appAccordionMarker viewBox="0 0 20 20" fill="none">
+              <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+
+          <div class="accordion-content">
+            <p>This is the default content area. The header remains a single bar while the center summary controls the open state.</p>
+          </div>
+        </details>
+      </app-wrapper-accordion>
+
+      <app-wrapper-accordion>
+        <details appAccordionDetails appAccordionDisabled>
+          <summary appAccordionSummary>
+            <span class="label">Disabled example</span>
+            <svg appAccordionMarker viewBox="0 0 20 20" fill="none">
+              <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+
+          <div class="accordion-content">
+            <p>This content is intentionally not toggleable while disabled.</p>
+          </div>
+        </details>
+      </app-wrapper-accordion>
+    </article>
+
+    <article class="example-card">
+      <p class="example-label">Complex · Reorder + Lock</p>
+
+      <div
+        class="accordion-list"
+        cdkDropList
+        [cdkDropListData]="items()"
+        (cdkDropListDropped)="drop($event)"
+      >
+        @for (item of items(); track trackById($index, item)) {
+          <div class="accordion-item" cdkDrag [cdkDragDisabled]="item.locked">
+            <ng-template cdkDragPlaceholder>
+              <div class="drag-placeholder" aria-hidden="true"></div>
+            </ng-template>
+
+            <app-wrapper-accordion>
+              <button
+                appAccordionLeft
+                type="button"
+                class="slot-button drag-handle"
+                cdkDragHandle
+                [attr.aria-label]="'Reorder ' + item.title"
+                [disabled]="item.locked"
+                [class.is-disabled]="item.locked"
+              >
+                <svg viewBox="0 0 20 20" aria-hidden="true">
+                  <circle cx="7" cy="6" r="1.25"></circle>
+                  <circle cx="13" cy="6" r="1.25"></circle>
+                  <circle cx="7" cy="10" r="1.25"></circle>
+                  <circle cx="13" cy="10" r="1.25"></circle>
+                  <circle cx="7" cy="14" r="1.25"></circle>
+                  <circle cx="13" cy="14" r="1.25"></circle>
+                </svg>
+              </button>
+
+              <button
+                appAccordionRight
+                type="button"
+                class="slot-button lock-toggle"
+                [attr.aria-label]="(item.locked ? 'Unlock ' : 'Lock ') + item.title"
+                [attr.aria-pressed]="item.locked"
+                (click)="toggleLock(item.id, $event)"
+              >
+                @if (item.locked) {
+                  <svg viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M6.5 9V6.4A3.5 3.5 0 0113.5 6.4V9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    <rect x="4.5" y="9" width="11" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5" />
+                  </svg>
+                } @else {
+                  <svg viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M6.5 9V6.5A3.5 3.5 0 0113.2 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    <rect x="4.5" y="9" width="11" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5" />
+                  </svg>
+                }
+              </button>
+
+              <details appAccordionDetails>
+                <summary appAccordionSummary>
+                  <span class="label">{{ item.title }}</span>
+                  <svg appAccordionMarker viewBox="0 0 20 20" fill="none">
+                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </summary>
+
+                <div class="accordion-content item-body" [class.is-locked]="item.locked">
+                  <label>
+                    Detail notes
+                    <textarea [(ngModel)]="item.details" [disabled]="item.locked" rows="3"></textarea>
+                  </label>
+
+                  <label>
+                    Estimate (days)
+                    <input type="number" min="1" max="10" [(ngModel)]="item.estimate" [disabled]="item.locked" />
+                  </label>
+                </div>
+              </details>
+            </app-wrapper-accordion>
+          </div>
+        }
+      </div>
+    </article>
+  </section>
+</main>

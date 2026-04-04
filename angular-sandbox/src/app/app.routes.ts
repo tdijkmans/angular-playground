@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
-import { ContainerQueryDemoComponent } from './pages/container-query-demo';
+import { AccordionDemoComponent } from './pages/accordion-demo/accordion-demo';
+import { ContainerQueryDemoComponent } from './pages/container-query-demo/container-query-demo';
 
 export const routes: Routes = [
 	{
@@ -11,5 +12,9 @@ export const routes: Routes = [
 	{
 		path: 'container-query',
 		component: ContainerQueryDemoComponent,
+	},
+	{
+		path: 'accordion',
+		component: AccordionDemoComponent,
 	},
 ];
