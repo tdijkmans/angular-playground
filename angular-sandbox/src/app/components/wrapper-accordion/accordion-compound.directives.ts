@@ -1,103 +1,83 @@
 import {
     Directive,
-    HostBinding,
-    HostListener,
     booleanAttribute,
     inject,
     input,
+    model,
 } from '@angular/core';
 
 @Directive({
-  selector: 'details[appAccordionDetails]',
-  standalone: true,
-  host: {
-    class: 'accordion-details',
-  },
+    selector: 'details[appAccordionDetails]',
+    standalone: true,
+    host: {
+        class: 'accordion-details',
+        '[class.is-disabled]': 'disabled()',
+        // 1. Keeps the native HTML element in sync with your Signal
+        '[open]': 'open()', 
+        // 2. Listens for when the user clicks the summary to update the Signal
+        '(toggle)': 'onToggle($event)', 
+    },
 })
 export class AccordionDetailsDirective {
-  readonly disabled = input(false, {
-    alias: 'appAccordionDisabled',
-    transform: booleanAttribute,
-  });
+    readonly disabled = input(false, {
+        alias: 'appAccordionDisabled',
+        transform: booleanAttribute,
+    });
 
-  @HostBinding('class.is-disabled')
-  get isDisabledClass(): boolean {
-    return this.disabled();
-  }
+    open = model(false, { alias: 'appAccordionOpen' });
+
+    protected onToggle(event: Event): void {
+        const isNowOpen = (event.target as HTMLDetailsElement).open;
+        
+        if (isNowOpen !== this.open()) {
+            this.open.set(isNowOpen);
+        }
+    }
 }
 
 @Directive({
-  selector: 'summary[appAccordionSummary]',
-  standalone: true,
-  host: {
-    class: 'accordion-summary',
-  },
+    selector: 'summary[appAccordionSummary]',
+    host: {
+        class: 'accordion-summary',
+        '[attr.aria-disabled]': "details?.disabled() ? 'true' : null",
+        '[class.is-disabled]': 'details?.disabled()',
+        '(click)': 'handleEvent($event)',
+        '(keydown.enter)': 'handleEvent($event)',
+        '(keydown.space)': 'handleEvent($event)',
+    },
 })
 export class AccordionSummaryDirective {
-  private readonly details = inject(AccordionDetailsDirective, {
-    optional: true,
-    host: true,
-  });
+    protected readonly details = inject(AccordionDetailsDirective, { optional: true });
 
-  @HostBinding('attr.aria-disabled')
-  get ariaDisabled(): 'true' | null {
-    return this.details?.disabled() ? 'true' : null;
-  }
-
-  @HostBinding('class.is-disabled')
-  get isDisabledClass(): boolean {
-    return !!this.details?.disabled();
-  }
-
-  @HostListener('click', ['$event'])
-  protected onClick(event: MouseEvent): void {
-    if (!this.details?.disabled()) {
-      return;
+    protected handleEvent(event: Event): void {
+        if (this.details?.disabled()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
     }
-
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  @HostListener('keydown', ['$event'])
-  protected onKeydown(event: KeyboardEvent): void {
-    if (!this.details?.disabled()) {
-      return;
-    }
-
-    if (event.key !== 'Enter' && event.key !== ' ') {
-      return;
-    }
-
-    event.preventDefault();
-    event.stopPropagation();
-  }
 }
 
 @Directive({
-  selector: '[appAccordionMarker]',
-  standalone: true,
-  host: {
-    class: 'accordion-marker',
-    'aria-hidden': 'true',
-  },
+    selector: '[appAccordionMarker]',
+    host: {
+        class: 'accordion-marker',
+        'aria-hidden': 'true',
+    },
 })
-export class AccordionMarkerDirective {}
+export class AccordionMarkerDirective { }
 
 @Directive({
-  selector: '[appAccordionLeft]',
-  standalone: true,
-  host: {
-    class: 'accordion-left',
-  },
+    selector: '[appAccordionLeft]',
+    host: {
+        class: 'accordion-left',
+    },
 })
-export class AccordionLeftDirective {}
+export class AccordionLeftDirective { }
 
 @Directive({
-  selector: '[appAccordionRight]',
-  standalone: true,
-  host: {
-    class: 'accordion-right',
-  },
+    selector: '[appAccordionRight]',
+    host: {
+        class: 'accordion-right',
+    },
 })
-export class AccordionRightDirective {}
+export class AccordionRightDirective { }
