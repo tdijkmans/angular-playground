@@ -56,14 +56,7 @@
         classPrefix="both"
         #bothCq="cq"
       >
-        <div class="demo-heading">
-          <span>Width</span>
-          <strong>{{ bothCq.state().width >= 360 ? 'wide' : 'narrow' }}</strong>
-        </div>
-        <div class="demo-heading">
-          <span>Height</span>
-          <strong>{{ bothCq.state().height >= 240 ? 'tall' : 'short' }}</strong>
-        </div>
+        
         <div class="demo-metrics">
           <span>{{ bothCq.state().width }} × {{ bothCq.state().height }}</span>
           <code>{{ bothCq.state().className ?? '—' }}</code>
