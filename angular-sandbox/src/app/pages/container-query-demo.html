@@ -75,7 +75,7 @@
       <p class="example-label">observeParent</p>
 
       <div class="parent-frame">
-        <div class="parent-surface">
+        <div class="parent-surface" #parentEl>
           <p class="parent-surface-hint">resizable container</p>
 
           <div
@@ -83,7 +83,7 @@
             [appCq]="panelBreakpoints"
             strategy="both"
             classPrefix="panel"
-            [observeParent]="true"
+            [observeTarget]="parentEl"
             #panelCq="cq"
           >
             <div class="demo-heading">
