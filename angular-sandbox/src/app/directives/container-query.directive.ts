@@ -28,15 +28,14 @@ export interface CqState {
 
 @Directive({
   selector: '[appCq]',
-  standalone: true,
   exportAs: 'cq',
 })
 export class ContainerQueryDirective implements AfterViewInit {
   readonly breakpoints = input.required<CqBreakpoint[]>({ alias: 'appCq' });
-  readonly observeParent = input(false);
   readonly observeTarget = input<HTMLElement | string | null>(null);
   readonly strategy = input<CqStrategy>('width');
   readonly classPrefix = input('cq');
+  private observedElement?: HTMLElement | null;
 
   private host = inject<ElementRef<HTMLElement>>(ElementRef);
   private renderer = inject(Renderer2);
@@ -74,8 +73,10 @@ export class ContainerQueryDirective implements AfterViewInit {
 
     this.disconnect();
 
+    this.observedElement = el;
     this.observer = new ResizeObserver(() => this.recalculate());
     this.observer.observe(el);
+
     this.recalculate();
   }
 
@@ -86,34 +87,32 @@ export class ContainerQueryDirective implements AfterViewInit {
 
   private resolveTarget(): HTMLElement | null {
     const host = this.host.nativeElement;
-    const custom = this.observeTarget();
+    const target = this.observeTarget();
 
-    if (custom instanceof HTMLElement) return custom;
+    if (target instanceof HTMLElement) return target;
 
-    if (typeof custom === 'string') {
-      const root = host.getRootNode();
-      if ('querySelector' in root) {
-        return (root as ParentNode).querySelector(custom) as HTMLElement | null;
-      }
-      return null;
+    if (typeof target === 'string') {
+      return (host.getRootNode() as ParentNode).querySelector(target);
     }
 
-    return this.observeParent() ? host.parentElement : host;
+    return host;
   }
 
   private recalculate() {
-    const target = this.resolveTarget();
+    const target = this.observedElement;
     if (!target) return;
 
     const rect = target.getBoundingClientRect();
     const width = Math.round(rect.width);
     const height = Math.round(rect.height);
 
-   const match = [...this.breakpoints()]
-  .reverse()
-  .find(bp => this.matches(bp, width, height)) ?? null;
+    const match = [...this.breakpoints()]
+      .reverse()
+      .find(bp => this.matches(bp, width, height)) ?? null;
 
     const className = match ? `${this.classPrefix()}-${match.name}` : null;
+
+    if (this.currentClass === className) return;
 
     this.applyClass(className);
 
@@ -128,15 +127,15 @@ export class ContainerQueryDirective implements AfterViewInit {
     this.subject.next(state);
   }
 
- private matches(bp: CqBreakpoint, w: number, h: number) {
-  const strategy = this.strategy();
+  private matches(bp: CqBreakpoint, w: number, h: number) {
+    const strategy = this.strategy();
 
-  return strategy === 'width'
-    ? w >= (bp.width ?? 0)
-    : strategy === 'height'
-    ? h >= (bp.height ?? 0)
-    : w >= (bp.width ?? 0) && h >= (bp.height ?? 0);
-}
+    return strategy === 'width'
+      ? w >= (bp.width ?? 0)
+      : strategy === 'height'
+        ? h >= (bp.height ?? 0)
+        : w >= (bp.width ?? 0) && h >= (bp.height ?? 0);
+  }
 
   private applyClass(next: string | null) {
     if (this.currentClass === next) return;
