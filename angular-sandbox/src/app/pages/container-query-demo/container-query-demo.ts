@@ -3,9 +3,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { distinctUntilKeyChanged } from 'rxjs';
 
 import {
-  ContainerQueryDirective,
-  CqBreakpoint,
-} from '../directives/container-query.directive';
+    ContainerQueryDirective,
+    CqBreakpoint,
+} from '../../directives/container-query.directive';
 
 const WIDTH_BREAKPOINTS: CqBreakpoint[] = [
   { name: 'compact' },

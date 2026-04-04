@@ -1,0 +1,13 @@
+<div class="app-accordion-wrapper">
+  <div class="accordion-header-row">
+    <div class="slot-left">
+      <ng-content select="[appAccordionLeft]"></ng-content>
+    </div>
+
+    <ng-content select="details[appAccordionDetails]"></ng-content>
+
+    <div class="slot-right">
+      <ng-content select="[appAccordionRight]"></ng-content>
+    </div>
+  </div>
+</div>
