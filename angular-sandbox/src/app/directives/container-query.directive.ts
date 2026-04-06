@@ -35,6 +35,7 @@ export class ContainerQueryDirective implements AfterViewInit {
   readonly observeTarget = input<HTMLElement | string | null>(null);
   readonly strategy = input<CqStrategy>('width');
   readonly classPrefix = input('cq');
+  readonly devMode = input(false);
   private observedElement?: HTMLElement | null;
 
   private host = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -44,6 +45,8 @@ export class ContainerQueryDirective implements AfterViewInit {
 
   private observer?: ResizeObserver;
   private currentClass: string | null = null;
+  private devOverlay: HTMLElement | null = null;
+  private originalHostPosition: string | null = null;
 
   private stateSignal = signal<CqState>({
     breakpoint: null,
@@ -83,6 +86,7 @@ export class ContainerQueryDirective implements AfterViewInit {
   private disconnect() {
     this.observer?.disconnect();
     this.observer = undefined;
+    this.removeDevOverlay();
   }
 
   private resolveTarget(): HTMLElement | null {
@@ -123,6 +127,12 @@ export class ContainerQueryDirective implements AfterViewInit {
 
     this.stateSignal.set(state);
     this.subject.next(state);
+
+    if (this.devMode()) {
+      this.updateDevOverlay(state);
+    } else {
+      this.removeDevOverlay();
+    }
   }
 
   private matches(bp: CqBreakpoint, w: number, h: number) {
@@ -147,5 +157,58 @@ export class ContainerQueryDirective implements AfterViewInit {
     }
 
     this.currentClass = next;
+  }
+
+  private updateDevOverlay(state: CqState) {
+    const host = this.host.nativeElement;
+
+    if (!this.devOverlay) {
+      const el: HTMLElement = this.renderer.createElement('div');
+
+      Object.assign(el.style, {
+        position: 'absolute',
+        top: '4px',
+        right: '4px',
+        zIndex: '9999',
+        padding: '2px 6px',
+        borderRadius: '4px',
+        background: 'rgba(0,0,0,0.65)',
+        color: '#fff',
+        fontFamily: 'monospace',
+        fontSize: '11px',
+        lineHeight: '1.5',
+        pointerEvents: 'none',
+        whiteSpace: 'nowrap',
+      });
+
+      this.renderer.setAttribute(el, 'aria-hidden', 'true');
+      this.renderer.appendChild(host, el);
+
+      const hostPosition = getComputedStyle(host).position;
+      if (hostPosition === 'static') {
+        this.originalHostPosition = null;
+        this.renderer.setStyle(host, 'position', 'relative');
+      } else {
+        this.originalHostPosition = hostPosition;
+      }
+
+      this.devOverlay = el;
+    }
+
+    this.devOverlay.textContent =
+      `${state.breakpoint ?? '—'} · ${state.width}×${state.height}` +
+      (state.className ? ` · .${state.className}` : '');
+  }
+
+  private removeDevOverlay() {
+    if (this.devOverlay) {
+      this.renderer.removeChild(this.host.nativeElement, this.devOverlay);
+      this.devOverlay = null;
+
+      if (this.originalHostPosition === null) {
+        this.renderer.removeStyle(this.host.nativeElement, 'position');
+      }
+      this.originalHostPosition = null;
+    }
   }
 }
