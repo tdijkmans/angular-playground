@@ -46,6 +46,7 @@ export class ContainerQueryDirective implements AfterViewInit {
   private observer?: ResizeObserver;
   private currentClass: string | null = null;
   private devOverlay: HTMLElement | null = null;
+  private originalHostPosition: string | null = null;
 
   private stateSignal = signal<CqState>({
     breakpoint: null,
@@ -180,11 +181,15 @@ export class ContainerQueryDirective implements AfterViewInit {
         whiteSpace: 'nowrap',
       });
 
+      this.renderer.setAttribute(el, 'aria-hidden', 'true');
       this.renderer.appendChild(host, el);
 
       const hostPosition = getComputedStyle(host).position;
       if (hostPosition === 'static') {
+        this.originalHostPosition = null;
         this.renderer.setStyle(host, 'position', 'relative');
+      } else {
+        this.originalHostPosition = hostPosition;
       }
 
       this.devOverlay = el;
@@ -199,6 +204,11 @@ export class ContainerQueryDirective implements AfterViewInit {
     if (this.devOverlay) {
       this.renderer.removeChild(this.host.nativeElement, this.devOverlay);
       this.devOverlay = null;
+
+      if (this.originalHostPosition === null) {
+        this.renderer.removeStyle(this.host.nativeElement, 'position');
+      }
+      this.originalHostPosition = null;
     }
   }
 }
