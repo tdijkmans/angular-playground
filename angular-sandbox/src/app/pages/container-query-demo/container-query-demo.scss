@@ -252,6 +252,21 @@
     border-color: var(--color-success-border);
 }
 
+.event-log {
+    margin: 0;
+    font-size: var(--font-size-100);
+    color: var(--color-text-muted);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-muted);
+    border: var(--border-width) solid var(--color-border);
+
+    code {
+        font-family: "Consolas", "Cascadia Code", monospace;
+        color: var(--color-text);
+    }
+}
+
 @media (max-width: 600px) {
     .page-shell {
         padding: var(--space-4) var(--space-4) var(--space-6);

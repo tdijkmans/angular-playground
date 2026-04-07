@@ -12,6 +12,7 @@
         class="demo-box demo-box-width"
         [appCq]="widthBreakpoints"
         classPrefix="width"
+        (cqChange)="onWidthChange($event)"
         #widthCq="cq"
       >
         <div class="demo-heading">
@@ -23,6 +24,14 @@
           <code>{{ widthCq.state().className ?? '—' }}</code>
         </div>
       </div>
+
+      @if (lastWidthEvent(); as event) {
+        <p class="event-log">
+          <strong>(cqChange)</strong> last event:
+          breakpoint=<code>{{ event.breakpoint }}</code>
+          &nbsp;{{ event.width }}×{{ event.height }}px
+        </p>
+      }
     </article>
 
     <article class="example-card">
