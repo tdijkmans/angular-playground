@@ -7,6 +7,7 @@ import {
   Renderer2,
   inject,
   input,
+  output,
   signal,
 } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -56,6 +57,9 @@ export class ContainerQueryDirective implements AfterViewInit {
 
   readonly state = this.stateSignal.asReadonly();
   readonly state$: Observable<CqState> = this.subject.asObservable();
+
+  /** Output signal – fires whenever the resolved breakpoint state changes. */
+  readonly cqChange = output<CqState>();
 
   constructor() {
     this.destroyRef.onDestroy(() => this.disconnect());
@@ -123,6 +127,7 @@ export class ContainerQueryDirective implements AfterViewInit {
 
     this.stateSignal.set(state);
     this.subject.next(state);
+    this.cqChange.emit(state);
   }
 
   private matches(bp: CqBreakpoint, w: number, h: number) {

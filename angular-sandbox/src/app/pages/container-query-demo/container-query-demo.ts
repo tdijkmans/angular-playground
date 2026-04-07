@@ -1,10 +1,11 @@
-import { Component, DestroyRef, effect, inject, viewChild } from '@angular/core';
+import { Component, DestroyRef, effect, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { distinctUntilKeyChanged } from 'rxjs';
 
 import {
     ContainerQueryDirective,
     CqBreakpoint,
+    CqState,
 } from '../../directives/container-query.directive';
 
 const WIDTH_BREAKPOINTS: CqBreakpoint[] = [
@@ -57,6 +58,9 @@ export class ContainerQueryDemoComponent {
   protected readonly bothBreakpoints = BOTH_BREAKPOINTS;
   protected readonly targetBreakpoints = TARGET_BREAKPOINTS;
 
+  /** Stores the last CqState received via the (cqChange) output binding. */
+  protected readonly lastWidthEvent = signal<CqState | null>(null);
+
   constructor() {
     effect(() => {
       this.widthCq().state$
@@ -71,5 +75,10 @@ export class ContainerQueryDemoComponent {
         .pipe(distinctUntilKeyChanged('breakpoint'), takeUntilDestroyed(this.destroyRef))
         .subscribe(s => console.log(`[panel] breakpoint=${s.breakpoint} ${s.width}x${s.height}`));
     });
+  }
+
+  /** Handler wired to (cqChange) in the template – demonstrates output-signal consumption. */
+  protected onWidthChange(state: CqState): void {
+    this.lastWidthEvent.set(state);
   }
 }
