@@ -13,6 +13,8 @@ import { Observable, ReplaySubject } from 'rxjs';
 
 export type CqStrategy = 'width' | 'height' | 'both';
 
+export type CqDirection = 'growing' | 'shrinking' | 'initial';
+
 export interface CqBreakpoint {
   name: string;
   width?: number;
@@ -24,6 +26,8 @@ export interface CqState {
   width: number;
   height: number;
   className: string | null;
+  widthDirection: CqDirection;
+  heightDirection: CqDirection;
 }
 
 @Directive({
@@ -44,12 +48,16 @@ export class ContainerQueryDirective implements AfterViewInit {
 
   private observer?: ResizeObserver;
   private currentClass: string | null = null;
+  private previousWidth: number | null = null;
+  private previousHeight: number | null = null;
 
   private stateSignal = signal<CqState>({
     breakpoint: null,
     width: 0,
     height: 0,
     className: null,
+    widthDirection: 'initial',
+    heightDirection: 'initial',
   });
 
   private subject = new ReplaySubject<CqState>(1);
@@ -83,6 +91,8 @@ export class ContainerQueryDirective implements AfterViewInit {
   private disconnect() {
     this.observer?.disconnect();
     this.observer = undefined;
+    this.previousWidth = null;
+    this.previousHeight = null;
   }
 
   private resolveTarget(): HTMLElement | null {
@@ -106,6 +116,21 @@ export class ContainerQueryDirective implements AfterViewInit {
     const width = Math.round(rect.width);
     const height = Math.round(rect.height);
 
+    const widthDirection: CqDirection =
+      this.previousWidth === null ? 'initial'
+      : width > this.previousWidth ? 'growing'
+      : width < this.previousWidth ? 'shrinking'
+      : this.stateSignal().widthDirection;
+
+    const heightDirection: CqDirection =
+      this.previousHeight === null ? 'initial'
+      : height > this.previousHeight ? 'growing'
+      : height < this.previousHeight ? 'shrinking'
+      : this.stateSignal().heightDirection;
+
+    this.previousWidth = width;
+    this.previousHeight = height;
+
     const match = [...this.breakpoints()]
       .reverse()
       .find(bp => this.matches(bp, width, height)) ?? null;
@@ -119,6 +144,8 @@ export class ContainerQueryDirective implements AfterViewInit {
       width,
       height,
       className,
+      widthDirection,
+      heightDirection,
     };
 
     this.stateSignal.set(state);
