@@ -20,6 +20,7 @@
         </div>
         <div class="demo-metrics">
           <span>{{ widthCq.state().width }}px wide</span>
+          <span class="cq-direction" [attr.data-direction]="widthCq.state().widthDirection">{{ widthCq.state().widthDirection }}</span>
           <code>{{ widthCq.state().className ?? '—' }}</code>
         </div>
       </div>
@@ -41,6 +42,7 @@
         </div>
         <div class="demo-metrics">
           <span>{{ heightCq.state().height }}px tall</span>
+          <span class="cq-direction" [attr.data-direction]="heightCq.state().heightDirection">{{ heightCq.state().heightDirection }}</span>
           <code>{{ heightCq.state().className ?? '—' }}</code>
         </div>
       </div>
@@ -59,6 +61,8 @@
         
         <div class="demo-metrics">
           <span>{{ bothCq.state().width }} × {{ bothCq.state().height }}</span>
+          <span class="cq-direction" [attr.data-direction]="bothCq.state().widthDirection">W: {{ bothCq.state().widthDirection }}</span>
+          <span class="cq-direction" [attr.data-direction]="bothCq.state().heightDirection">H: {{ bothCq.state().heightDirection }}</span>
           <code>{{ bothCq.state().className ?? '—' }}</code>
         </div>
       </div>
@@ -83,6 +87,8 @@
             </div>
             <div class="demo-metrics">
               <span>{{ panelCq.state().width }} × {{ panelCq.state().height }}</span>
+              <span class="cq-direction" [attr.data-direction]="panelCq.state().widthDirection">W: {{ panelCq.state().widthDirection }}</span>
+              <span class="cq-direction" [attr.data-direction]="panelCq.state().heightDirection">H: {{ panelCq.state().heightDirection }}</span>
               <code>{{ panelCq.state().className ?? '—' }}</code>
             </div>
           </div>
@@ -112,6 +118,7 @@
           </div>
           <div class="demo-metrics">
             <span>{{ targetCq.state().width }}px wide</span>
+            <span class="cq-direction" [attr.data-direction]="targetCq.state().widthDirection">{{ targetCq.state().widthDirection }}</span>
             <code>{{ targetCq.state().className ?? '—' }}</code>
           </div>
         </div>
