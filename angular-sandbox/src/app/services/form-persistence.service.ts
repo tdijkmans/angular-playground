@@ -20,12 +20,14 @@ export class FormPersistenceService {
     }
   }
 
-  setItem(formId: string, caseId: string, value: Record<string, unknown>): void {
+  setItem(formId: string, caseId: string, value: Record<string, unknown>): boolean {
     const key = this.buildKey(formId, caseId);
     try {
       sessionStorage.setItem(key, JSON.stringify(value));
+      return true;
     } catch (error) {
       console.warn(`[FormPersistenceService] Failed to write key "${key}":`, error);
+      return false;
     }
   }
 

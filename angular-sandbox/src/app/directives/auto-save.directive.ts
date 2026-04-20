@@ -52,12 +52,14 @@ export class AutoSaveDirective implements OnInit {
       )
       .subscribe((value) => {
         this.autoSaveStatus.emit('saving');
-        this.persistence.setItem(
+        const success = this.persistence.setItem(
           this.formId(),
           this.caseId(),
           value as Record<string, unknown>,
         );
-        this.autoSaveStatus.emit('saved');
+        if (success) {
+          this.autoSaveStatus.emit('saved');
+        }
       });
   }
 }
