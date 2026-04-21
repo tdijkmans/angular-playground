@@ -32,5 +32,6 @@ describe('App', () => {
     const navLinks = Array.from(compiled.querySelectorAll('.nav-link')).map(link => link.textContent?.trim());
     expect(navLinks).toContain('Container Query Demo');
     expect(navLinks).toContain('Accordion Demo');
+    expect(navLinks).toContain('Auto-Save Demo');
   });
 });

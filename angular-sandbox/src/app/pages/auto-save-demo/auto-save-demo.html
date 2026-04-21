@@ -1,0 +1,54 @@
+<section class="demo-section">
+  <h2 class="demo-title">Auto-Save Demo</h2>
+  <p class="demo-subtitle">
+    Fill out the form below and refresh the page — your draft will be restored from session storage.
+  </p>
+
+  @if (draftNotice) {
+    <div class="draft-notice">
+      <span>📝 A previously saved draft has been restored.</span>
+      <button type="button" class="notice-dismiss" (click)="dismissNotice()">✕</button>
+    </div>
+  }
+
+  <form
+    [formGroup]="form"
+    appAutoSave
+    [formId]="formId"
+    [caseId]="caseId"
+    (draftLoaded)="onDraftLoaded()"
+    (autoSaveStatus)="onStatusChange($event)"
+    (ngSubmit)="onSubmit()"
+    class="demo-form"
+  >
+    <div class="form-field">
+      <label for="firstName">First Name</label>
+      <input id="firstName" formControlName="firstName" />
+    </div>
+
+    <div class="form-field">
+      <label for="lastName">Last Name</label>
+      <input id="lastName" formControlName="lastName" />
+    </div>
+
+    <div class="form-field">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" />
+    </div>
+
+    <div class="form-field">
+      <label for="notes">Notes</label>
+      <textarea id="notes" formControlName="notes" rows="4"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="form.invalid" class="btn-submit">Submit</button>
+
+      @if (status) {
+        <span class="save-status" [class.is-saving]="status === 'saving'">
+          {{ status === 'saving' ? 'Saving…' : '✓ Saved' }}
+        </span>
+      }
+    </div>
+  </form>
+</section>
