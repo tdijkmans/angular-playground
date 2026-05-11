@@ -1,0 +1,135 @@
+.page-shell {
+    width: min(var(--container-width), 100% - (2 * var(--space-5)));
+    margin: 0 auto;
+    padding: var(--space-6) 0 var(--space-7);
+    display: grid;
+    gap: var(--space-5);
+}
+
+.demo-header {
+    display: grid;
+    gap: var(--space-3);
+}
+
+.eyebrow {
+    font-size: var(--font-size-100);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    font-weight: var(--font-weight-bold);
+}
+
+.demo-title {
+    font-family: var(--font-family-heading);
+    font-size: clamp(1.9rem, 2.8vw, 2.4rem);
+    line-height: var(--line-height-tight);
+}
+
+.demo-subtitle {
+    color: var(--color-text-muted);
+    max-width: 70ch;
+}
+
+.example-grid {
+    display: grid;
+    gap: var(--space-5);
+}
+
+.example-card {
+    display: grid;
+    gap: var(--space-4);
+    background: linear-gradient(175deg, var(--color-surface), #f7fafc);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-sm);
+}
+
+.example-label {
+    font-size: var(--font-size-100);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+}
+
+.avatar-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.avatar-row--labeled {
+    align-items: flex-start;
+}
+
+.size-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.size-labels span {
+    width: 1.5rem;
+    text-align: center;
+    font-size: var(--font-size-100);
+    color: var(--color-text-subtle);
+}
+
+.size-labels span:nth-child(2) { width: 1.875rem; }
+.size-labels span:nth-child(3) { width: 2.25rem; }
+.size-labels span:nth-child(4) { width: 3rem; }
+.size-labels span:nth-child(5) { width: 4rem; }
+
+.avatar-figure {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-2);
+    margin: 0;
+}
+
+.avatar-figure figcaption {
+    font-size: var(--font-size-100);
+    color: var(--color-text-subtle);
+    text-align: center;
+    max-width: 8ch;
+    overflow-wrap: break-word;
+}
+
+.team-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+}
+
+.team-member {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.team-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.team-name {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+}
+
+.team-role {
+    font-size: var(--font-size-100);
+    color: var(--color-text-subtle);
+}
+
+@media (max-width: 700px) {
+    .page-shell {
+        width: min(var(--container-width), 100% - (2 * var(--space-4)));
+        padding-top: var(--space-5);
+    }
+}

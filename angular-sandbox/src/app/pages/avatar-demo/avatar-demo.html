@@ -1,0 +1,115 @@
+<main class="page-shell">
+  <header class="demo-header">
+    <p class="eyebrow">Component Showcase</p>
+    <h1 class="demo-title">Avatar Component</h1>
+    <p class="demo-subtitle">
+      Displays name initials derived from a "Surname, First name" string.
+      Supports multiple sizes, optional custom colours, and a square variant.
+    </p>
+  </header>
+
+  <section class="example-grid">
+
+    <!-- Sizes -->
+    <article class="example-card">
+      <p class="example-label">Sizes (round, default)</p>
+      <div class="avatar-row">
+        <app-avatar name="Dijkstra, Edsger" size="xs" />
+        <app-avatar name="Dijkstra, Edsger" size="sm" />
+        <app-avatar name="Dijkstra, Edsger" size="md" />
+        <app-avatar name="Dijkstra, Edsger" size="lg" />
+        <app-avatar name="Dijkstra, Edsger" size="xl" />
+      </div>
+      <div class="size-labels">
+        <span>xs</span>
+        <span>sm</span>
+        <span>md</span>
+        <span>lg</span>
+        <span>xl</span>
+      </div>
+    </article>
+
+    <!-- Square -->
+    <article class="example-card">
+      <p class="example-label">Sizes (square)</p>
+      <div class="avatar-row">
+        <app-avatar name="Lovelace, Ada" size="xs" [square]="true" />
+        <app-avatar name="Lovelace, Ada" size="sm" [square]="true" />
+        <app-avatar name="Lovelace, Ada" size="md" [square]="true" />
+        <app-avatar name="Lovelace, Ada" size="lg" [square]="true" />
+        <app-avatar name="Lovelace, Ada" size="xl" [square]="true" />
+      </div>
+      <div class="size-labels">
+        <span>xs</span>
+        <span>sm</span>
+        <span>md</span>
+        <span>lg</span>
+        <span>xl</span>
+      </div>
+    </article>
+
+    <!-- Custom colours -->
+    <article class="example-card">
+      <p class="example-label">Custom colours</p>
+      <div class="avatar-row">
+        <app-avatar name="Turing, Alan" [color]="['#fff', '#7c3aed']" />
+        <app-avatar name="Hopper, Grace" [color]="['#fff', '#059669']" />
+        <app-avatar name="Babbage, Charles" [color]="['#fff', '#dc2626']" />
+        <app-avatar name="Knuth, Donald" [color]="['#1e293b', '#fbbf24']" />
+        <app-avatar name="Liskov, Barbara" [color]="['#fff', '#0284c7']" />
+      </div>
+    </article>
+
+    <!-- Name parsing edge cases -->
+    <article class="example-card">
+      <p class="example-label">Name parsing</p>
+      <div class="avatar-row avatar-row--labeled">
+        <figure class="avatar-figure">
+          <app-avatar name="Smith, John" />
+          <figcaption>Smith, John</figcaption>
+        </figure>
+        <figure class="avatar-figure">
+          <app-avatar name="O'Brien, Conan" />
+          <figcaption>O'Brien, Conan</figcaption>
+        </figure>
+        <figure class="avatar-figure">
+          <app-avatar name="Tesla, Nikola" [square]="true" />
+          <figcaption>square</figcaption>
+        </figure>
+        <figure class="avatar-figure">
+          <app-avatar name="Wozniak" />
+          <figcaption>surname only</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <!-- Mixed in a list -->
+    <article class="example-card">
+      <p class="example-label">In context — team list</p>
+      <ul class="team-list">
+        <li class="team-member">
+          <app-avatar name="Dijkstra, Edsger" [color]="['#fff', '#7c3aed']" />
+          <div class="team-info">
+            <span class="team-name">Edsger Dijkstra</span>
+            <span class="team-role">Algorithm Design</span>
+          </div>
+        </li>
+        <li class="team-member">
+          <app-avatar name="Hopper, Grace" [color]="['#fff', '#059669']" />
+          <div class="team-info">
+            <span class="team-name">Grace Hopper</span>
+            <span class="team-role">Compiler Pioneer</span>
+          </div>
+        </li>
+        <li class="team-member">
+          <app-avatar name="Turing, Alan" [color]="['#fff', '#0284c7']" />
+          <div class="team-info">
+            <span class="team-name">Alan Turing</span>
+            <span class="team-role">Computability Theory</span>
+          </div>
+        </li>
+      </ul>
+    </article>
+
+  </section>
+</main>
