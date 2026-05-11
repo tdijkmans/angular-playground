@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { AccordionDemoComponent } from './pages/accordion-demo/accordion-demo';
 import { AutoSaveDemoComponent } from './pages/auto-save-demo/auto-save-demo';
+import { AvatarDemoComponent } from './pages/avatar-demo/avatar-demo';
 import { ContainerQueryDemoComponent } from './pages/container-query-demo/container-query-demo';
 
 export const routes: Routes = [
@@ -21,5 +22,9 @@ export const routes: Routes = [
 	{
 		path: 'auto-save',
 		component: AutoSaveDemoComponent,
+	},
+	{
+		path: 'avatar',
+		component: AvatarDemoComponent,
 	},
 ];
