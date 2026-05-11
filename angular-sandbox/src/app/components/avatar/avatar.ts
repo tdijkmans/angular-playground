@@ -28,6 +28,6 @@ export class AvatarComponent {
     const parts = raw.split(',').map((p) => p.trim());
     const surname = parts[0]?.[0]?.toUpperCase() ?? '';
     const first = parts[1]?.[0]?.toUpperCase() ?? '';
-    return surname + first || surname || '?';
+    return (surname + first) || '?';
   });
 }
