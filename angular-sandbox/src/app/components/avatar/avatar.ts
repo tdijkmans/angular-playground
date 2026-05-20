@@ -10,25 +10,23 @@ export type AvatarColorTuple = [string, string];
 /** A named map of colour presets. */
 export type AvatarPresets = Record<string, AvatarColorTuple>;
 
-const WHITE = dzyColors['neutral-0'];
-
 /**
  * Ten built-in named colour presets sourced from the Dzy design-system palette.
- * Each pair uses white (`neutral-0`) text on a mid-dark background for
+ * Each pair uses near white text on a mid-dark background for
  * consistent legibility.  The five colour families (magenta, indigo, petrol,
  * orange, green) appear at two depths each so the set feels cohesive.
  */
 export const AVATAR_BUILT_IN_PRESETS: AvatarPresets = {
-  magenta: [WHITE, dzyColors['magenta-60']],   // #AA0061
-  rose:    [WHITE, dzyColors['magenta-50']],   // #C52578
-  indigo:  [WHITE, dzyColors['indigo-60']],    // #4A4F9A
-  violet:  [WHITE, dzyColors['indigo-70']],    // #303385
-  petrol:  [WHITE, dzyColors['petrol-60']],    // #0F6B99
-  teal:    [WHITE, dzyColors['petrol-70']],    // #0B5E89
-  orange:  [WHITE, dzyColors['orange-60']],    // #C54725
-  rust:    [WHITE, dzyColors['orange-70']],    // #9F2E12
-  green:   [WHITE, dzyColors['green-60']],     // #437F6C
-  forest:  [WHITE, dzyColors['green-70']],     // #356D5C
+  magenta: [dzyColors['magenta-10'], dzyColors['magenta-60']],   // #AA0061
+  rose:    [dzyColors['magenta-10'], dzyColors['magenta-50']],   // #C52578
+  indigo:  [dzyColors['indigo-10'], dzyColors['indigo-60']],    // #4A4F9A
+  violet:  [dzyColors['indigo-10'], dzyColors['indigo-70']],    // #303385
+  petrol:  [dzyColors['petrol-10'], dzyColors['petrol-60']],    // #0F6B99
+  teal:    [dzyColors['petrol-10'], dzyColors['petrol-70']],    // #0B5E89
+  orange:  [dzyColors['orange-10'], dzyColors['orange-60']],    // #C54725
+  rust:    [dzyColors['orange-10'], dzyColors['orange-70']],    // #9F2E12
+  green:   [dzyColors['green-10'], dzyColors['green-60']],     // #437F6C
+  forest:  [dzyColors['green-10'], dzyColors['green-70']],     // #356D5C
 };
 
 /**
