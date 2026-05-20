@@ -1,5 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 
+import { dzyColors } from './dzy-colors';
+
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 /** A [foreground, background] colour pair. */
@@ -8,18 +10,25 @@ export type AvatarColorTuple = [string, string];
 /** A named map of colour presets. */
 export type AvatarPresets = Record<string, AvatarColorTuple>;
 
-/** Ten built-in named colour presets. */
+const WHITE = dzyColors['neutral-0'];
+
+/**
+ * Ten built-in named colour presets sourced from the Dzy design-system palette.
+ * Each pair uses white (`neutral-0`) text on a mid-dark background for
+ * consistent legibility.  The five colour families (magenta, indigo, petrol,
+ * orange, green) appear at two depths each so the set feels cohesive.
+ */
 export const AVATAR_BUILT_IN_PRESETS: AvatarPresets = {
-  violet:  ['#ffffff', '#7c3aed'],
-  emerald: ['#ffffff', '#059669'],
-  rose:    ['#ffffff', '#e11d48'],
-  amber:   ['#1e293b', '#f59e0b'],
-  sky:     ['#ffffff', '#0284c7'],
-  pink:    ['#ffffff', '#db2777'],
-  orange:  ['#ffffff', '#ea580c'],
-  teal:    ['#ffffff', '#0d9488'],
-  indigo:  ['#ffffff', '#4f46e5'],
-  slate:   ['#ffffff', '#475569'],
+  magenta: [WHITE, dzyColors['magenta-60']],   // #AA0061
+  rose:    [WHITE, dzyColors['magenta-50']],   // #C52578
+  indigo:  [WHITE, dzyColors['indigo-60']],    // #4A4F9A
+  violet:  [WHITE, dzyColors['indigo-70']],    // #303385
+  petrol:  [WHITE, dzyColors['petrol-60']],    // #0F6B99
+  teal:    [WHITE, dzyColors['petrol-70']],    // #0B5E89
+  orange:  [WHITE, dzyColors['orange-60']],    // #C54725
+  rust:    [WHITE, dzyColors['orange-70']],    // #9F2E12
+  green:   [WHITE, dzyColors['green-60']],     // #437F6C
+  forest:  [WHITE, dzyColors['green-70']],     // #356D5C
 };
 
 /**
