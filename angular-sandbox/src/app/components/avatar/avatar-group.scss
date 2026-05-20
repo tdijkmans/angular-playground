@@ -1,0 +1,64 @@
+:host {
+    display: inline-flex;
+    align-items: center;
+}
+
+app-avatar,
+.avatar-overflow {
+    box-shadow: 0 0 0 2px var(--color-surface);
+}
+
+app-avatar + app-avatar,
+app-avatar + .avatar-overflow {
+    margin-inline-start: -0.5rem;
+}
+
+.avatar-overflow {
+    --avatar-size: 2.25rem;
+    --avatar-font-size: 0.8125rem;
+    --avatar-radius: 50%;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    border-radius: var(--avatar-radius);
+    background-color: var(--color-surface-muted);
+    border: var(--border-width) solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--avatar-font-size);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.avatar-overflow.size-xs {
+    --avatar-size: 1.5rem;
+    --avatar-font-size: 0.5rem;
+}
+
+.avatar-overflow.size-sm {
+    --avatar-size: 1.875rem;
+    --avatar-font-size: 0.625rem;
+}
+
+.avatar-overflow.size-md {
+    --avatar-size: 2.25rem;
+    --avatar-font-size: 0.75rem;
+}
+
+.avatar-overflow.size-lg {
+    --avatar-size: 3rem;
+    --avatar-font-size: 0.9375rem;
+}
+
+.avatar-overflow.size-xl {
+    --avatar-size: 4rem;
+    --avatar-font-size: 1.1875rem;
+}
+
+.avatar-overflow.is-square {
+    --avatar-radius: var(--radius-md);
+}

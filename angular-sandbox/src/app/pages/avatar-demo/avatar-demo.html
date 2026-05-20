@@ -3,113 +3,231 @@
     <p class="eyebrow">Component Showcase</p>
     <h1 class="demo-title">Avatar Component</h1>
     <p class="demo-subtitle">
-      Displays name initials derived from a "Surname, First name" string.
-      Supports multiple sizes, optional custom colours, and a square variant.
+      Accepts 1–3 character initials. Supports named colour presets, custom
+      colours, multiple sizes, round &amp; square shapes, and grouped
+      abbreviated views.
     </p>
   </header>
 
   <section class="example-grid">
 
-    <!-- Sizes -->
+    <!-- Sizes — round -->
     <article class="example-card">
       <p class="example-label">Sizes (round, default)</p>
       <div class="avatar-row">
-        <app-avatar name="Dijkstra, Edsger" size="xs" />
-        <app-avatar name="Dijkstra, Edsger" size="sm" />
-        <app-avatar name="Dijkstra, Edsger" size="md" />
-        <app-avatar name="Dijkstra, Edsger" size="lg" />
-        <app-avatar name="Dijkstra, Edsger" size="xl" />
+        <app-avatar initials="DE" size="xs" label="Edsger Dijkstra" />
+        <app-avatar initials="DE" size="sm" label="Edsger Dijkstra" />
+        <app-avatar initials="DE" size="md" label="Edsger Dijkstra" />
+        <app-avatar initials="DE" size="lg" label="Edsger Dijkstra" />
+        <app-avatar initials="DE" size="xl" label="Edsger Dijkstra" />
       </div>
       <div class="size-labels">
-        <span>xs</span>
-        <span>sm</span>
-        <span>md</span>
-        <span>lg</span>
-        <span>xl</span>
+        <span>xs</span><span>sm</span><span>md</span><span>lg</span><span>xl</span>
       </div>
     </article>
 
-    <!-- Square -->
+    <!-- Sizes — square -->
     <article class="example-card">
       <p class="example-label">Sizes (square)</p>
       <div class="avatar-row">
-        <app-avatar name="Lovelace, Ada" size="xs" [square]="true" />
-        <app-avatar name="Lovelace, Ada" size="sm" [square]="true" />
-        <app-avatar name="Lovelace, Ada" size="md" [square]="true" />
-        <app-avatar name="Lovelace, Ada" size="lg" [square]="true" />
-        <app-avatar name="Lovelace, Ada" size="xl" [square]="true" />
+        <app-avatar initials="AL" size="xs" [square]="true" label="Ada Lovelace" />
+        <app-avatar initials="AL" size="sm" [square]="true" label="Ada Lovelace" />
+        <app-avatar initials="AL" size="md" [square]="true" label="Ada Lovelace" />
+        <app-avatar initials="AL" size="lg" [square]="true" label="Ada Lovelace" />
+        <app-avatar initials="AL" size="xl" [square]="true" label="Ada Lovelace" />
       </div>
       <div class="size-labels">
-        <span>xs</span>
-        <span>sm</span>
-        <span>md</span>
-        <span>lg</span>
-        <span>xl</span>
+        <span>xs</span><span>sm</span><span>md</span><span>lg</span><span>xl</span>
       </div>
     </article>
 
-    <!-- Custom colours -->
+    <!-- Built-in colour presets -->
     <article class="example-card">
-      <p class="example-label">Custom colours</p>
-      <div class="avatar-row">
-        <app-avatar name="Turing, Alan" [color]="['#fff', '#7c3aed']" />
-        <app-avatar name="Hopper, Grace" [color]="['#fff', '#059669']" />
-        <app-avatar name="Babbage, Charles" [color]="['#fff', '#dc2626']" />
-        <app-avatar name="Knuth, Donald" [color]="['#1e293b', '#fbbf24']" />
-        <app-avatar name="Liskov, Barbara" [color]="['#fff', '#0284c7']" />
+      <p class="example-label">Built-in colour presets</p>
+      <div class="avatar-row avatar-row--labeled">
+        @for (name of presetNames; track name) {
+          <figure class="avatar-figure">
+            <app-avatar initials="AB" [preset]="name" [label]="name" />
+            <figcaption>{{ name }}</figcaption>
+          </figure>
+        }
       </div>
     </article>
 
-    <!-- Name parsing edge cases -->
+    <!-- Custom colours override preset -->
     <article class="example-card">
-      <p class="example-label">Name parsing</p>
+      <p class="example-label">Custom colours (override preset)</p>
       <div class="avatar-row avatar-row--labeled">
         <figure class="avatar-figure">
-          <app-avatar name="Smith, John" />
-          <figcaption>Smith, John</figcaption>
+          <app-avatar initials="AT" [color]="['#fff', '#7c3aed']" label="Alan Turing" />
+          <figcaption>violet</figcaption>
         </figure>
         <figure class="avatar-figure">
-          <app-avatar name="O'Brien, Conan" />
-          <figcaption>O'Brien, Conan</figcaption>
+          <app-avatar initials="GH" [color]="['#fff', '#059669']" label="Grace Hopper" />
+          <figcaption>emerald</figcaption>
         </figure>
         <figure class="avatar-figure">
-          <app-avatar name="Tesla, Nikola" [square]="true" />
-          <figcaption>square</figcaption>
+          <app-avatar initials="CB" [color]="['#fff', '#dc2626']" label="Charles Babbage" />
+          <figcaption>red</figcaption>
         </figure>
         <figure class="avatar-figure">
-          <app-avatar name="Wozniak" />
-          <figcaption>surname only</figcaption>
+          <app-avatar initials="DK" [color]="['#1e293b', '#fbbf24']" label="Donald Knuth" />
+          <figcaption>amber</figcaption>
         </figure>
       </div>
     </article>
 
-    <!-- Mixed in a list -->
+    <!-- Deterministic auto-preset -->
+    <article class="example-card">
+      <p class="example-label">Deterministic auto-preset (no preset or color input)</p>
+      <p class="example-note">
+        Each set of initials always maps to the same preset — identity stays stable across renders.
+      </p>
+      <div class="avatar-row avatar-row--labeled">
+        <figure class="avatar-figure">
+          <app-avatar initials="ED" label="Edsger Dijkstra" />
+          <figcaption>ED</figcaption>
+        </figure>
+        <figure class="avatar-figure">
+          <app-avatar initials="GH" label="Grace Hopper" />
+          <figcaption>GH</figcaption>
+        </figure>
+        <figure class="avatar-figure">
+          <app-avatar initials="AT" label="Alan Turing" />
+          <figcaption>AT</figcaption>
+        </figure>
+        <figure class="avatar-figure">
+          <app-avatar initials="AL" label="Ada Lovelace" />
+          <figcaption>AL</figcaption>
+        </figure>
+        <figure class="avatar-figure">
+          <app-avatar initials="NW" label="Niklaus Wirth" />
+          <figcaption>NW</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <!-- Capitalize toggle -->
+    <article class="example-card">
+      <p class="example-label">Capitalize option</p>
+      <div class="avatar-row avatar-row--labeled">
+        <figure class="avatar-figure">
+          <app-avatar initials="jd" [capitalize]="true" label="John Doe (capitalized)" />
+          <figcaption>capitalize: true</figcaption>
+        </figure>
+        <figure class="avatar-figure">
+          <app-avatar initials="jd" [capitalize]="false" label="John Doe (as-is)" />
+          <figcaption>capitalize: false</figcaption>
+        </figure>
+        <figure class="avatar-figure">
+          <app-avatar initials="abc" [capitalize]="true" label="3-char initials capitalized" />
+          <figcaption>3 chars (cap)</figcaption>
+        </figure>
+        <figure class="avatar-figure">
+          <app-avatar initials="abc" [capitalize]="false" label="3-char initials as-is" />
+          <figcaption>3 chars (raw)</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <!-- Custom presets -->
+    <article class="example-card">
+      <p class="example-label">Custom colour presets</p>
+      <p class="example-note">
+        Custom presets override built-in ones. Provide a <code>customPresets</code> map
+        and reference keys by name via <code>preset</code>.
+      </p>
+      <div class="avatar-row avatar-row--labeled">
+        @for (item of customPresetTeam; track item.initials) {
+          <figure class="avatar-figure">
+            <app-avatar
+              [initials]="item.initials"
+              [preset]="item.preset"
+              [label]="item.label"
+              [customPresets]="customPresets"
+            />
+            <figcaption>{{ item.preset }}</figcaption>
+          </figure>
+        }
+      </div>
+    </article>
+
+    <!-- Avatar groups -->
+    <article class="example-card">
+      <p class="example-label">Avatar group — abbreviated</p>
+      <p class="example-note">
+        Show <strong>3</strong> avatars from a team of <strong>8</strong>; the
+        rest collapse into "+5". The <code>max</code> input is fully customisable.
+      </p>
+      <div class="group-row">
+        <div class="group-example">
+          <span class="group-caption">max=3</span>
+          <app-avatar-group
+            [items]="team"
+            [max]="3"
+            label="Engineering team (8 members)"
+          />
+        </div>
+        <div class="group-example">
+          <span class="group-caption">max=5</span>
+          <app-avatar-group
+            [items]="team"
+            [max]="5"
+            label="Engineering team (8 members)"
+          />
+        </div>
+        <div class="group-example">
+          <span class="group-caption">max=8 (all)</span>
+          <app-avatar-group
+            [items]="team"
+            [max]="8"
+            label="Engineering team (8 members)"
+          />
+        </div>
+      </div>
+    </article>
+
+    <!-- Avatar group — square + custom presets -->
+    <article class="example-card">
+      <p class="example-label">Avatar group — square + custom presets</p>
+      <div class="group-row">
+        <div class="group-example">
+          <span class="group-caption">max=3, square</span>
+          <app-avatar-group
+            [items]="customPresetTeam"
+            [max]="3"
+            [square]="true"
+            [customPresets]="customPresets"
+            label="Squad (5 members)"
+          />
+        </div>
+        <div class="group-example">
+          <span class="group-caption">size=lg</span>
+          <app-avatar-group
+            [items]="team"
+            [max]="4"
+            size="lg"
+            label="Engineering team (8 members)"
+          />
+        </div>
+      </div>
+    </article>
+
+    <!-- In context — team list -->
     <article class="example-card">
       <p class="example-label">In context — team list</p>
       <ul class="team-list">
-        <li class="team-member">
-          <app-avatar name="Dijkstra, Edsger" [color]="['#fff', '#7c3aed']" />
-          <div class="team-info">
-            <span class="team-name">Edsger Dijkstra</span>
-            <span class="team-role">Algorithm Design</span>
-          </div>
-        </li>
-        <li class="team-member">
-          <app-avatar name="Hopper, Grace" [color]="['#fff', '#059669']" />
-          <div class="team-info">
-            <span class="team-name">Grace Hopper</span>
-            <span class="team-role">Compiler Pioneer</span>
-          </div>
-        </li>
-        <li class="team-member">
-          <app-avatar name="Turing, Alan" [color]="['#fff', '#0284c7']" />
-          <div class="team-info">
-            <span class="team-name">Alan Turing</span>
-            <span class="team-role">Computability Theory</span>
-          </div>
-        </li>
+        @for (item of team; track item.initials) {
+          <li class="team-member">
+            <app-avatar [initials]="item.initials" [label]="item.label" />
+            <div class="team-info">
+              <span class="team-name">{{ item.label }}</span>
+            </div>
+          </li>
+        }
       </ul>
     </article>
 
   </section>
 </main>
+
