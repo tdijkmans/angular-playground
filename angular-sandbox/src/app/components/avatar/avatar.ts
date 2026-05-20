@@ -58,6 +58,7 @@ export function resolveAvatarColor(
     '[style.--avatar-bg]': 'resolvedColor()[1]',
     role: 'img',
     '[attr.aria-label]': 'label() || displayInitials()',
+    '[attr.title]': 'label() || displayInitials()',
   },
 })
 export class AvatarComponent {
