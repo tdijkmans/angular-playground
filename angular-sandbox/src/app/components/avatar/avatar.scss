@@ -1,0 +1,56 @@
+:host {
+    --avatar-fg: var(--color-surface);
+    --avatar-bg: var(--color-primary);
+    --avatar-size: 2.25rem;
+    --avatar-font-size: 0.8125rem;
+    --avatar-radius: 50%;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    border-radius: var(--avatar-radius);
+    background-color: var(--avatar-bg);
+    color: var(--avatar-fg);
+    font-size: var(--avatar-font-size);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    user-select: none;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+:host(.size-xs) {
+    --avatar-size: 1.5rem;
+    --avatar-font-size: 0.625rem;
+}
+
+:host(.size-sm) {
+    --avatar-size: 1.875rem;
+    --avatar-font-size: 0.6875rem;
+}
+
+:host(.size-md) {
+    --avatar-size: 2.25rem;
+    --avatar-font-size: 0.8125rem;
+}
+
+:host(.size-lg) {
+    --avatar-size: 3rem;
+    --avatar-font-size: 1.0625rem;
+}
+
+:host(.size-xl) {
+    --avatar-size: 4rem;
+    --avatar-font-size: 1.375rem;
+}
+
+:host(.is-square) {
+    --avatar-radius: var(--radius-md);
+}
+
+.avatar-text {
+    pointer-events: none;
+}

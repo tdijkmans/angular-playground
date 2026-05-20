@@ -1,0 +1,22 @@
+@for (item of visibleItems(); track $index) {
+  <app-avatar
+    [initials]="item.initials"
+    [capitalize]="item.capitalize ?? true"
+    [preset]="item.preset"
+    [color]="item.color"
+    [label]="item.label ?? item.initials"
+    [size]="size()"
+    [square]="square()"
+    [customPresets]="customPresets()"
+  />
+}
+
+@if (overflowCount() > 0) {
+  <span
+    class="avatar-overflow size-{{ size() }}"
+    [class.is-square]="square()"
+    role="img"
+    [attr.aria-label]="overflowLabel()"
+    [attr.title]="overflowLabel()"
+  >+{{ overflowCount() }}</span>
+}
