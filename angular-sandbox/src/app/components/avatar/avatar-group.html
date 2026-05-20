@@ -1,4 +1,4 @@
-@for (item of visibleItems(); track item.initials + $index) {
+@for (item of visibleItems(); track $index) {
   <app-avatar
     [initials]="item.initials"
     [capitalize]="item.capitalize ?? true"

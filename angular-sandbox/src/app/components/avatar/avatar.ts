@@ -42,8 +42,8 @@ export function resolveAvatarColor(
 
   const keys = Object.keys(merged);
   let hash = 0;
-  for (const ch of initials) hash += ch.charCodeAt(0);
-  return merged[keys[hash % keys.length]];
+  for (const ch of initials) hash = (hash * 31 + ch.charCodeAt(0)) % keys.length;
+  return merged[keys[hash]];
 }
 
 @Component({
@@ -61,7 +61,10 @@ export function resolveAvatarColor(
   },
 })
 export class AvatarComponent {
-  /** 1–3 character initials string to display. */
+  /**
+   * 1–3 character initials string to display.
+   * Strings longer than 3 characters are silently truncated to 3.
+   */
   readonly initials = input.required<string>();
 
   /** When true (default), initials are rendered as uppercase. */
