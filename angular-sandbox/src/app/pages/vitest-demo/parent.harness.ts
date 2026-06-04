@@ -9,7 +9,11 @@ export class ParentHarness {
   constructor(private readonly el: DebugElement) {}
 
   get statusElement(): HTMLElement {
-    return this.el.query(By.css('[role="status"]')).nativeElement as HTMLElement;
+    const found = this.el.query(By.css('[role="status"]'));
+    if (!found) {
+      throw new Error('ParentHarness: no element found with role="status"');
+    }
+    return found.nativeElement as HTMLElement;
   }
 
   get child(): ChildHarness {

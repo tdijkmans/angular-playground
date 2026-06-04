@@ -41,6 +41,14 @@ describe('ParentComponent', () => {
     });
   });
 
+  describe('Mock cleanup between tests', () => {
+    it('should not carry over call count from a previous test', () => {
+      // vi.clearAllMocks() in the outer beforeEach resets mockFetchData before every test,
+      // so at this point (before detectChanges) it has not yet been called.
+      expect(mockFetchData).not.toHaveBeenCalled();
+    });
+  });
+
   describe('After detectChanges (ngOnInit executes)', () => {
     beforeEach(() => {
       fixture.detectChanges();
@@ -84,13 +92,6 @@ describe('ParentComponent', () => {
       fixture.detectChanges();
 
       expect(component.statusMessage()).toBe('Action triggered');
-    });
-  });
-
-  describe('Mock cleanup between tests', () => {
-    it('should not carry over call count from a previous test', () => {
-      // vi.clearAllMocks() in beforeEach ensures a clean slate each time
-      expect(mockFetchData).not.toHaveBeenCalled();
     });
   });
 });
