@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { AutoSaveDirective } from './auto-save.directive';
@@ -59,6 +59,7 @@ describe('AutoSaveDirective', () => {
 
   afterEach(() => {
     sessionStorage.clear();
+    vi.useRealTimers();
   });
 
   it('should create the directive', () => {
@@ -72,45 +73,47 @@ describe('AutoSaveDirective', () => {
     fixture.detectChanges(); // triggers ngOnInit
 
     expect(host.form.value).toEqual({ name: 'Jane', email: 'jane@example.com' });
-    expect(host.draftWasLoaded).toBeTrue();
+    expect(host.draftWasLoaded).toBe(true);
   });
 
   it('should not emit draftLoaded when no draft exists', () => {
     fixture.detectChanges();
 
-    expect(host.draftWasLoaded).toBeFalse();
+    expect(host.draftWasLoaded).toBe(false);
   });
 
-  it('should auto-save to sessionStorage after debounce', fakeAsync(() => {
+  it('should auto-save to sessionStorage after debounce', () => {
+    vi.useFakeTimers();
     fixture.detectChanges();
 
     host.form.controls['name'].setValue('Alice');
-    tick(500); // not yet
+    vi.advanceTimersByTime(500); // not yet
     expect(persistence.getItem('test_form', 'case_1')).toBeNull();
 
-    tick(600); // 1100ms total — debounce fires
+    vi.advanceTimersByTime(600); // 1100ms total — debounce fires
     expect(persistence.getItem('test_form', 'case_1')).toEqual({
       name: 'Alice',
       email: '',
     });
     expect(host.lastStatus).toBe('saved');
-  }));
+  });
 
-  it('should debounce rapid typing', fakeAsync(() => {
+  it('should debounce rapid typing', () => {
+    vi.useFakeTimers();
     fixture.detectChanges();
 
     host.form.controls['name'].setValue('A');
-    tick(500);
+    vi.advanceTimersByTime(500);
     host.form.controls['name'].setValue('Al');
-    tick(500);
+    vi.advanceTimersByTime(500);
     host.form.controls['name'].setValue('Ali');
-    tick(1100);
+    vi.advanceTimersByTime(1100);
 
     const saved = persistence.getItem('test_form', 'case_1');
     expect(saved).toEqual({ name: 'Ali', email: '' });
-  }));
+  });
 
-  it('should isolate drafts between different caseIds', fakeAsync(() => {
+  it('should isolate drafts between different caseIds', () => {
     persistence.setItem('test_form', 'case_1', { name: 'Case1', email: '' });
     persistence.setItem('test_form', 'case_2', { name: 'Case2', email: '' });
 
@@ -118,7 +121,7 @@ describe('AutoSaveDirective', () => {
 
     // host.caseId is 'case_1', so it should hydrate from case_1
     expect(host.form.value).toEqual({ name: 'Case1', email: '' });
-  }));
+  });
 
   it('should use patchValue so extra stored fields do not crash', () => {
     persistence.setItem('test_form', 'case_1', {
@@ -131,14 +134,15 @@ describe('AutoSaveDirective', () => {
     expect(host.form.value).toEqual({ name: 'Jane', email: 'j@example.com' });
   });
 
-  it('should clear the draft via the service removeItem method', fakeAsync(() => {
+  it('should clear the draft via the service removeItem method', () => {
+    vi.useFakeTimers();
     fixture.detectChanges();
 
     host.form.controls['name'].setValue('Draft');
-    tick(1100);
+    vi.advanceTimersByTime(1100);
     expect(persistence.getItem('test_form', 'case_1')).not.toBeNull();
 
     persistence.removeItem('test_form', 'case_1');
     expect(persistence.getItem('test_form', 'case_1')).toBeNull();
-  }));
+  });
 });
