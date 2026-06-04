@@ -62,7 +62,7 @@ describe('FormPersistenceService', () => {
 
   describe('error handling', () => {
     it('should return null and warn on malformed JSON', () => {
-      spyOn(console, 'warn');
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
       sessionStorage.setItem('draft_form_v1_case1', '{invalid json');
 
       const result = service.getItem('form_v1', 'case1');
@@ -71,8 +71,8 @@ describe('FormPersistenceService', () => {
     });
 
     it('should warn but not throw when sessionStorage.setItem fails', () => {
-      spyOn(console, 'warn');
-      spyOn(Storage.prototype, 'setItem').and.throwError('QuotaExceeded');
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('QuotaExceeded'); });
 
       expect(() => service.setItem('f', 'c', { x: 1 })).not.toThrow();
       expect(console.warn).toHaveBeenCalled();
