@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
-import { AVATAR_BUILT_IN_PRESETS, AvatarPresets } from '../../components/avatar/avatar';
-import { AvatarComponent } from '../../components/avatar/avatar';
+import { AVATAR_BUILT_IN_PRESETS, AvatarComponent, AvatarPresets } from '../../components/avatar/avatar';
 import { AvatarGroupComponent, AvatarItem } from '../../components/avatar/avatar-group';
 
 const TEAM: AvatarItem[] = [
@@ -20,6 +19,7 @@ const TEAM: AvatarItem[] = [
   standalone: true,
   imports: [AvatarComponent, AvatarGroupComponent],
   templateUrl: './avatar-demo.html',
+  
   styleUrl: './avatar-demo.scss',
 })
 export class AvatarDemoComponent {
@@ -41,4 +41,3 @@ export class AvatarDemoComponent {
     { initials: 'EE', preset: 'success', label: 'Eve E' },
   ];
 }
-

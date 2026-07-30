@@ -3,8 +3,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { distinctUntilKeyChanged } from 'rxjs';
 
 import {
-    ContainerQueryDirective,
-    CqBreakpoint,
+  ContainerQueryDirective,
+  CqBreakpoint,
 } from '../../directives/container-query.directive';
 
 const WIDTH_BREAKPOINTS: CqBreakpoint[] = [
@@ -42,6 +42,7 @@ const TARGET_BREAKPOINTS: CqBreakpoint[] = [
   selector: 'app-container-query-demo',
   imports: [ContainerQueryDirective],
   templateUrl: './container-query-demo.html',
+  
   styleUrl: './container-query-demo.scss',
 })
 export class ContainerQueryDemoComponent {

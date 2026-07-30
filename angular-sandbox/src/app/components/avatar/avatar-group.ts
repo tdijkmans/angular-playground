@@ -27,6 +27,7 @@ export interface AvatarItem {
   imports: [AvatarComponent],
   templateUrl: './avatar-group.html',
   styleUrl: './avatar-group.scss',
+  
   host: {
     role: 'group',
     '[attr.aria-label]': 'label()',

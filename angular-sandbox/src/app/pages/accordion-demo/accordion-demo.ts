@@ -52,6 +52,7 @@ const DEMO_ITEMS: AccordionItem[] = [
     FormsModule,
   ],
   templateUrl: './accordion-demo.html',
+  
   styleUrl: './accordion-demo.scss',
 })
 export class AccordionDemoComponent {

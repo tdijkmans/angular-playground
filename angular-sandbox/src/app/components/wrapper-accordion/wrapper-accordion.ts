@@ -5,6 +5,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   standalone: true,
   templateUrl: './wrapper-accordion.html',
   styleUrl: './wrapper-accordion.scss',
+  
   encapsulation: ViewEncapsulation.None,
 })
 export class WrapperAccordionComponent {}

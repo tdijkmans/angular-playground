@@ -58,6 +58,7 @@ export function resolveAvatarColor(
   standalone: true,
   templateUrl: './avatar.html',
   styleUrl: './avatar.scss',
+  
   host: {
     '[class]': '"avatar size-" + size()',
     '[class.is-square]': 'square()',
