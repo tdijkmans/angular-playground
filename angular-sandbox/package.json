@@ -20,7 +20,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/cdk": "^21.2.11",
+    "@angular/cdk": "^22.1.0",
     "@angular/common": "^22.1.0",
     "@angular/compiler": "^22.1.0",
     "@angular/core": "^22.1.0",
@@ -32,11 +32,11 @@
     "zone.js": "^0.16.2"
   },
   "devDependencies": {
-    "@angular/build": "^21.2.19",
-    "@angular/cli": "^21.2.19",
+    "@angular/build": "^22.1.2",
+    "@angular/cli": "^22.1.2",
     "@angular/compiler-cli": "^22.1.0",
     "jsdom": "^29.1.1",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.10"
   }
 }
