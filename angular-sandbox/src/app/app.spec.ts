@@ -33,5 +33,6 @@ describe('App', () => {
     expect(navLinks).toContain('Container Query Demo');
     expect(navLinks).toContain('Accordion Demo');
     expect(navLinks).toContain('Auto-Save Demo');
+    expect(navLinks).toContain('Fuzzy Search Demo');
   });
 });

@@ -4,6 +4,7 @@ import { AccordionDemoComponent } from './pages/accordion-demo/accordion-demo';
 import { AutoSaveDemoComponent } from './pages/auto-save-demo/auto-save-demo';
 import { AvatarDemoComponent } from './pages/avatar-demo/avatar-demo';
 import { ContainerQueryDemoComponent } from './pages/container-query-demo/container-query-demo';
+import { FuzzySearchDemoComponent } from './pages/fuzzy-search-demo/fuzzy-search-demo';
 
 export const routes: Routes = [
 	{
@@ -26,5 +27,9 @@ export const routes: Routes = [
 	{
 		path: 'avatar',
 		component: AvatarDemoComponent,
+	},
+	{
+		path: 'fuzzy-search-demo',
+		component: FuzzySearchDemoComponent,
 	},
 ];
