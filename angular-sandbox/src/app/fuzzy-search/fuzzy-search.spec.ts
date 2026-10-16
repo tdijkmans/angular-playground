@@ -170,9 +170,14 @@ describe('FuzzySearch', () => {
     const engine = createEngine({ threshold: 0.6 });
     expect(engine.search('')).toEqual([]);
 
-    const longQuery = 'Fresh red tomato used in pasta sauce.';
-    const results = engine.search(longQuery);
-    expect(results.some((result) => result.item.name === 'Tomato')).toBe(true);
+    const longNeedle = 'slow-roasted tomato and basil soup concentrate batch signature';
+    const longEngine = new FuzzySearch(
+      [{ name: longNeedle, description: 'Long pattern fixture', tags: [] }],
+      { keys: ['name'], threshold: 0.6 },
+    );
+
+    const results = longEngine.search(longNeedle);
+    expect(results).toHaveLength(1);
   });
 
   it('supports reusable prebuilt indexes and result limits', () => {

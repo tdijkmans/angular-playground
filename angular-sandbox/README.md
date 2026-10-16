@@ -60,7 +60,7 @@ For more information on using the Angular CLI, including detailed command refere
 
 ## Fuzzy search experiment
 
-This repository now includes a framework-independent fuzzy search engine in `/home/runner/work/angular-playground/angular-playground/angular-sandbox/src/app/fuzzy-search`.
+This repository now includes a framework-independent fuzzy search engine in `src/app/fuzzy-search`.
 
 ### Public API
 

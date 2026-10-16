@@ -19,6 +19,12 @@ export interface SearchOptions<T> {
 
 export interface SearchRequest {
   limit?: number;
+  threshold?: number;
+  location?: number;
+  distance?: number;
+  ignoreLocation?: boolean;
+  findAllMatches?: boolean;
+  minMatchCharLength?: number;
 }
 
 export interface SearchMatch {

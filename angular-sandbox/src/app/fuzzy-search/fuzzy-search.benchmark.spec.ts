@@ -41,7 +41,6 @@ describe('FuzzySearch benchmark coverage', () => {
       expect(results.length).toBeGreaterThan(0);
       expect(durationMs).toBeGreaterThanOrEqual(0);
     }
-
-    console.info('Benchmark timings (ms):', timings);
+    expect(timings).toHaveLength(4);
   });
 });

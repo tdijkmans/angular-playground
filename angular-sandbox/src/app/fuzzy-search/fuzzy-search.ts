@@ -55,7 +55,8 @@ function scoreField(
       continue;
     }
 
-    const normalizedScore = Math.min(1, Math.max(0, matchResult.score / Math.max(value.norm, Number.EPSILON)));
+    const baseScore = Math.min(1, Math.max(0, matchResult.score));
+    const normalizedScore = Math.min(1, baseScore * (2 - value.norm));
 
     if (normalizedScore < bestScore) {
       bestScore = normalizedScore;
@@ -109,8 +110,22 @@ export class FuzzySearch<T> {
       this.options.ignoreDiacritics,
     );
 
+    if (!normalizedQuery.trim()) {
+      return [];
+    }
+
     const limit = request.limit ?? Number.POSITIVE_INFINITY;
-    const results: SearchResult<T>[] = [];
+    const runtimeOptions: Required<SearchOptions<unknown>> = {
+      ...(this.options as Required<SearchOptions<unknown>>),
+      threshold: request.threshold ?? this.options.threshold,
+      location: request.location ?? this.options.location,
+      distance: request.distance ?? this.options.distance,
+      ignoreLocation: request.ignoreLocation ?? this.options.ignoreLocation,
+      findAllMatches: request.findAllMatches ?? this.options.findAllMatches,
+      minMatchCharLength: request.minMatchCharLength ?? this.options.minMatchCharLength,
+    };
+
+    const results: Array<{ item: T; refIndex: number; score: number; matches: SearchMatch[] }> = [];
 
     for (const indexedItem of this.index.items) {
       if (indexedItem.fields.length === 0) {
@@ -122,7 +137,7 @@ export class FuzzySearch<T> {
       const itemMatches: SearchMatch[] = [];
 
       for (const field of indexedItem.fields) {
-        const fieldMatch = scoreField(normalizedQuery, field, this.options as Required<SearchOptions<unknown>>);
+        const fieldMatch = scoreField(normalizedQuery, field, runtimeOptions);
 
         if (!fieldMatch) {
           continue;
@@ -142,39 +157,43 @@ export class FuzzySearch<T> {
 
       const score = Math.min(1, weightedScoreTotal / matchedWeightTotal);
 
-      if (score > this.options.threshold) {
+      if (score > runtimeOptions.threshold) {
         continue;
       }
 
-      const result: SearchResult<T> = {
+      results.push({
         item: indexedItem.item,
         refIndex: indexedItem.refIndex,
-      };
-
-      if (this.options.includeScore) {
-        result.score = score;
-      }
-
-      if (this.options.includeMatches) {
-        result.matches = itemMatches;
-      }
-
-      results.push(result);
+        score,
+        matches: itemMatches,
+      });
     }
 
     if (this.options.shouldSort) {
       results.sort((left, right) => {
-        const leftScore = left.score ?? 0;
-        const rightScore = right.score ?? 0;
-
-        if (leftScore !== rightScore) {
-          return leftScore - rightScore;
+        if (left.score !== right.score) {
+          return left.score - right.score;
         }
 
         return left.refIndex - right.refIndex;
       });
     }
 
-    return results.slice(0, limit);
+    return results.slice(0, limit).map((result) => {
+      const searchResult: SearchResult<T> = {
+        item: result.item,
+        refIndex: result.refIndex,
+      };
+
+      if (this.options.includeScore) {
+        searchResult.score = result.score;
+      }
+
+      if (this.options.includeMatches) {
+        searchResult.matches = result.matches;
+      }
+
+      return searchResult;
+    });
   }
 }

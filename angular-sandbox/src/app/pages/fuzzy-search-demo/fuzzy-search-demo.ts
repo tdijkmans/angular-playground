@@ -21,7 +21,7 @@ const EXAMPLE_QUERIES = [
   'crme fraiche',
   'jalapeno',
   'extra virgin',
-  'smoked paprica',
+  'smoked paprika',
 ];
 
 function mergeRanges(ranges: Array<[number, number]>): Array<[number, number]> {
@@ -103,10 +103,6 @@ export class FuzzySearchDemoComponent {
         { name: 'description', weight: 0.25 },
         { name: 'tags', weight: 0.1 },
       ],
-      threshold: this.threshold(),
-      location: this.location(),
-      distance: this.distance(),
-      ignoreLocation: this.ignoreLocation(),
       isCaseSensitive: this.isCaseSensitive(),
       ignoreDiacritics: this.ignoreDiacritics(),
       includeScore: true,
@@ -121,7 +117,13 @@ export class FuzzySearchDemoComponent {
     const query = this.query();
 
     const startedAt = performance.now();
-    const results = this.engine().search(query, { limit: this.resultLimit() });
+    const results = this.engine().search(query, {
+      limit: this.resultLimit(),
+      threshold: this.threshold(),
+      location: this.location(),
+      distance: this.distance(),
+      ignoreLocation: this.ignoreLocation(),
+    });
     const durationMs = performance.now() - startedAt;
 
     const decoratedResults: DemoSearchResult[] = results.map((result) => {

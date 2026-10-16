@@ -192,11 +192,12 @@ function searchShortPattern(text: string, pattern: string, config: BitapSearchCo
     lastBitArray = bitArray;
   }
 
-  const indices = convertMaskToIndices(resultMask, config.minMatchCharLength);
+  const hasAcceptedMatch = bestLocation >= 0;
+  const indices = hasAcceptedMatch ? convertMaskToIndices(resultMask, config.minMatchCharLength) : [];
 
   return {
-    isMatch: bestLocation >= 0 || indices.length > 0,
-    score: Math.max(0, threshold),
+    isMatch: hasAcceptedMatch,
+    score: hasAcceptedMatch ? Math.max(0, threshold) : 1,
     indices,
   };
 }
@@ -208,6 +209,17 @@ export function bitapSearch(text: string, pattern: string, config: BitapSearchCo
       score: 0,
       indices: [],
     };
+  }
+
+  if (pattern.length > MAX_BITS) {
+    const exactIndex = text.indexOf(pattern);
+    if (exactIndex >= 0) {
+      return {
+        isMatch: true,
+        score: 0,
+        indices: [[exactIndex, exactIndex + pattern.length - 1]],
+      };
+    }
   }
 
   if (pattern.length <= MAX_BITS) {
