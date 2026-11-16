@@ -1,0 +1,161 @@
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand-section">
+      <div class="mark" aria-hidden="true"><span class="mark-core"></span><span class="mark-ring"></span><span class="mark-orbit"></span></div>
+      <div class="brand-word">WILD<span class="brand-period">.</span></div>
+      <span class="brand-divider"></span><span class="brand-byline">A living experiment</span>
+    </div>
+    <div class="top-center"><span class="status-dot"></span> GENERATIVE BIOLOGY <span class="top-slash">/</span> WORLD {{ (seed() % 10000).toString().padStart(4, '0') }}</div>
+    <div class="top-actions">
+      <a class="subtle-btn demo-return" routerLink="/container-query" aria-label="Back to Angular playground">← Demos</a>
+      <button class="subtle-btn aquarium-enter" (click)="toggleAquarium()" title="Aquarium mode (F)" aria-label="Open fullscreen aquarium">⛶ <span class="hide-sm">Aquarium</span></button>
+      <button class="icon-btn info-btn" (click)="toggleGuide()" title="How to interact" aria-label="Show instructions">?</button>
+      <button class="subtle-btn" (click)="newWorld()" title="Seed a new world"><span class="action-icon">↻</span><span class="hide-sm"> New world</span></button>
+      <button class="subtle-btn" (click)="cycleSpeed()" title="Change simulation speed">{{ speed() }}×</button>
+      <button class="pause-btn" [class.is-paused]="paused()" (click)="togglePause()">{{ paused() ? '▶ Resume' : 'Ⅱ Pause' }}</button>
+    </div>
+  </header>
+
+  <div class="page-intro">
+    <div><div class="eyebrow">AN EXPERIMENT IN EMERGENCE <span class="eyebrow-rule"></span> NO TWO WORLDS THE SAME</div>
+      <h1>Life finds a way<span class="headline-dot">.</span></h1>
+      <p>Nothing is scripted. Every movement, encounter and mutation shapes what comes next.</p>
+    </div>
+    <div class="intro-right"><span class="live-indicator"><span class="live-ring"></span> {{ paused() ? 'SIMULATION PAUSED' : 'SIMULATION ACTIVE' }}</span>
+      <span class="session-label">DAY {{ stats().day.toFixed(0).padStart(3,'0') }} <span class="intro-separator">·</span> GEN {{ formatGeneration(stats().generations) }}</span>
+    </div>
+  </div>
+
+  <main class="main-layout">
+    <section class="world-section" aria-label="Living ecosystem">
+      <div #worldFrame class="world-frame" [class.aquarium-active]="aquariumMode()" (pointermove)="wakeAquarium()" (pointerdown)="wakeAquarium()">
+        <canvas #worldCanvas class="world-canvas" aria-label="Interactive live predator prey ecosystem" role="img"
+          (pointerdown)="onPointerDown($event)" (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp($event)"
+          (pointercancel)="onPointerUp($event)" (pointerleave)="onPointerLeave()" (wheel)="onWheel($event)"></canvas>
+        @if(aquariumMode()) {
+          <div class="aquarium-hud" [class.aquarium-hud-idle]="aquariumIdle() && !aquariumSettingsOpen()">
+            <div class="aquarium-brand"><span class="aquarium-brand-dot"></span> WILD <span> / A LIVING WORLD</span></div>
+            <div class="aquarium-toolbar" role="toolbar" aria-label="Aquarium display controls">
+              <button class="aquarium-ui-button" (click)="toggleAquariumSettings()" [attr.aria-expanded]="aquariumSettingsOpen()" aria-controls="aquarium-settings" title="Display settings">⚙ <span>Display</span></button>
+              <button class="aquarium-ui-button aquarium-exit" (click)="exitAquarium()" title="Exit aquarium (F or Esc)">⤢ <span>Exit</span></button>
+            </div>
+          </div>
+          @if(aquariumSettingsOpen()) {
+            <section id="aquarium-settings" class="aquarium-settings" aria-label="Aquarium display settings">
+              <div class="aquarium-settings-header"><div><span class="aquarium-kicker">MAKE THIS WORLD YOURS</span><h2>Display atmosphere</h2></div><button class="aquarium-close" (click)="toggleAquariumSettings()" aria-label="Close display settings">×</button></div>
+              <div class="aquarium-control-caption">VIEW PRESETS</div>
+              <div class="aquarium-presets" role="group" aria-label="Information level">
+                <button [class.is-active]="aquariumPreset()==='zen'" (click)="setAquariumPreset('zen')">✧ <span>Zen</span></button>
+                <button [class.is-active]="aquariumPreset()==='glance'" (click)="setAquariumPreset('glance')">◈ <span>Glance</span></button>
+                <button [class.is-active]="aquariumPreset()==='study'" (click)="setAquariumPreset('study')">▤ <span>Discover</span></button>
+              </div>
+              <div class="aquarium-control-caption aquarium-divider">SHOW INFORMATION CARDS</div>
+              @for(card of aquariumCardOptions; track card.id){
+                <button class="aquarium-toggle-row" (click)="toggleAquariumCard(card.id)" [attr.aria-pressed]="aquariumCards()[card.id]">
+                  <span><strong>{{card.title}}</strong><small>{{card.subtitle}}</small></span><span class="aquarium-switch" [class.on]="aquariumCards()[card.id]"><i></i></span>
+                </button>
+              }
+              <button class="aquarium-interact" (click)="toggleAquariumInteraction()" [attr.aria-pressed]="aquariumInteract()"><span>Allow touch to shape the world<small>{{ aquariumInteract() ? 'Interaction enabled' : 'View only · no accidental changes' }}</small></span><span class="aquarium-switch" [class.on]="aquariumInteract()"><i></i></span></button>
+              @if(aquariumInteract()){
+                <div class="aquarium-mini-tools" aria-label="Interaction tool">
+                  @for(tool of tools; track tool.id){<button [class.is-active]="mode()===tool.id" (click)="setMode(tool.id)" [title]="tool.description">{{tool.icon}} {{tool.name}}</button>}
+                </div>
+              }
+              <div class="aquarium-help">Move mouse or tap to reveal controls · F / Esc to leave</div>
+            </section>
+          }
+          <div class="aquarium-cards" aria-label="Floating live statistics">
+            @if(aquariumCards().journal){
+              <div class="aqua-card aqua-journal"><div class="aqua-label"><span class="aqua-live-dot"></span> FROM THE FIELD</div>
+                @for(event of events().slice(0,2);track event.message){<div class="aqua-event"><small>DAY {{event.day}}</small><span>{{event.message}}</span></div>}
+              </div>
+            }
+            @if(aquariumCards().timeline){
+              <div class="aqua-card aqua-timeline"><div class="aqua-label">POPULATION HISTORY <span>LIVE ↗</span></div><canvas #aquariumChart aria-label="Population history" class="aqua-graph"></canvas><div class="aqua-legend"><span>● GRAZERS</span><span>● HUNTERS</span></div></div>
+            }
+            @if(aquariumCards().population){
+              <div class="aqua-card aqua-population"><div class="aqua-label"><span class="aqua-live-dot"></span> LIVE POPULATIONS <span>DAY {{stats().day.toFixed(0)}}</span></div>
+                <div class="aqua-pop-grid"><div><small>GRAZERS</small><strong>{{stats().prey | number}}</strong></div><div><small>HUNTERS</small><strong>{{stats().predators | number}}</strong></div></div>
+              </div>
+            }
+            @if(aquariumCards().evolution){
+              <div class="aqua-card aqua-evolution"><div class="aqua-label">EVOLUTION AT WORK</div><div class="aqua-metric"><span>Average generation</span><strong>{{formatGeneration(stats().generations)}}</strong></div><div class="aqua-metric"><span>Genetic diversity</span><strong>{{stats().diversity.toFixed(0)}}%</strong></div><div class="aqua-metric"><span>Births / Hunts</span><strong>{{stats().births | number}} <em>/</em> {{stats().kills | number}}</strong></div></div>
+            }
+          </div>
+        }
+        <div class="world-top-left"><span class="world-eyebrow">THE BIOSPHERE</span><span class="world-tag">EXPERIMENT 001</span></div>
+        <div class="world-top-right"><span class="reticle">⌖</span> FREE ECOSYSTEM <span class="world-online">●</span></div>
+
+        @if(showGuide()) {
+          <div class="welcome-overlay">
+            <button class="overlay-close" (click)="toggleGuide()" aria-label="Dismiss instructions">×</button>
+            <div class="welcome-orb">✳</div>
+            <div class="welcome-small">THIS IS NOT AN ANIMATION</div>
+            <div class="welcome-title">You are part<br>of the ecosystem.</div>
+            <p>Touch the world. Grow food, redirect currents, change the climate. Then watch life adapt to what you leave behind.</p>
+            <button class="welcome-action" (click)="toggleGuide()">ENTER THE WORLD <span>↗</span></button>
+          </div>
+        }
+        @if(selected(); as a){
+          <div class="selected-card">
+            <button class="overlay-close" (click)="closeInspector()" title="Close inspector">×</button>
+            <div class="selected-kicker"><span class="selected-dot" [class.predator]="a.species==='predator'"></span> SPECIMEN #{{a.id}}</div>
+            <div class="selected-name">{{ a.species === 'prey' ? 'GRAZER' : 'HUNTER' }} <span class="muted">/ GEN {{a.generation}}</span></div>
+            <div class="gene"><span>Speed</span><div class="gene-rail"><i [style.width.%]="a.genes.speed/1.6*100"></i></div><b>{{a.genes.speed.toFixed(2)}}</b></div>
+            <div class="gene"><span>Perception</span><div class="gene-rail"><i [style.width.%]="a.genes.vision/1.6*100"></i></div><b>{{a.genes.vision.toFixed(2)}}</b></div>
+            <div class="gene"><span>Camouflage</span><div class="gene-rail"><i [style.width.%]="a.genes.camouflage*100"></i></div><b>{{a.genes.camouflage.toFixed(2)}}</b></div>
+            <div class="gene"><span>Fertility</span><div class="gene-rail"><i [style.width.%]="a.genes.fertility/1.5*100"></i></div><b>{{a.genes.fertility.toFixed(2)}}</b></div>
+            <div class="selected-footer">ENERGY {{a.energy.toFixed(2)}} <span>·</span> AGE {{a.age.toFixed(0)}}s</div>
+          </div>
+        }
+        <div class="bottom-gradient"></div>
+        <div class="tools-wrap">
+          <div class="tool-heading">YOUR INFLUENCE <span> / 01</span></div>
+          <div class="tool-tray" role="toolbar" aria-label="Interact with the ecosystem">
+            @for (tool of tools; track tool.id) {
+              <button class="tool-button" [class.active]="mode()===tool.id" [attr.aria-pressed]="mode()===tool.id" [title]="tool.description" (click)="setMode(tool.id)">
+                <span class="tool-icon" [class.mint]="tool.color==='mint'" [class.coral]="tool.color==='coral'" [class.blue]="tool.color==='blue'">{{tool.icon}}</span>
+                <span class="tool-name">{{tool.name}}</span>
+              </button>
+            }
+          </div>
+        </div>
+        <div class="canvas-corner bottom-corner">{{ currentTool.description }} <span class="key-label">{{currentTool.shortcut}}</span></div>
+        <div class="zoom-label">{{ (zoomLevel()*100).toFixed(0) }}% <span>✛</span></div>
+      </div>
+      <div class="under-world"><div class="interaction-status"><span class="pulse-small"></span> {{ interaction() }}</div>
+        <span class="under-legend"><span class="dot mint"></span> GRAZERS <span class="dot coral"></span> HUNTERS <span class="dot sage"></span> FOOD</span>
+      </div>
+      <section class="timeline-card">
+        <div class="timeline-heading"><div><div class="eyebrow">THE STORY SO FAR</div><h2>Population dynamics</h2></div>
+          <div class="timeline-controls"><button [class.active]="chartMode()==='population'" (click)="setChartMode('population')">Population</button><button [class.active]="chartMode()==='traits'" (click)="setChartMode('traits')">Traits</button></div></div>
+        <div class="chart-legend"><span><i class="line mint"></i> {{ chartMode()==='population' ? 'Grazers' : 'Average speed' }}</span>
+          <span><i class="line coral"></i> {{ chartMode()==='population' ? 'Hunters' : 'Camouflage' }}</span>
+          <span class="chart-note">RECORDED FROM THE SIMULATION <span class="chart-rec">●</span></span></div>
+        <canvas #popChart class="main-chart" aria-label="Live population timeline"></canvas>
+      </section>
+    </section>
+
+    <aside class="insights-panel" aria-label="Live ecosystem statistics">
+      <div class="insights-heading"><span>FIELD NOTES <span class="panel-number">/ 001</span></span><span class="insights-live"><span></span> LIVE DATA</span></div>
+      <div class="panel-title">A world in<br><em>constant motion.</em></div>
+      <div class="panel-subtitle">Every number is alive. They change because of what happens out there.</div>
+      <div class="stat-row"><div class="stat-main"><span class="stat-dot mint"></span><span class="stat-name">GRAZERS</span><div class="stat-value">{{ stats().prey | number }}</div><div class="stat-description">Foraging · fleeing · evolving</div></div><canvas #preySpark class="spark" aria-hidden="true"></canvas></div>
+      <div class="stat-row"><div class="stat-main"><span class="stat-dot coral"></span><span class="stat-name">HUNTERS</span><div class="stat-value coral-text">{{ stats().predators | number }}</div><div class="stat-description">Tracking · hunting · adapting</div></div><canvas #predatorSpark class="spark" aria-hidden="true"></canvas></div>
+      <div class="metrics-header">EVOLUTIONARY SIGNALS <span>↗</span></div>
+      <div class="metrics-grid">
+        <div class="metric"><span class="metric-label">GENETIC DIVERSITY</span><strong>{{ stats().diversity.toFixed(0) }}<small>%</small></strong><div class="progress"><i [style.width.%]="stats().diversity"></i></div></div>
+        <div class="metric"><span class="metric-label">AVG. SPEED GENE</span><strong>{{ stats().meanSpeed.toFixed(2) }}<small>×</small></strong><div class="progress"><i class="warm" [style.width.%]="stats().meanSpeed/1.6*100"></i></div></div>
+        <div class="metric"><span class="metric-label">NEW LIVES</span><strong>{{ stats().births | number }}</strong><span class="metric-caption">CUMULATIVE BIRTHS</span></div>
+        <div class="metric"><span class="metric-label">PREDATION EVENTS</span><strong>{{ stats().kills | number }}</strong><span class="metric-caption">CUMULATIVE HUNTS</span></div>
+      </div>
+      <div class="facts"><div><span>AVAILABLE FOOD</span><strong>{{stats().food | number}} <span class="fact-unit">SPORES</span></strong></div>
+        <div><span>AVERAGE GENERATION</span><strong>{{formatGeneration(stats().generations)}}</strong></div><div><span>AMBIENT TEMPERATURE</span><strong>{{stats().temperature.toFixed(1)}}° <span class="fact-unit">C</span></strong></div></div>
+      <section class="field-log"><div class="log-heading">FIELD JOURNAL <span>↗</span></div>
+        @for(e of events().slice(0,3); track e.key){<div class="log-entry"><span class="log-node" [class.log-coral]="e.type==='hunt'"></span><div><span class="log-date">DAY {{e.day.toString().padStart(3,'0')}}</span><p>{{e.message}}</p></div></div>}
+      </section>
+      <div class="insights-footer">WILD LABORATORY <span>© AN OPEN EXPERIMENT</span></div>
+    </aside>
+  </main>
+  <footer class="app-footer"><span>AN ARTIFICIAL WORLD. REAL EMERGENCE.</span><span>TOUCH TO INTERVENE <span class="footer-star">✳</span> STEP BACK TO DISCOVER</span></footer>
+</div>

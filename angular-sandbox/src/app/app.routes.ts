@@ -27,4 +27,8 @@ export const routes: Routes = [
 		path: 'avatar',
 		component: AvatarDemoComponent,
 	},
+	{
+		path: 'ecosystem',
+		loadComponent: () => import('./pages/ecosystem/ecosystem').then(m => m.EcosystemComponent),
+	},
 ];
