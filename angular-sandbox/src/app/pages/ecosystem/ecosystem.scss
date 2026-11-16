@@ -1,0 +1,22 @@
+:host {
+  display: block;
+  background: #081116;
+  color: #e9f2ec;
+  font-family: "DM Sans", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+:host, :host * {
+  box-sizing: border-box;
+}
+
+:host button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+:host canvas {
+  display: block;
+}
